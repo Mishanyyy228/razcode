@@ -86,7 +86,7 @@ namespace lab
                     {
                         MessageBox.Show("Пароль должен быть не менее 6 символов.");
                     }
-                    if (isEmailValid | isPasswordValid)
+                    if (isEmailValid || isPasswordValid)
                     {
                         Window w2 = new MainEmpty();
                         Hide();
