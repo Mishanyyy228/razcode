@@ -15,18 +15,12 @@ namespace lab.Repository
            new Usermodel { Username = "Салфетка", Email = "mananev13@gmail.com", Password = "123456" },
            new Usermodel { Username = "Anna", Email = "anna@example.com", Password = "password" }
        };
-
+        public static Usermodel CurrentUser { get; private set; }
         public Usermodel? GetUser(string email, string password)
         {
-            foreach (var user in _users)
-            {
-                if (user.Email == email && user.Password == password)
-                {
-                    return user;
-                }
-            }
-            return null;
+            return _users.FirstOrDefault(user => user.Email == email && user.Password == password);
         }
+
         public bool Register(string username, string email, string password)
         {
             if (_users.Exists(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase)))
@@ -34,9 +28,31 @@ namespace lab.Repository
                 return false;
             }
 
-            _users.Add(new Usermodel { Username = username, Email = email, Password = password });
+            var newUser = new Usermodel
+            {
+                Username = username,
+                Email = email,
+                Password = password
+            };
+            _users.Add(newUser);
+
+            CurrentUser = newUser;
+            return true;
+        }
+        public bool AuthenticateUser(string email, string username, string password)
+        {
+            CurrentUser = new Usermodel();
+
+            var user = _users.FirstOrDefault(user => user.Email == email && user.Password == password);
+
+            if (user == null)
+            {
+
+                return false;
+            }
+
+            CurrentUser = user;
             return true;
         }
     }
-
 }
