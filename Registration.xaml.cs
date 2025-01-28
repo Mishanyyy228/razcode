@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using lab.Validation;
+using lab.Repository;
 
 namespace lab
 {
@@ -103,6 +104,7 @@ namespace lab
             Hide();
             w2.Show();
         }
+
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             if (Name_user.Text != "Введите имя пользователя")
@@ -111,6 +113,7 @@ namespace lab
                 {
                     if (Pass_user.Text != "Введите пароль")
                     {
+
                         string email = Email_user.Text;
                         string password = Pass_user.Text;
                         string name = Name_user.Text;
@@ -121,31 +124,48 @@ namespace lab
                         bool isNameValid = name.ValidateName();
                         bool isPasswordValid1 = password1.ValidatePassword();
 
-                        if (!isEmailValid)
+                        if (!isEmailValid | !isPasswordValid | !isNameValid)
                         {
-                            MessageBox.Show("Некорректный формат почты.");
+
+                            if (!isEmailValid)
+                            {
+                                MessageBox.Show("Некорректный формат почты.");
+                            }
+                            if (!isPasswordValid1)
+                            {
+                                MessageBox.Show("Пароль должен быть не менее 6 символов.");
+                            }
+                            if (!isNameValid)
+                            {
+                                MessageBox.Show("Имя должно содержать не менее 3 символов.");
+                            }
+                            if (Pass_user.Text != Pass_user1.Text)
+                            {
+                                MessageBox.Show("Пароли должны совпадать");
+                            }
                         }
-                        if (!isPasswordValid)
+
+                        if (Pass_user.Text == Pass_user1.Text)
                         {
-                            MessageBox.Show("Пароль должен быть не менее 6 символов.");
+                            var userRepo = new UserRepository();
+                            bool registr = userRepo.Register(Name_user.Text, Email_user.Text, Pass_user.Text);
+
+                            if (registr)
+                            {
+                                MessageBox.Show("Успешно!!!");
+                                //Window w2 = new MainEmpty();
+                                //Hide();
+                                //w2.Show();
+                            }
+                            if (!registr)
+                            {
+                                MessageBox.Show("Email уже занят. Пожалуйста, выберите другой.");
+                            }
+
                         }
-                        if (!isPasswordValid1)
-                        {
-                            MessageBox.Show("Пароль должен быть не менее 6 символов.");
-                        }
-                        if (!isNameValid)
-                        {
-                            MessageBox.Show("Имя должно содержать не менее 3 символов.");
-                        }
-                        if (password != password1)
+                        else
                         {
                             MessageBox.Show("Пароли должны совпадать");
-                        }
-                        if (isEmailValid & isNameValid & isPasswordValid & password == password1)
-                        {
-                            Window w2 = new MainEmpty();
-                            Hide();
-                            w2.Show();
                         }
                     }
                     else
