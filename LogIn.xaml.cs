@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using lab.Validation;
+using lab.Repository;
 
 namespace lab
 {
@@ -79,19 +80,33 @@ namespace lab
                     bool isEmailValid = email.ValidateEmail();
                     bool isPasswordValid = password.ValidatePassword();
 
-                    if (!isEmailValid)
+                    if (!isEmailValid & !isPasswordValid)
                     {
-                        MessageBox.Show("Некорректный формат почты.");
+                        if (!isEmailValid)
+                        {
+                            MessageBox.Show("Некорректный формат почты.");
+                        }
+                        if (!isPasswordValid)
+                        {
+                            MessageBox.Show("Пароль должен быть не менее 6 символов.");
+                        }
                     }
-                    if (!isPasswordValid)
+                    if (isEmailValid && isPasswordValid)
                     {
-                        MessageBox.Show("Пароль должен быть не менее 6 символов.");
-                    }
-                    if (isEmailValid || isPasswordValid)
-                    {
-                        Window w2 = new MainEmpty();
-                        Hide();
-                        w2.Show();
+                        var userRepo = new UserRepository();
+                        var user = userRepo.GetUser(Pochta_user11.Text, Password_user11.Text);
+
+                        if (user != null)
+                        {
+                            MessageBox.Show("С возращением, " + user.Username);
+                            Window w2 = new MainEmpty();
+                            Hide();
+                            w2.Show();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Неверный email или пароль.");
+                        }
                     }
                 }
                 else
