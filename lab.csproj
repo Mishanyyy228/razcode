@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\taskLibrary\taskLibrary.csproj" />
     <ProjectReference Include="..\TodoEntities\TodoEntities.csproj" />
   </ItemGroup>
 

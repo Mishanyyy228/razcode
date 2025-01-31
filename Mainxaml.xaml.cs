@@ -77,7 +77,7 @@ namespace lab
             TaskName.Content = classTask.Name;
             TaskDescriotion.Text = classTask.Description;
             TaskDate.Text = classTask.Date.ToString("HH:mm");
-            TaskDateTime.Text = classTask.DateTime.ToString("dd MMMMMMMMMM yyyy");
+            //TaskDateTime.Text = classTask.DateTime.ToString("dd MMMMMMMMMM yyyy");
             Buttone_Delete.Visibility = Visibility.Visible;
             Buttone_Gotovo.Visibility = Visibility.Visible;
 
