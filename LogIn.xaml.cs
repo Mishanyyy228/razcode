@@ -25,7 +25,9 @@ namespace lab
         public LogIn()
         {
             InitializeComponent();
+
         }
+
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             Window w2 = new Registration();
@@ -98,10 +100,19 @@ namespace lab
 
                         if (user != null)
                         {
-                            MessageBox.Show("С возращением, " + user.Username);
-                            Window w2 = new MainEmpty();
-                            Hide();
-                            w2.Show();
+                            if (user.IsNewlyRegistered) // Если пользователь зарегистрировался только что
+                            {
+                                MessageBox.Show($"Добро пожаловать, {user.Username}!", "Успех", MessageBoxButton.OK);
+
+                                MainEmpty menuWindow = new MainEmpty();
+                                WindowManager.SwitchWindow(this, menuWindow);
+                            }
+                            else
+                            {
+                                MessageBox.Show($"Вход выполнен успешно! Добро пожаловать, {user.Username}!", "Успех", MessageBoxButton.OK);
+                                Mainxaml main_Empty = new Mainxaml();
+                                WindowManager.SwitchWindow(this, main_Empty);
+                            }
                         }
                         else
                         {
@@ -119,5 +130,15 @@ namespace lab
                 MessageBox.Show("Поле почта пустое!");
             }
         }
+
+    }
+    public static class WindowManager
+    {
+        public static void SwitchWindow(Window currentWindow, Window newWindow)
+        {
+            newWindow.Show();
+            currentWindow.Hide();
+        }
     }
 }
+
