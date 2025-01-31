@@ -19,6 +19,8 @@ using System.Reflection.Emit;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using TodoEntities;
+using taskLibrary;
+
 
 
 namespace lab
@@ -54,9 +56,6 @@ namespace lab
 
             Tasks = new ObservableCollection<ClassTask>
             {
-                new ClassTask{Category="njvn234234",Name="Прогулка с собакой",Date=DateTime.Now,DateTime=DateTime.Now,Description="jvekbvr",IsCompleted=false},
-                new ClassTask{Category="Дом",Name="Пробежка утром",Date=DateTime.Now,DateTime=DateTime.Now,Description="Пробежать утром 5км",IsCompleted=false},
-                new ClassTask{Category="Дом",Name="Еда",Date=DateTime.Now,DateTime=DateTime.Now,Description="Приготовить ужин",IsCompleted=false}
             };
             Task_List.ItemsSource = Tasks;
             DataContext = this;
