@@ -143,6 +143,8 @@ namespace lab
             gridthick.Visibility = Visibility.Hidden;
             Buttone_Delete.Visibility = Visibility.Hidden;
             Buttone_Gotovo.Visibility = Visibility.Hidden;
+            gridthick.Visibility = Visibility.Hidden;
+            gridthick1.Visibility = Visibility.Hidden;
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -163,10 +165,13 @@ namespace lab
             gridthick.Visibility = Visibility.Hidden;
             Buttone_Delete.Visibility = Visibility.Hidden;
             Buttone_Gotovo.Visibility = Visibility.Hidden;
+            gridthick.Visibility = Visibility.Hidden;
+            gridthick1.Visibility = Visibility.Hidden;
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
+
             var add = new NewTask();
             if (add.ShowDialog() == true && add.NewTaskes != null) // Ожидаем результата
             {
@@ -197,6 +202,8 @@ namespace lab
             Taske_List.Visibility = Visibility.Visible;
             Buttone_Delete.Visibility = Visibility.Hidden;
             Buttone_Gotovo.Visibility = Visibility.Hidden;
+            //gridthick.Visibility = Visibility.Hidden;
+            //gridthick1.Visibility = Visibility.Hidden;
         }
         private void Taske_List_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -211,6 +218,8 @@ namespace lab
                 TaskDescriotion.Text = classTask.Description;
                 TaskDate.Text = classTask.Date.ToString("HH:mm");
                 TaskDateTime.Text = classTask.DateAndTime.ToString("dd MMMMMMMMMM yyyy");
+                gridthick1.BorderThickness = new Thickness(1);
+                gridthick1.BorderBrush = Brushes.Black;
             }
             Buttone_Delete.Visibility = Visibility.Hidden;
             Buttone_Gotovo.Visibility = Visibility.Hidden;
@@ -225,6 +234,8 @@ namespace lab
             TaskDescriotion.Text = "";
             TaskDate.Text = "";
             TaskDateTime.Text = "";
+            //gridthick.Visibility = Visibility.Hidden;
+            //gridthick1.Visibility = Visibility.Hidden;
         }
 
         private void Category_List_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
@@ -276,10 +287,6 @@ namespace lab
             byte b = (byte)random.Next(256);
 
             return new SolidColorBrush(Color.FromRgb(r, g, b));
-        }
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-
         }
         private void Category_List_Loaded(object sender, RoutedEventArgs e)
         {

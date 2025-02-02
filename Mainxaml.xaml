@@ -416,10 +416,9 @@
             </Grid>
             <Grid Grid.Row="3">
                 <Button HorizontalAlignment="Center" Background="White" Grid.Row="3" Content="Задачи" RenderTransformOrigin="0.524,-0.346" Width="50" BorderThickness="0,0,0,0" Margin="0,3,0,2" Click="Button_Click_4"/>
-
             </Grid>
             <Grid Grid.Row="4">
-                <Button Background="White" HorizontalAlignment="Center"  Grid.Row="4" Content="История" Width="56" Margin="0,6,0,0" BorderThickness="0,0,0,0" Click="Button_Click_3" ></Button>
+                <Button Background="White" HorizontalAlignment="Center" Content="История" Width="56" Margin="0,6,0,0" BorderThickness="0,0,0,0" Click="Button_Click_3" Height="33" VerticalAlignment="Top" />
             </Grid>
             <Grid Grid.Row="6">
                 <Button Style="{DynamicResource ButtonStyle3}"  Foreground="White" Content="+" FontSize="30"  Grid.Row="6" Background="#FFC37979" Margin="0,5,0,0" Height="66" VerticalAlignment="Top" Click="Button_Click_2"/>
@@ -498,7 +497,7 @@
 
 
             <Grid Grid.Row="2">
-                <ListBox Style="{DynamicResource ListBoxStyle1}" x:Name="Taske_List" SelectionChanged="Taske_List_SelectionChanged"  BorderThickness="0,0,0,0" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled" >
+                <ListBox  x:Name="Taske_List" SelectionChanged="Taske_List_SelectionChanged"  BorderThickness="0,0,0,0" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled" >
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Margin="5" Orientation="Horizontal" >
@@ -523,12 +522,17 @@
             </Grid>
         </Grid>
         <Border Grid.Column="2" BorderThickness="1,1,1,1" BorderBrush="{Binding Task_List_SelectionChanged}" />
+        <Border Grid.Column="2" BorderThickness="1,1,1,1" BorderBrush="{Binding Taske_List_SelectionChanged}" />
         <Grid Grid.Column="2" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="76*"/>
                 <RowDefinition Height="643*" />
             </Grid.RowDefinitions>
             <Border x:Name="gridthick" Grid.Row="1" BorderThickness="1" BorderBrush="{Binding Task_List_SelectionChanged}">
+                <Grid>
+                </Grid>
+            </Border>
+            <Border x:Name="gridthick1" Grid.Row="1" BorderThickness="1" BorderBrush="{Binding Taske_List_SelectionChanged}">
                 <Grid>
                 </Grid>
             </Border>

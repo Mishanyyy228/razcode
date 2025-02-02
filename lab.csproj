@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resorses\5217769998146199571.png" />
     <None Remove="Resorses\fbd77efb-cf91-44bf-a1f4-9b1ac7516c80.jpg" />
   </ItemGroup>
 
@@ -18,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resorses\5217769998146199571.png" />
     <Resource Include="Resorses\fbd77efb-cf91-44bf-a1f4-9b1ac7516c80.jpg" />
   </ItemGroup>
 
