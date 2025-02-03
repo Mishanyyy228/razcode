@@ -24,8 +24,6 @@ namespace lab
         public NewTask()
         {
             InitializeComponent();
-
-
         }
         public ClassTask NewTaskes { get; private set; }
         private void Button_Click_1(object sender, RoutedEventArgs e)
