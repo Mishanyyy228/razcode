@@ -67,6 +67,7 @@ namespace lab
 
         public Mainxaml()
         {
+           
             _repository = new TaskRepository();
             var tasks = new ObservableCollection<ClassTask>(TaskRepository.AllTasks);
             this.Tasks = tasks;
@@ -80,7 +81,7 @@ namespace lab
             // Остальные настройки контекста данных
             DataContext = this;
             InitializeComponent();
-            DataContext = this;
+;
             if (UserRepository.CurrentUser != null)
             {
                 Username = UserRepository.CurrentUser.Username;
@@ -167,7 +168,7 @@ namespace lab
             gridthick.Visibility = Visibility.Hidden;
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void AddTaskButton_Click_2(object sender, RoutedEventArgs e)
         {
 
             var add = new NewTask();
@@ -195,6 +196,7 @@ namespace lab
             TaskDescriotion.Text = "";
             TaskDate.Text = "";
             TaskDateTime.Text = "";
+            AddTaskButton.Visibility = Visibility.Hidden;
             Task_List.Visibility = Visibility.Hidden;
             Taske_List.Visibility = Visibility.Visible;
             Buttone_Delete.Visibility = Visibility.Hidden;
@@ -228,6 +230,7 @@ namespace lab
             Task_List.Visibility = Visibility.Visible;
             Buttone_Delete.Visibility = Visibility.Hidden;
             Buttone_Gotovo.Visibility = Visibility.Hidden;
+            AddTaskButton.Visibility = Visibility.Visible;
             TaskName.Content = "";
             TaskDescriotion.Text = "";
             TaskDate.Text = "";
@@ -275,6 +278,8 @@ namespace lab
                 }
             }
         }
+
+
     }
 }
 

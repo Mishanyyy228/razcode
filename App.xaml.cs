@@ -9,6 +9,10 @@ namespace lab
     /// </summary>
     public partial class App : Application
     {
+        private void DropShadowEffect_CleanUpVirtualizedItem(object sender, System.Windows.Controls.CleanUpVirtualizedItemEventArgs e)
+        {
+
+        }
     }
 
 }

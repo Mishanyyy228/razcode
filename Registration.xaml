@@ -150,8 +150,8 @@
             <TextBox x:Name="Pass_user" Text="Введите пароль" FontSize="16"  Grid.Row="6"  Foreground="#FF6C6868" BorderThickness="0,0,0,1" VerticalAlignment="Bottom" GotFocus="Pass_user_GotFocus" LostFocus="Pass_user_LostFocus"  ></TextBox>
             <Label Grid.Row="7" Content="Повторите пароль" VerticalAlignment="Bottom" FontSize="20" ></Label>
             <TextBox x:Name="Pass_user1" Text="Повторите пароль" FontSize="16" Grid.Row="8"  Foreground="#FF6C6868" BorderThickness="0,0,0,1" VerticalAlignment="Bottom" GotFocus="Pass_user1_GotFocus" LostFocus="Pass_user1_LostFocus" ></TextBox>
-            <Button Style="{DynamicResource ButtonStyle1}"  Grid.Row="10" VerticalAlignment="Top" HorizontalAlignment="Left" Width="250" Height="45" Content="Зарегестрироваться" Background="#FFC37979" Name="Button" Margin="0,38,0,0" Grid.RowSpan="2" Click="Button_Click_1"  ></Button>
-            <Button Style="{DynamicResource ButtonStyle2}"  Grid.Row="12" VerticalAlignment="Top" HorizontalAlignment="Left" Width="250" Height="45" Content="Назад" FlowDirection="RightToLeft" Background="#FFC37979" Click="Button_Click"  ></Button>
+            <Button Style="{DynamicResource ButtonStyle1}"  Grid.Row="10" VerticalAlignment="Top" HorizontalAlignment="Left" Width="250" Height="45" Content="Зарегестрироваться" Background="#F96060" Name="Button" Margin="0,38,0,0" Grid.RowSpan="2" Click="Button_Click_1"  ></Button>
+            <Button Style="{DynamicResource ButtonStyle2}"  Grid.Row="12" VerticalAlignment="Top" HorizontalAlignment="Left" Width="250" Height="45" Content="Назад" FlowDirection="RightToLeft" Background="#F96060" Click="Button_Click"  ></Button>
 
         </Grid>
         <Image Grid.Column="0" Source="/Resorses/fbd77efb-cf91-44bf-a1f4-9b1ac7516c80.jpg" Margin="100" HorizontalAlignment="Center" VerticalAlignment="Top" />
