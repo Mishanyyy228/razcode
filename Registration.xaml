@@ -29,17 +29,17 @@
                 <RowDefinition Height="50*"/>
                 <RowDefinition Height="11*"/>
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" Content="Welcome back" VerticalAlignment="Bottom" FontSize="20"></Label>
-            <Label Grid.Row="1" Content="Имя пользователя" VerticalAlignment="Bottom" FontSize="20"></Label>
-            <TextBox x:Name="Name_user" Text="Введите имя пользователя" Foreground="#FF6C6868" FontSize="16" Grid.Row="2"  BorderThickness="0,0,0,1"  GotFocus="Name_user_GotFocus_1" VerticalAlignment="Bottom" LostFocus="Name_user_LostFocus"  />
-            <Label Grid.Row="3" Content="Ваша почта" VerticalAlignment="Bottom" FontSize="20"></Label>
-            <TextBox x:Name="Email_user" Text="Введите почту" FontSize="16" Grid.Row="4"  Foreground="#FF6C6868" BorderThickness="0,0,0,1" VerticalAlignment="Bottom" GotFocus="Email_user_GotFocus" LostFocus="Email_user_LostFocus"  ></TextBox>
-            <Label Grid.Row="5" Content="Пароль"  VerticalAlignment="Bottom" FontSize="20"></Label>
-            <TextBox x:Name="Pass_user" Text="Введите пароль" FontSize="16"  Grid.Row="6"  Foreground="#FF6C6868" BorderThickness="0,0,0,1" VerticalAlignment="Bottom" GotFocus="Pass_user_GotFocus" LostFocus="Pass_user_LostFocus"  ></TextBox>
-            <Label Grid.Row="7" Content="Повторите пароль" VerticalAlignment="Bottom" FontSize="20" ></Label>
-            <TextBox x:Name="Pass_user1" Text="Повторите пароль" FontSize="16" Grid.Row="8"  Foreground="#FF6C6868" BorderThickness="0,0,0,1" VerticalAlignment="Bottom" GotFocus="Pass_user1_GotFocus" LostFocus="Pass_user1_LostFocus" ></TextBox>
-            <Button Style="{DynamicResource ButtonStyle1}"  Grid.Row="10" VerticalAlignment="Top" HorizontalAlignment="Left" Width="250" Height="45" Content="Зарегестрироваться" Background="#F96060" Name="Button" Margin="0,38,0,0" Grid.RowSpan="2" Click="Button_Click_1"  ></Button>
-            <Button Style="{DynamicResource ButtonStyle2}"  Grid.Row="12" VerticalAlignment="Top" HorizontalAlignment="Left" Width="250" Height="45" Content="Назад" FlowDirection="RightToLeft" Background="#F96060" Click="Button_Click"  ></Button>
+            <Label Grid.Row="0" Content="Welcome back" Style="{DynamicResource LabelStyle}"></Label>
+            <Label Grid.Row="1" Content="Имя пользователя" Style="{DynamicResource LabelStyle}"></Label>
+            <TextBox x:Name="Name_user" Text="Введите имя пользователя"  Grid.Row="2"  GotFocus="Name_user_GotFocus_1" Style="{DynamicResource TextBoxStyle1}" LostFocus="Name_user_LostFocus"  />
+            <Label Grid.Row="3" Content="Ваша почта" Style="{DynamicResource LabelStyle}"></Label>
+            <TextBox x:Name="Email_user" Text="Введите почту"  Grid.Row="4"  Style="{DynamicResource TextBoxStyle1}" GotFocus="Email_user_GotFocus" LostFocus="Email_user_LostFocus"  ></TextBox>
+            <Label Grid.Row="5" Content="Пароль"  Style="{DynamicResource LabelStyle}"></Label>
+            <TextBox x:Name="Pass_user" Text="Введите пароль"  Grid.Row="6"  GotFocus="Pass_user_GotFocus" LostFocus="Pass_user_LostFocus" Style="{DynamicResource TextBoxStyle1}"  ></TextBox>
+            <Label Grid.Row="7" Content="Повторите пароль" Style="{DynamicResource LabelStyle}" ></Label>
+            <TextBox x:Name="Pass_user1" Text="Повторите пароль"  Grid.Row="8" Style="{DynamicResource TextBoxStyle1}" GotFocus="Pass_user1_GotFocus" LostFocus="Pass_user1_LostFocus" ></TextBox>
+            <Button Style="{DynamicResource ButtonStyle1}"  Grid.Row="10" VerticalAlignment="Top" HorizontalAlignment="Left" Width="250" Height="45" Content="Зарегестрироваться" Name="Button" Margin="0,38,0,0"  Click="Button_Click_1"  ></Button>
+            <Button Style="{DynamicResource ButtonStyle2}"  Grid.Row="12" VerticalAlignment="Top" HorizontalAlignment="Left" Width="250" Height="45" Content="Назад"  Click="Button_Click"  ></Button>
 
         </Grid>
         <Image Grid.Column="0" Source="/Resorses/fbd77efb-cf91-44bf-a1f4-9b1ac7516c80.jpg" Margin="100" HorizontalAlignment="Center" VerticalAlignment="Top" />
