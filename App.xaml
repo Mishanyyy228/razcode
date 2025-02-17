@@ -2,45 +2,12 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:lab"
-             StartupUri="Mainxaml.xaml">
+             StartupUri="LogIn.xaml">
     <Application.Resources>
-            <Style TargetType="StackPanel" x:Key="qwerty">
-                <Setter Property="Effect">
-                    <Setter.Value>
-                        <DropShadowEffect BlurRadius="10" ShadowDepth="0" Opacity="0.7" Color="Black"/>
-                    </Setter.Value>
-                </Setter>
-            <Setter Property="Background" Value="Transparent"/>
-        </Style>
-
-        <Style x:Key="CustomBorderStyle" TargetType="Border">
-            <Setter Property="BorderBrush" Value="#eeeeee" />
-            <Setter Property="BorderThickness" Value="0,0,1,1" />
-            <Setter Property="Effect">
-                <Setter.Value>
-                    <DropShadowEffect BlurRadius="10" ShadowDepth="5" Direction="270" Opacity="0.2" Color="Gray"/>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
-                    <Setter Property="Background" Value="#BDECB6" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="CustomBorderStyle1" TargetType="Border">
-            <Setter Property="BorderBrush" Value="#eeeeee" />
-            <Setter Property="BorderThickness" Value="0,0,1,1" />
-            <Setter Property="Effect">
-                <Setter.Value>
-                    <DropShadowEffect BlurRadius="10" ShadowDepth="5" Direction="270" Opacity="0.2" Color="Gray"/>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
-                    <Setter Property="Background" Value="#CCCCFF" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Dictionary1.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
