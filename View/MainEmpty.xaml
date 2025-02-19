@@ -6,9 +6,6 @@
         xmlns:local="clr-namespace:lab"
         mc:Ignorable="d"
         Title="MainEmpty" Height="600" Width="800">
-    <Page.Resources>
-        
-    </Page.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20*"/>
@@ -21,11 +18,10 @@
                 <RowDefinition Height="80*"/>
                 <RowDefinition Height="558*"/>
             </Grid.RowDefinitions>
-            <Label Grid.Row="1" Content="Добро пожаловать!" Style="{DynamicResource LabelStyle}"></Label>
-            <Label Grid.Row="2" Content="Создайте свою первую задачу!" Style="{DynamicResource LabelStyle}"></Label>
-            <Button Style="{DynamicResource ButtonStyle7}"  Grid.Row="4" Content="Создать первую задачу"  Click="Button_Click"></Button>
+            <Label Grid.Row="1" Content="Добро пожаловать!" VerticalContentAlignment="Bottom" FontSize="20"></Label>
+            <Label Grid.Row="2" VerticalAlignment="Bottom" Content="Создайте свою первую задачу!" FontSize="20"></Label>
+            <Button  Grid.Row="4" Content="Создать первую задачу" Background="#F96060" Height="40" Width="200" Click="Button_Click"></Button>
         </Grid>
         <Image Source="/Resorses/5217769998146199571.png" Style="{DynamicResource ImageStyle}" />
-
     </Grid>
 </Page>

@@ -164,6 +164,7 @@ namespace lab
                             {
                                 MessageBox.Show("Email уже занят. Пожалуйста, выберите другой.");
                             }
+
                         }
                         else
                         {

@@ -137,5 +137,13 @@ namespace lab
         }
 
     }
+    public static class WindowManager
+    {
+        public static void SwitchWindow(Window currentWindow, Window newWindow)
+        {
+            newWindow.Show();
+            currentWindow.Hide();
+        }
+    }
 }
 

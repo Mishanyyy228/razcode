@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace lab
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Логика взаимодействия для MainWindow1.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow1 : Window
     {
-        public MainWindow()
+        public MainWindow1()
         {
             InitializeComponent();
             MainFrame.Navigate(new LogIn());

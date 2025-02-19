@@ -17,7 +17,7 @@ namespace lab
     /// <summary>
     /// Логика взаимодействия для MainEmpty.xaml
     /// </summary>
-    public partial class MainEmpty : Window
+    public partial class MainEmpty : Page
     {
         public MainEmpty()
         {
@@ -27,6 +27,9 @@ namespace lab
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Manager.MainFrame.Navigate(new Mainxaml());
+
+            //Mainxaml main = new Mainxaml();
+            //WindowManager.SwitchWindow(this, main);
         }
     }
 }
