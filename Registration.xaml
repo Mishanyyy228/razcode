@@ -1,4 +1,4 @@
-﻿<Window x:Class="lab.Registration"
+﻿<Page x:Class="lab.Registration"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -44,4 +44,4 @@
         </Grid>
         <Image Grid.Column="0" Source="/Resorses/fbd77efb-cf91-44bf-a1f4-9b1ac7516c80.jpg" Margin="100" HorizontalAlignment="Center" VerticalAlignment="Top" />
     </Grid>
-</Window>
+</Page>

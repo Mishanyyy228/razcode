@@ -20,7 +20,7 @@ namespace lab
     /// <summary>
     /// Логика взаимодействия для Registration.xaml
     /// </summary>
-    public partial class Registration : Window
+    public partial class Registration : Page
     {
         public Registration()
         {
@@ -100,9 +100,10 @@ namespace lab
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Window w2 = new LogIn();
-            Hide();
-            w2.Show();
+            Manager.MainFrame.Navigate(new LogIn());
+            //Window w2 = new LogIn();
+            //Hide();
+            //w2.Show();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -153,6 +154,8 @@ namespace lab
                             if (registr)
                             {
                                 MessageBox.Show("Успешно!!!");
+                                Manager.MainFrame.Navigate(new LogIn());
+
                                 //Window w2 = new MainEmpty();
                                 //Hide();
                                 //w2.Show();
@@ -161,7 +164,6 @@ namespace lab
                             {
                                 MessageBox.Show("Email уже занят. Пожалуйста, выберите другой.");
                             }
-
                         }
                         else
                         {
