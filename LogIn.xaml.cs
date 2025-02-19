@@ -20,7 +20,7 @@ namespace lab
     /// <summary>
     /// Логика взаимодействия для LogIn.xaml
     /// </summary>
-    public partial class LogIn : Window
+    public partial class LogIn : Page
     {
         public LogIn()
         {
@@ -30,9 +30,11 @@ namespace lab
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            Window w2 = new Registration();
-            Hide();
-            w2.Show();
+            Manager.MainFrame.Navigate(new Registration());
+
+            //Window w2 = new Registration();
+            //Hide();
+            //w2.Show();
         }
 
         private void Password_user11_GotFocus(object sender, RoutedEventArgs e)
@@ -104,14 +106,17 @@ namespace lab
                             {
                                 MessageBox.Show($"Добро пожаловать, {user.Username}!", "Успех", MessageBoxButton.OK);
 
-                                MainEmpty menuWindow = new MainEmpty();
-                                WindowManager.SwitchWindow(this, menuWindow);
+                                Manager.MainFrame.Navigate(new MainEmpty());
+                                //MainEmpty menuWindow = new MainEmpty();
+                                //WindowManager.SwitchWindow(this, menuWindow);
                             }
                             else
                             {
                                 MessageBox.Show($"Вход выполнен успешно! Добро пожаловать, {user.Username}!", "Успех", MessageBoxButton.OK);
-                                Mainxaml main_Empty = new Mainxaml();
-                                WindowManager.SwitchWindow(this, main_Empty);
+                                Manager.MainFrame.Navigate(new Mainxaml());
+
+                                //Mainxaml main_Empty = new Mainxaml();
+                                //WindowManager.SwitchWindow(this, main_Empty);
                             }
                         }
                         else
@@ -131,14 +136,6 @@ namespace lab
             }
         }
 
-    }
-    public static class WindowManager
-    {
-        public static void SwitchWindow(Window currentWindow, Window newWindow)
-        {
-            newWindow.Show();
-            currentWindow.Hide();
-        }
     }
 }
 

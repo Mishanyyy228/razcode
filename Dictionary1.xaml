@@ -16,7 +16,7 @@
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"></Setter>
         <Setter Property="BorderThickness" Value="0"></Setter>
     </Style>
-
+    
     <Style TargetType="Button" x:Key="ButtonStyle6">
         <Setter Property="Background" Value="White"></Setter>
         <Setter Property="HorizontalAlignment" Value="Left"></Setter>
@@ -507,7 +507,5 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-
     <DropShadowEffect x:Key="MyDropShadowEffect" BlurRadius="10" ShadowDepth="5" Direction="270" Opacity="0.2" Color="Gray"/>
 </ResourceDictionary>
