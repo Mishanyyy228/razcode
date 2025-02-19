@@ -28,7 +28,7 @@ namespace lab
     /// <summary>
     /// Логика взаимодействия для Mainxaml.xaml
     /// </summary>
-    public partial class Mainxaml : Window, INotifyPropertyChanged
+    public partial class Mainxaml : Page, INotifyPropertyChanged
     {
         public TaskRepository _repository;
 
@@ -67,7 +67,7 @@ namespace lab
 
         public Mainxaml()
         {
-           
+
             _repository = new TaskRepository();
             var tasks = new ObservableCollection<ClassTask>(TaskRepository.AllTasks);
             this.Tasks = tasks;
@@ -81,7 +81,7 @@ namespace lab
             // Остальные настройки контекста данных
             DataContext = this;
             InitializeComponent();
-;
+            ;
             if (UserRepository.CurrentUser != null)
             {
                 Username = UserRepository.CurrentUser.Username;
