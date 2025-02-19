@@ -38,8 +38,8 @@
             <TextBox x:Name="Pass_user" Text="Введите пароль"  Grid.Row="6"  GotFocus="Pass_user_GotFocus" LostFocus="Pass_user_LostFocus" Style="{DynamicResource TextBoxStyle1}"  ></TextBox>
             <Label Grid.Row="7" Content="Повторите пароль" Style="{DynamicResource LabelStyle}" ></Label>
             <TextBox x:Name="Pass_user1" Text="Повторите пароль"  Grid.Row="8" Style="{DynamicResource TextBoxStyle1}" GotFocus="Pass_user1_GotFocus" LostFocus="Pass_user1_LostFocus" ></TextBox>
-            <Button Style="{DynamicResource ButtonStyle1}"  Grid.Row="10" VerticalAlignment="Top" HorizontalAlignment="Left" Width="250" Height="45" Content="Зарегестрироваться" Name="Button" Margin="0,38,0,0"  Click="Button_Click_1"  ></Button>
-            <Button Style="{DynamicResource ButtonStyle2}"  Grid.Row="12" VerticalAlignment="Top" HorizontalAlignment="Left" Width="250" Height="45" Content="Назад"  Click="Button_Click"  ></Button>
+            <Button Style="{DynamicResource ButtonStyle1}"  Grid.Row="10"   Content="Зарегестрироваться" Name="Button"   Click="Button_Click_1"  ></Button>
+            <Button Style="{DynamicResource ButtonStyle2}"  Grid.Row="12"   Content="Назад"  Click="Button_Click"  ></Button>
 
         </Grid>
         <Image Grid.Column="0" Source="/Resorses/fbd77efb-cf91-44bf-a1f4-9b1ac7516c80.jpg" Margin="100" HorizontalAlignment="Center" VerticalAlignment="Top" />
