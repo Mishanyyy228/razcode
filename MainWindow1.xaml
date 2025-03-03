@@ -6,8 +6,16 @@
         xmlns:local="clr-namespace:lab"
         mc:Ignorable="d"
         Title="MainWindow1" Height="600" Width="800">
+    <Window.Resources>
+        <Storyboard x:Key="FadeInStoryboard">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.5"/>
+        </Storyboard>
+        <Storyboard x:Key="FadeOutStoryboard">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.5"/>
+        </Storyboard>
+    </Window.Resources>
     <Grid>
-        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"></Frame>
+        <Frame x:Name="MainFrame" Navigating="MainFrame_OnNavigating" NavigationUIVisibility="Hidden"></Frame>
 
     </Grid>
 </Window>

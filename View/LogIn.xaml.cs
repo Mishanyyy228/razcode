@@ -99,7 +99,8 @@ namespace lab
                     {
                         var userRepo = new UserRepository();
                         var user = userRepo.GetUser(Pochta_user11.Text, Password_user11.Text);
-
+                        var qwer = Pochta_user11.Text;
+                        var qwert = Password_user11.Text;
                         if (user != null)
                         {
                             if (user.IsNewlyRegistered) // Если пользователь зарегистрировался только что
@@ -113,7 +114,7 @@ namespace lab
                             else
                             {
                                 MessageBox.Show($"Вход выполнен успешно! Добро пожаловать, {user.Username}!", "Успех", MessageBoxButton.OK);
-                                Manager.MainFrame.Navigate(new Mainxaml());
+                                Manager.MainFrame.Navigate(new Mainxaml(qwer,qwert));
 
                                 //Mainxaml main_Empty = new Mainxaml();
                                 //WindowManager.SwitchWindow(this, main_Empty);

@@ -26,7 +26,7 @@ namespace lab
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Manager.MainFrame.Navigate(new Mainxaml());
+            Manager.MainFrame.Navigate(new Mainxaml(null,null));
 
             //Mainxaml main = new Mainxaml();
             //WindowManager.SwitchWindow(this, main);

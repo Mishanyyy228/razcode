@@ -31,15 +31,43 @@
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Content="Welcome back" Style="{DynamicResource LabelStyle}"></Label>
             <Label Grid.Row="1" Content="Имя пользователя" Style="{DynamicResource LabelStyle}"></Label>
-            <TextBox x:Name="Name_user" Text="Введите имя пользователя"  Grid.Row="2"  GotFocus="Name_user_GotFocus_1" Style="{DynamicResource TextBoxStyle1}" LostFocus="Name_user_LostFocus"  />
+            <TextBox x:Name="Name_user" Text="Введите имя пользователя"  Grid.Row="2"  GotFocus="Name_user_GotFocus_1" Style="{DynamicResource TextBoxStyle1}" LostFocus="Name_user_LostFocus" Height="25" Margin="10,10,10,0" VerticalAlignment="Top"  />
             <Label Grid.Row="3" Content="Ваша почта" Style="{DynamicResource LabelStyle}"></Label>
-            <TextBox x:Name="Email_user" Text="Введите почту"  Grid.Row="4"  Style="{DynamicResource TextBoxStyle1}" GotFocus="Email_user_GotFocus" LostFocus="Email_user_LostFocus"  ></TextBox>
+            <TextBox x:Name="Email_user" Text="Введите почту"  Grid.Row="4"  Style="{DynamicResource TextBoxStyle1}" GotFocus="Email_user_GotFocus" LostFocus="Email_user_LostFocus" Height="24" Margin="10,10,10,0" VerticalAlignment="Top"  ></TextBox>
             <Label Grid.Row="5" Content="Пароль"  Style="{DynamicResource LabelStyle}"></Label>
-            <TextBox x:Name="Pass_user" Text="Введите пароль"  Grid.Row="6"  GotFocus="Pass_user_GotFocus" LostFocus="Pass_user_LostFocus" Style="{DynamicResource TextBoxStyle1}"  ></TextBox>
+            <TextBox x:Name="Pass_user" Text="Введите пароль"  Grid.Row="6"  GotFocus="Pass_user_GotFocus" LostFocus="Pass_user_LostFocus" Style="{DynamicResource TextBoxStyle1}" Height="25" Margin="10,10,10,0" VerticalAlignment="Top"  ></TextBox>
             <Label Grid.Row="7" Content="Повторите пароль" Style="{DynamicResource LabelStyle}" ></Label>
-            <TextBox x:Name="Pass_user1" Text="Повторите пароль"  Grid.Row="8" Style="{DynamicResource TextBoxStyle1}" GotFocus="Pass_user1_GotFocus" LostFocus="Pass_user1_LostFocus" ></TextBox>
-            <Button Style="{DynamicResource ButtonStyle1}"  Grid.Row="10" VerticalAlignment="Top" HorizontalAlignment="Left" Width="250" Height="45" Content="Зарегестрироваться" Name="Button"   Click="Button_Click_1"  ></Button>
-            <Button Style="{DynamicResource ButtonStyle2}"  Grid.Row="12" VerticalAlignment="Top" HorizontalAlignment="Left" Width="250" Height="45" Content="Назад"  Click="Button_Click"  ></Button>
+            <TextBox x:Name="Pass_user1" Text="Повторите пароль"  Grid.Row="8" Style="{DynamicResource TextBoxStyle1}" GotFocus="Pass_user1_GotFocus" LostFocus="Pass_user1_LostFocus" Height="25" Margin="10,10,10,0" VerticalAlignment="Top" ></TextBox>
+            <Button Style="{DynamicResource ButtonStyle1}"  Grid.Row="10" VerticalAlignment="Top" HorizontalAlignment="Left" Width="250" Height="45" Content="Зарегестрироваться" Name="Button"   Click="Button_Click_1"  >
+                <Button.RenderTransform>
+                    <ScaleTransform/>
+                </Button.RenderTransform>
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Button.Click">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="1" To="1.2" Duration="0:0:0.2" AutoReverse="True"/>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" From="1" To="1.2" Duration="0:0:0.2" AutoReverse="True"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Button.Triggers>
+            </Button>
+            <Button Style="{DynamicResource ButtonStyle2}"  Grid.Row="12" VerticalAlignment="Top" HorizontalAlignment="Left" Width="250" Height="45" Content="Назад"  Click="Button_Click"  >
+                <Button.RenderTransform>
+                    <ScaleTransform/>
+                </Button.RenderTransform>
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Button.Click">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="1" To="1.2" Duration="0:0:0.2" AutoReverse="True"/>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" From="1" To="1.2" Duration="0:0:0.2" AutoReverse="True"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Button.Triggers> 
+            </Button>
         </Grid>
         <Image Grid.Column="0" Source="/Resorses/fbd77efb-cf91-44bf-a1f4-9b1ac7516c80.jpg" Margin="100" HorizontalAlignment="Center" VerticalAlignment="Top" />
     </Grid>

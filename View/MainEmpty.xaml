@@ -20,7 +20,21 @@
             </Grid.RowDefinitions>
             <Label Grid.Row="1" Content="Добро пожаловать!" VerticalContentAlignment="Bottom" FontSize="20"></Label>
             <Label Grid.Row="2" VerticalAlignment="Bottom" Content="Создайте свою первую задачу!" FontSize="20"></Label>
-            <Button  Grid.Row="4" Content="Создать первую задачу" Background="#F96060" Height="40" Width="200" Click="Button_Click"></Button>
+            <Button  Grid.Row="4" Content="Создать первую задачу" Background="#F96060" Height="40" Width="200" Click="Button_Click">
+                <Button.RenderTransform>
+                    <ScaleTransform/>
+                </Button.RenderTransform>
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Button.Click">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="1" To="1.2" Duration="0:0:0.2" AutoReverse="True"/>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" From="1" To="1.2" Duration="0:0:0.2" AutoReverse="True"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Button.Triggers>
+            </Button>
         </Grid>
         <Image Source="/Resorses/5217769998146199571.png" Style="{DynamicResource ImageStyle}" />
     </Grid>

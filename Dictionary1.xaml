@@ -55,7 +55,7 @@
     </Style>
 
     <Style TargetType="TextBlock" x:Key="TextBlockStyle1">
-        <Setter Property="FontSize" Value="16"></Setter>
+        <Setter Property="FontSize" Value="14"></Setter>
         <Setter Property="Foreground" Value="Gray"></Setter>
         <Setter Property="TextDecorations" Value="Strikethrough"></Setter>
     </Style>
@@ -90,11 +90,37 @@
     </Style>
 
     <Style TargetType="TextBox" x:Key="TextBoxStyle1">
-        <Setter Property="Margin" Value="10"></Setter>
-        <Setter Property="BorderThickness" Value="0,0,0,1"></Setter>
-        <Setter Property="Foreground" Value="Gray"></Setter>
-        <Setter Property="VerticalAlignment" Value="Bottom"></Setter>
-        <Setter Property="FontSize" Value="16"></Setter>
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+        <Setter Property="Foreground" Value="Gray"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <ScrollViewer x:Name="PART_ContentHost" Margin="2"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <EventTrigger RoutedEvent="TextBox.GotFocus">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                                 From="-5" To="5" Duration="0:0:0.1" AutoReverse="True" RepeatBehavior="3x"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <TranslateTransform/>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style TargetType="Label" x:Key="LabelStyle1">

@@ -31,6 +31,7 @@ namespace lab
     public partial class Mainxaml : Page, INotifyPropertyChanged
     {
         public TaskRepository _repository;
+        public UserRepository _repository1;
 
         private string _username;
         public string Username
@@ -65,7 +66,7 @@ namespace lab
 
         public event PropertyChangedEventHandler PropertyChangeded;
 
-        public Mainxaml()
+        public Mainxaml(string qwe,string eqrwer)
         {
 
             _repository = new TaskRepository();
@@ -81,11 +82,16 @@ namespace lab
             // Остальные настройки контекста данных
             DataContext = this;
             InitializeComponent();
-            ;
-            if (UserRepository.CurrentUser != null)
+            
+            if (qwe != null & eqrwer!=null)
             {
-                Username = UserRepository.CurrentUser.Username;
-                UserBox.Content = Username;
+                var qazwsx = new UserRepository();
+                var qwert = qazwsx.GetUser(qwe,eqrwer);
+                UserBox.Content = qwert.Username;
+                //UserBox.Content = user.Username;
+
+                //var qwerty = _repository1.GetUser(qwer, qwera).Username;
+                //UserBox.Content = qwerty;
             }
 
             Taske_List.ItemsSource = Tasks;
@@ -98,6 +104,7 @@ namespace lab
             Buttone_Delete.Visibility = Visibility.Hidden;
             Buttone_Gotovo.Visibility = Visibility.Hidden;
             Taske_List.Visibility = Visibility.Hidden;
+            //_repository1 = repository1;
         }
 
         private void Task_List_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -172,13 +179,11 @@ namespace lab
         {
 
             var add = new NewTask();
-            if (add.ShowDialog() == true && add.NewTaskes != null) // Ожидаем результата
+            if (add.ShowDialog() == true && add.NewTaskes != null) 
             {
-                Tasks.Add(add.NewTaskes); // Добавляем новую задачу в ObservableCollection
+                Tasks.Add(add.NewTaskes); 
                 string category = add.NewTaskes.Category;
-                // Получение уникальных категорий
                 var uniqueCategories = Tasks.Select(t => t.Category).Distinct().ToList();
-                // Сохранение уникальных категорий в отдельный список
                 UniqueCategoriesList = new List<string>(uniqueCategories);
                 UniqueCategoriesList.Add("Все");
                 Task_List.ItemsSource = Tasks;
@@ -202,7 +207,6 @@ namespace lab
             Buttone_Delete.Visibility = Visibility.Hidden;
             Buttone_Gotovo.Visibility = Visibility.Hidden;
             gridthick.Visibility = Visibility.Hidden;
-            //gridthick1.Visibility = Visibility.Hidden;
         }
         private void Taske_List_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -235,7 +239,6 @@ namespace lab
             TaskDescriotion.Text = "";
             TaskDate.Text = "";
             TaskDateTime.Text = "";
-            //gridthick.Visibility = Visibility.Hidden;
         }
 
         private void Category_List_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
