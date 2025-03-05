@@ -31,32 +31,20 @@ namespace lab
             this.Close();
         }
 
-        public static class TaskIdGenerator
-        {
-            private static int nextId = 1;
-
-            public static int GetNextId()
-            {
-                return nextId++;
-            }
-        }
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-
             NewTaskes = new ClassTask
             {
                 Name = Name_textbox.Text,
                 Category = Category_textbox.Text,
-                Date = Date_PickerBox.SelectedDate ?? DateTime.Now,
-                DateAndTime = DateTime.Now,
+                Date = Date_PickerBox.SelectedDate.Value.ToShortDateString(),
                 Description = Description_textbox.Text,
                 IsCompleted = false,
-                id = TaskIdGenerator.GetNextId(),
             };
             this.DialogResult = true;
             var userRepo1 = new TaskRepository();
-
-            bool registr = userRepo1.AddTask(Name_textbox.Text, Description_textbox.Text, Category_textbox.Text);
+            string selectedDateAsString = Date_PickerBox.SelectedDate.Value.ToShortDateString();
+            bool registr = userRepo1.AddTask(Name_textbox.Text, Description_textbox.Text, Category_textbox.Text, selectedDateAsString);
 
             if (registr)
             {

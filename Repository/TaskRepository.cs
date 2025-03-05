@@ -15,7 +15,7 @@ namespace lab.Repository
         };
         public static IEnumerable<ClassTask> AllTasks => Tasks;
         public static ClassTask CurrentTask { get; private set; }
-        public bool AddTask(string category, string name, string description)
+        public bool AddTask(string category, string name, string description,string date)
         {
             var newTask = new ClassTask
             {
@@ -23,8 +23,7 @@ namespace lab.Repository
                 Name = name,
                 Description = description,
                 IsCompleted = false,
-                DateAndTime = DateTime.Now,
-                Date = DateTime.Now,
+                Date = date,
             };
             Tasks.Add(newTask);
             CurrentTask = newTask;

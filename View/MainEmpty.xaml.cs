@@ -1,4 +1,5 @@
-﻿using System;
+﻿using lab.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,17 +20,25 @@ namespace lab
     /// </summary>
     public partial class MainEmpty : Page
     {
-        public MainEmpty()
+        public MainEmpty(string qwe, string eqrwer)
         {
+            var em = qwe;
+            var pas = eqrwer;
             InitializeComponent();
+            if (qwe != null & eqrwer != null)
+            {
+                var qazwsx = new UserRepository();
+                var qwert = qazwsx.GetUser(qwe, eqrwer);
+                Current_user.Content = qwert.Name;
+            }
         }
+        public  string Em { get; set; }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Manager.MainFrame.Navigate(new Mainxaml(null,null));
-
-            //Mainxaml main = new Mainxaml();
-            //WindowManager.SwitchWindow(this, main);
+            var qwe = Current_user.Content;
+            var qa = qwe.ToString();
+            Manager.MainFrame.Navigate(new Mainxaml(qa));
         }
     }
 }

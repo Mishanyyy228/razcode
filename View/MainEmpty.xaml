@@ -37,5 +37,6 @@
             </Button>
         </Grid>
         <Image Source="/Resorses/5217769998146199571.png" Style="{DynamicResource ImageStyle}" />
+        <Label VerticalAlignment="Top" x:Name="Current_user" Grid.ColumnSpan="2" Margin="0,143,674,0" ></Label>
     </Grid>
 </Page>

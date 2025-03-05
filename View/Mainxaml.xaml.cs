@@ -66,33 +66,30 @@ namespace lab
 
         public event PropertyChangedEventHandler PropertyChangeded;
 
-        public Mainxaml(string qwe,string eqrwer)
+        public Mainxaml(string qwe)
         {
-
             _repository = new TaskRepository();
             var tasks = new ObservableCollection<ClassTask>(TaskRepository.AllTasks);
             this.Tasks = tasks;
             DataContext = this;
 
-            // Получение уникальных категорий
             var uniqueCategories = tasks.Select(t => t.Category).Distinct().ToList();
 
-            // Сохранение уникальных категорий в отдельный список
             UniqueCategoriesList = new List<string>(uniqueCategories);
-            // Остальные настройки контекста данных
+
             DataContext = this;
             InitializeComponent();
             
-            if (qwe != null & eqrwer!=null)
+            if( qwe!= null)
             {
-                var qazwsx = new UserRepository();
-                var qwert = qazwsx.GetUser(qwe,eqrwer);
-                UserBox.Content = qwert.Username;
-                //UserBox.Content = user.Username;
-
-                //var qwerty = _repository1.GetUser(qwer, qwera).Username;
-                //UserBox.Content = qwerty;
+                UserBox.Content = qwe;
             }
+            //if (qwe != null & eqrwer!=null)
+            //{
+            //    var qazwsx = new UserRepository();
+            //    var qwert = qazwsx.GetUser(qwe,eqrwer);
+            //    UserBox.Content = qwert.Name;
+            //}
 
             Taske_List.ItemsSource = Tasks;
             DataContext = this;
@@ -104,7 +101,6 @@ namespace lab
             Buttone_Delete.Visibility = Visibility.Hidden;
             Buttone_Gotovo.Visibility = Visibility.Hidden;
             Taske_List.Visibility = Visibility.Hidden;
-            //_repository1 = repository1;
         }
 
         private void Task_List_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -122,8 +118,7 @@ namespace lab
             {
                 TaskName.Content = classTask.Name;
                 TaskDescriotion.Text = classTask.Description;
-                TaskDate.Text = classTask.Date.ToString("HH:mm");
-                TaskDateTime.Text = classTask.DateAndTime.ToString("dd MMMMMMMMMM yyyy");
+                TaskDate.Text = classTask.Date;
                 gridthick.BorderThickness = new Thickness(1);
                 gridthick.BorderBrush = Brushes.Black;
             }
@@ -219,8 +214,8 @@ namespace lab
             {
                 TaskName.Content = classTask.Name;
                 TaskDescriotion.Text = classTask.Description;
-                TaskDate.Text = classTask.Date.ToString("HH:mm");
-                TaskDateTime.Text = classTask.DateAndTime.ToString("dd MMMMMMMMMM yyyy");
+                TaskDate.Text = classTask.Date;
+                //TaskDateTime.Text = classTask.DateAndTime.ToString("dd MMMMMMMMMM yyyy");
                 gridthick1.BorderThickness = new Thickness(1);
                 gridthick1.BorderBrush = Brushes.Black;
             }
@@ -265,7 +260,6 @@ namespace lab
                     TaskDescriotion.Text = "";
                     TaskDate.Text = "";
                     TaskDateTime.Text = "";
-                    // Показываем всех людей
                     Task_List.ItemsSource = Tasks;
                     Taske_List.ItemsSource = Tasks;
                 }
@@ -281,8 +275,6 @@ namespace lab
                 }
             }
         }
-
-
     }
 }
 

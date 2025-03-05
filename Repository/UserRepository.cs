@@ -12,8 +12,8 @@ namespace lab.Repository
     {
         private static List<Usermodel> _users = new List<Usermodel>()
        {
-           new Usermodel { Username = "Салфетка", Email = "mananev13@gmail.com", Password = "123456" },
-           new Usermodel { Username = "Anna", Email = "anna@example.com", Password = "password" }
+           new Usermodel { Name = "Салфетка", Email = "mananev13@gmail.com", Password = "123456" },
+           new Usermodel { Name = "Anna", Email = "anna@example.com", Password = "password" }
        };
         public static Usermodel CurrentUser { get; private set; }
         public Usermodel? GetUser(string email, string password)
@@ -30,28 +30,13 @@ namespace lab.Repository
 
             var newUser = new Usermodel
             {
-                Username = username,
+                Name = username,
                 Email = email,
                 Password = password
             };
             _users.Add(newUser);
 
             CurrentUser = newUser;
-            return true;
-        }
-        public bool AuthenticateUser(string email, string username, string password)
-        {
-            CurrentUser = new Usermodel();
-
-            var user = _users.FirstOrDefault(user => user.Email == email && user.Password == password);
-
-            if (user == null)
-            {
-
-                return false;
-            }
-
-            CurrentUser = user;
             return true;
         }
     }

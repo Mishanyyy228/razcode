@@ -103,22 +103,8 @@ namespace lab
                         var qwert = Password_user11.Text;
                         if (user != null)
                         {
-                            if (user.IsNewlyRegistered) // Если пользователь зарегистрировался только что
-                            {
-                                MessageBox.Show($"Добро пожаловать, {user.Username}!", "Успех", MessageBoxButton.OK);
-
-                                Manager.MainFrame.Navigate(new MainEmpty());
-                                //MainEmpty menuWindow = new MainEmpty();
-                                //WindowManager.SwitchWindow(this, menuWindow);
-                            }
-                            else
-                            {
-                                MessageBox.Show($"Вход выполнен успешно! Добро пожаловать, {user.Username}!", "Успех", MessageBoxButton.OK);
-                                Manager.MainFrame.Navigate(new Mainxaml(qwer,qwert));
-
-                                //Mainxaml main_Empty = new Mainxaml();
-                                //WindowManager.SwitchWindow(this, main_Empty);
-                            }
+                            MessageBox.Show($"Вход выполнен успешно! Добро пожаловать, {user.Name}!", "Успех", MessageBoxButton.OK);
+                            Manager.MainFrame.Navigate(new MainEmpty(qwer, qwert));
                         }
                         else
                         {
@@ -135,15 +121,6 @@ namespace lab
             {
                 MessageBox.Show("Поле почта пустое!");
             }
-        }
-
-    }
-    public static class WindowManager
-    {
-        public static void SwitchWindow(Window currentWindow, Window newWindow)
-        {
-            newWindow.Show();
-            currentWindow.Hide();
         }
     }
 }
