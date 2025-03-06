@@ -47,14 +47,7 @@ namespace lab
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            NewTaskes = new ClassTask
-            {
-                Name = txt_name.Text,
-                Category = txt_category.Text,
-                Date = Date_PickerBox.SelectedDate.Value.ToShortDateString(),
-                Description = txt_opis.Text,
-                IsCompleted = false,
-            };
+
             this.DialogResult = true;
             var userRepo1 = new TaskRepository();
             string selectedDateAsString = Date_PickerBox.SelectedDate.Value.ToShortDateString();
@@ -63,6 +56,14 @@ namespace lab
                 {
                     // Объединяем дату и время в одну строку
                     string combinedText = $"{Date_PickerBox.SelectedDate.Value.ToShortDateString()} {Cmb1.SelectedItem}";
+                    NewTaskes = new ClassTask
+                    {
+                        Name = txt_name.Text,
+                        Category = txt_category.Text,
+                        Date = combinedText,
+                        Description = txt_opis.Text,
+                        IsCompleted = false,
+                    };
 
                     bool registr = userRepo1.AddTask(txt_name.Text, txt_opis.Text, txt_category.Text, combinedText);
 

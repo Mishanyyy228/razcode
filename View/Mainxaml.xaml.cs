@@ -21,6 +21,7 @@ using System.Runtime.CompilerServices;
 using TodoEntities;
 using taskLibrary;
 using System.IO;
+using System.Runtime.Serialization;
 
 
 
@@ -99,37 +100,53 @@ namespace lab
 
         private void Task_List_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            var Formatter = new DateFormatter();
             TaskName.Content = string.Empty;
             TaskDescriotion.Text = "";
             TaskDate.Text = string.Empty;
             TaskDateTime.Text = string.Empty;
             ClassTask classTask = (ClassTask)Task_List.SelectedItem;
+            if (classTask != null)
+            {
+                int indexOfSpace = classTask.Date.LastIndexOf(' '); // находим последний пробел
+                if (indexOfSpace != -1 | classTask !=null)
+                {
+                    TaskDate.Text = classTask.Date.Substring(indexOfSpace + 1);
+                    var firstDate = classTask.Date.Substring(0, indexOfSpace);
+                    TaskDateTime.Text = Formatter.FormatDate(firstDate);
+                    TaskName.Content = classTask.Name;
+                    TaskDescriotion.Text = classTask.Description;
+                    gridthick.BorderThickness = new Thickness(1);
+                    gridthick.BorderBrush = Brushes.Black;
+                }
+            }
+            Buttone_Delete.Visibility = Visibility.Visible;
+            Buttone_Gotovo.Visibility = Visibility.Visible;
+        }
+        private void Taske_List_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var Formatter = new DateFormatter();
+
+            ClassTask classTask = (ClassTask)Taske_List.SelectedItem;
             if (classTask == null)
             {
 
             }
-            int indexOfSpace = classTask.Date.LastIndexOf(' '); // находим последний пробел
-            if (indexOfSpace != -1 | classTask.Category != null)
-            {
-                TaskDate.Text = classTask.Date.Substring(indexOfSpace + 1); // берём всё, что идёт после пробела
-                TaskName.Content = classTask.Name;
-                TaskDate.Text = classTask.Date;
-                TaskDescriotion.Text = classTask.Description;
-                gridthick.BorderThickness = new Thickness(1);
-                gridthick.BorderBrush = Brushes.Black;
-            }
-            //if (classTask != null)
-            //{
-            //    TaskName.Content = classTask.Name;
-            //    TaskDescriotion.Text = classTask.Description;
-            //    TaskDate.Text = qwer;
-            //    gridthick.BorderThickness = new Thickness(1);
-            //    gridthick.BorderBrush = Brushes.Black;
-            //}
-            Buttone_Delete.Visibility = Visibility.Visible;
-            Buttone_Gotovo.Visibility = Visibility.Visible;
-        }
+            int indexOfSpace = classTask.Date.LastIndexOf(' '); 
 
+            if (indexOfSpace != -1 | classTask != null)
+            {
+                TaskDate.Text = classTask.Date.Substring(indexOfSpace + 1);
+                var firstDate = classTask.Date.Substring(0, indexOfSpace);
+                TaskDateTime.Text = Formatter.FormatDate(firstDate);
+                TaskName.Content = classTask.Name;
+                TaskDescriotion.Text = classTask.Description;
+                gridthick1.BorderThickness = new Thickness(1);
+                gridthick1.BorderBrush = Brushes.Black;
+            }
+            Buttone_Delete.Visibility = Visibility.Hidden;
+            Buttone_Gotovo.Visibility = Visibility.Hidden;
+        }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             ClassTask classTask = (ClassTask)Task_List.SelectedItem;
@@ -187,29 +204,7 @@ namespace lab
             Buttone_Gotovo.Visibility = Visibility.Hidden;
             gridthick.Visibility = Visibility.Hidden;
         }
-        private void Taske_List_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ClassTask classTask = (ClassTask)Taske_List.SelectedItem;
-            if (classTask == null)
-            {
 
-            }
-            string[] parts = classTask.Date.Split(' ');
-
-            // parts[0] будет содержать дату, parts[1] — значение из Cmb1.SelectedItem
-            TaskDate.Text = parts[1]; // Присваиваем TaskDate.Text значение из Cmb1.SelectedItem
-            var qwer = parts.ToString();
-            if (classTask != null)
-            {
-                TaskName.Content = classTask.Name;
-                TaskDescriotion.Text = classTask.Description;
-                TaskDate.Text = qwer;
-                gridthick1.BorderThickness = new Thickness(1);
-                gridthick1.BorderBrush = Brushes.Black;
-            }
-            Buttone_Delete.Visibility = Visibility.Hidden;
-            Buttone_Gotovo.Visibility = Visibility.Hidden;
-        }
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
             gridthick1.Visibility = Visibility.Hidden;
