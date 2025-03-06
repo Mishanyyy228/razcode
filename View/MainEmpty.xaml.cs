@@ -32,7 +32,6 @@ namespace lab
                 Current_user.Content = qwert.Name;
             }
         }
-        public  string Em { get; set; }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {

@@ -20,6 +20,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using TodoEntities;
 using taskLibrary;
+using System.IO;
 
 
 
@@ -84,13 +85,6 @@ namespace lab
             {
                 UserBox.Content = qwe;
             }
-            //if (qwe != null & eqrwer!=null)
-            //{
-            //    var qazwsx = new UserRepository();
-            //    var qwert = qazwsx.GetUser(qwe,eqrwer);
-            //    UserBox.Content = qwert.Name;
-            //}
-
             Taske_List.ItemsSource = Tasks;
             DataContext = this;
             Task_List.ItemsSource = Tasks;
@@ -114,14 +108,24 @@ namespace lab
             {
 
             }
-            if (classTask != null)
+            int indexOfSpace = classTask.Date.LastIndexOf(' '); // находим последний пробел
+            if (indexOfSpace != -1 | classTask.Category != null)
             {
+                TaskDate.Text = classTask.Date.Substring(indexOfSpace + 1); // берём всё, что идёт после пробела
                 TaskName.Content = classTask.Name;
-                TaskDescriotion.Text = classTask.Description;
                 TaskDate.Text = classTask.Date;
+                TaskDescriotion.Text = classTask.Description;
                 gridthick.BorderThickness = new Thickness(1);
                 gridthick.BorderBrush = Brushes.Black;
             }
+            //if (classTask != null)
+            //{
+            //    TaskName.Content = classTask.Name;
+            //    TaskDescriotion.Text = classTask.Description;
+            //    TaskDate.Text = qwer;
+            //    gridthick.BorderThickness = new Thickness(1);
+            //    gridthick.BorderBrush = Brushes.Black;
+            //}
             Buttone_Delete.Visibility = Visibility.Visible;
             Buttone_Gotovo.Visibility = Visibility.Visible;
         }
@@ -170,33 +174,13 @@ namespace lab
             gridthick.Visibility = Visibility.Hidden;
         }
 
-        private void AddTaskButton_Click_2(object sender, RoutedEventArgs e)
-        {
-
-            var add = new NewTask();
-            if (add.ShowDialog() == true && add.NewTaskes != null) 
-            {
-                Tasks.Add(add.NewTaskes); 
-                string category = add.NewTaskes.Category;
-                var uniqueCategories = Tasks.Select(t => t.Category).Distinct().ToList();
-                UniqueCategoriesList = new List<string>(uniqueCategories);
-                UniqueCategoriesList.Add("Все");
-                Task_List.ItemsSource = Tasks;
-                DataContext = this;
-                Taske_List.ItemsSource = Tasks;
-                DataContext = this;
-                Category_List.ItemsSource = UniqueCategoriesList;
-                DataContext = this;
-            }
-        }
-
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             TaskName.Content = "";
             TaskDescriotion.Text = "";
             TaskDate.Text = "";
             TaskDateTime.Text = "";
-            AddTaskButton.Visibility = Visibility.Hidden;
+            NewTask_Image.Visibility = Visibility.Hidden;
             Task_List.Visibility = Visibility.Hidden;
             Taske_List.Visibility = Visibility.Visible;
             Buttone_Delete.Visibility = Visibility.Hidden;
@@ -210,12 +194,16 @@ namespace lab
             {
 
             }
+            string[] parts = classTask.Date.Split(' ');
+
+            // parts[0] будет содержать дату, parts[1] — значение из Cmb1.SelectedItem
+            TaskDate.Text = parts[1]; // Присваиваем TaskDate.Text значение из Cmb1.SelectedItem
+            var qwer = parts.ToString();
             if (classTask != null)
             {
                 TaskName.Content = classTask.Name;
                 TaskDescriotion.Text = classTask.Description;
-                TaskDate.Text = classTask.Date;
-                //TaskDateTime.Text = classTask.DateAndTime.ToString("dd MMMMMMMMMM yyyy");
+                TaskDate.Text = qwer;
                 gridthick1.BorderThickness = new Thickness(1);
                 gridthick1.BorderBrush = Brushes.Black;
             }
@@ -229,7 +217,7 @@ namespace lab
             Task_List.Visibility = Visibility.Visible;
             Buttone_Delete.Visibility = Visibility.Hidden;
             Buttone_Gotovo.Visibility = Visibility.Hidden;
-            AddTaskButton.Visibility = Visibility.Visible;
+            NewTask_Image.Visibility = Visibility.Visible;
             TaskName.Content = "";
             TaskDescriotion.Text = "";
             TaskDate.Text = "";
@@ -273,6 +261,25 @@ namespace lab
                     TaskDate.Text = "";
                     TaskDateTime.Text = "";
                 }
+            }
+        }
+
+        private void NewTask_Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var add = new TaskNew();
+            if (add.ShowDialog() == true && add.NewTaskes != null)
+            {
+                Tasks.Add(add.NewTaskes);
+                string category = add.NewTaskes.Category;
+                var uniqueCategories = Tasks.Select(t => t.Category).Distinct().ToList();
+                UniqueCategoriesList = new List<string>(uniqueCategories);
+                UniqueCategoriesList.Add("Все");
+                Task_List.ItemsSource = Tasks;
+                DataContext = this;
+                Taske_List.ItemsSource = Tasks;
+                DataContext = this;
+                Category_List.ItemsSource = UniqueCategoriesList;
+                DataContext = this;
             }
         }
     }
