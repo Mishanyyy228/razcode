@@ -13,8 +13,8 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="76*"/>
-            <ColumnDefinition Width="250*"/>
             <ColumnDefinition Width="300*"/>
+            <ColumnDefinition Width="250*"/>
             <ColumnDefinition Width="30*"/>
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" Grid.RowSpan="2">
@@ -96,10 +96,7 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="ListBoxItem">
-                                        <Border Style="{DynamicResource CustomBorderStyle1}" 
-                                                                                Padding="5" 
-                                Width="190"
-                                Margin="0,5">
+                                        <Border Style="{DynamicResource CustomBorderStyle1}" Padding="5"  Width="300" Margin="0,5">
                                             <StackPanel Margin="0,10,0,5" Orientation="Horizontal">
                                                 <RadioButton  x:Name="RadioButton1" Style="{DynamicResource RadioButtonStyle1}" Margin="10" IsChecked="{Binding IsCompleted}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FF1A68E5" FontWeight="Bold" />
                                                 <Grid Margin="10,0,0,0">
@@ -134,7 +131,7 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="ListBoxItem">
-                                        <Border Style="{DynamicResource CustomBorderStyle}" Padding="5" Width="190" Margin="0,5">
+                                        <Border Style="{DynamicResource CustomBorderStyle}" Padding="5" Width="300" Margin="0,5">
                                             <StackPanel Margin="0,10,0,5" Orientation="Horizontal">
                                                 <Image Margin="10" Height="13" Width="13" Source="/Resorses/cropped.png" />
                                                 <Grid Margin="10,0,0,0">
@@ -151,6 +148,11 @@
                                                 </Grid>
                                             </StackPanel>
                                         </Border>
+                                        <ControlTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding IsCompleted}" Value="false">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </ControlTemplate.Triggers>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>

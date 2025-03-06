@@ -50,36 +50,68 @@ namespace lab
 
             this.DialogResult = true;
             var userRepo1 = new TaskRepository();
-            string selectedDateAsString = Date_PickerBox.SelectedDate.Value.ToShortDateString();
             {
-                if (Date_PickerBox.SelectedDate.HasValue && Cmb1.SelectedItem != null)
+                if (Date_PickerBox.SelectedDate.HasValue!=null | Cmb1.SelectedItem != null | txt_name.Text.Length<=20 | txt_category.Text.Length <= 10)
                 {
-                    // Объединяем дату и время в одну строку
-                    string combinedText = $"{Date_PickerBox.SelectedDate.Value.ToShortDateString()} {Cmb1.SelectedItem}";
-                    NewTaskes = new ClassTask
-                    {
-                        Name = txt_name.Text,
-                        Category = txt_category.Text,
-                        Date = combinedText,
-                        Description = txt_opis.Text,
-                        IsCompleted = false,
-                    };
 
-                    bool registr = userRepo1.AddTask(txt_name.Text, txt_opis.Text, txt_category.Text, combinedText);
-
-                    if (registr)
+                    if(Cmb1.SelectedItem != null)
                     {
-                        MessageBox.Show("Задача добавлена");
+                        try
+                        {
+                            string selectedDateAsString = Date_PickerBox.SelectedDate.Value.ToShortDateString();
+                            if (selectedDateAsString == null)
+                            {
+                                MessageBox.Show("Выберите дату.");
+                            }
+                        }
+                        catch(Exception ex)
+                        {
+                            if(Date_PickerBox.SelectedDate.Value.ToShortDateString()==null)
+                            {
+                                MessageBox.Show(ex.Message);
+                            }
+                        }
+                        if (Cmb1.SelectedItem == null)
+                        {
+                            MessageBox.Show("Выберите время.");
+                        }
+                        else
+                        {
+                            if (txt_category.Text.Length >= 15)
+                            {
+                                MessageBox.Show("Название категории слишком длинное");
+                            }
+                            else
+                            {
+                                if (txt_name.Text.Length >= 20)
+                                {
+                                    MessageBox.Show("Название задачи слишком длинное");
+                                }
+                                else
+                                {
+
+                                    string combinedText = $"{Date_PickerBox.SelectedDate.Value.ToShortDateString()} {Cmb1.SelectedItem}";
+                                    NewTaskes = new ClassTask
+                                    {
+                                        Name = txt_name.Text,
+                                        Category = txt_category.Text,
+                                        Date = combinedText,
+                                        Description = txt_opis.Text,
+                                        IsCompleted = false,
+                                    };
+
+                                    bool registr = userRepo1.AddTask(txt_name.Text, txt_opis.Text, txt_category.Text, combinedText);
+
+                                    if (registr)
+                                    {
+                                        MessageBox.Show("Задача добавлена");
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
-                else
-                {
-                    MessageBox.Show("Выберите дату и время.");
-                }
-
-
             }
-
         }
     }
 }
