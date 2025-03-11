@@ -1,32 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace lab
 {
     public class DateFormatter
     {
-        public string FormatDate(string inputDate)
+        public int FormatDate(string inputDate)
         {
             try
             {
                 // Парсим входную строку в объект DateTime
-                DateTime date = DateTime.ParseExact(inputDate, "dd.MM.yyyy", null);
+                DateTime date = DateTime.ParseExact(inputDate, "dd.MM.yyyy", CultureInfo.InvariantCulture);
 
-                // Преобразуем дату в нужный формат
-                return date.ToString("d MMMM yyyy");
+                // Преобразуем дату в числовой формат
+                return date.Year * 10000 + date.Month * 100 + date.Day;
             }
             catch (FormatException ex)
             {
-                Console.WriteLine($"Ошибка формата: {ex.Message}");
-                return null;
+               MessageBox.Show($"Ошибка формата: {ex.Message}");
+                return 0;
             }
             catch (ArgumentNullException ex)
             {
-                Console.WriteLine($"Передана пустая строка: {ex.Message}");
-                return null;
+                MessageBox.Show($"Передана пустая строка: {ex.Message}");
+                return 0;
             }
         }
     }

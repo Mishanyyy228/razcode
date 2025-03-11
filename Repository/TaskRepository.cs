@@ -9,21 +9,21 @@ namespace lab.Repository
 {
     public class TaskRepository
     {
-        private static List<ClassTask> Tasks = new List<ClassTask>()
+        private static List<Todo> Tasks = new List<Todo>()
         {
 
         };
-        public static IEnumerable<ClassTask> AllTasks => Tasks;
-        public static ClassTask CurrentTask { get; private set; }
-        public bool AddTask(string category, string name, string description,string date)
+        public static IEnumerable<Todo> AllTasks => Tasks;
+        public static Todo CurrentTask { get; private set; }
+        public bool AddTask(string category, string name, string description,int date)
         {
-            var newTask = new ClassTask
+            var newTask = new Todo
             {
-                Category = category,
-                Name = name,
-                Description = description,
-                IsCompleted = false,
-                Date = date,
+                category = category,
+                title = name,
+                description = description,
+                isCompleated = false,
+                date = date,
             };
             Tasks.Add(newTask);
             CurrentTask = newTask;

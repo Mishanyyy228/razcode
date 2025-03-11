@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace lab.View
+namespace lab
 {
-    public static class TokenStorage
+    class Responce<T>
     {
-        public static string Value { get; set; }
+        public T data { get; set; }
+        //public T data;
     }
 }

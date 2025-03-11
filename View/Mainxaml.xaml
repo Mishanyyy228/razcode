@@ -98,13 +98,13 @@
                                                         <RowDefinition Height="auto"/>
                                                         <RowDefinition Height="auto"/>
                                                     </Grid.RowDefinitions>
-                                                    <TextBlock Grid.Row="0" Style="{DynamicResource TextBlockStyle}" Text="{Binding Name}"  />
-                                                    <TextBlock Grid.Row="1" Style="{DynamicResource TextBlockStyle3}" Text="{Binding Date, StringFormat={}{0:hh:mm tt }}"/>
+                                                    <TextBlock Grid.Row="0" Style="{DynamicResource TextBlockStyle}" Text="{Binding title}"  />
+                                                    <TextBlock Grid.Row="1" Style="{DynamicResource TextBlockStyle3}" Text="{Binding date, StringFormat={}{0:hh:mm tt }}"/>
                                                 </Grid>
                                             </StackPanel>
                                         </Border>
                                         <ControlTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding IsCompleted}" Value="true">
+                                            <DataTrigger Binding="{Binding isCompleated}" Value="true">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                             </DataTrigger>
                                         </ControlTemplate.Triggers>

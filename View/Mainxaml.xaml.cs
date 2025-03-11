@@ -50,7 +50,7 @@ namespace lab
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
-        public ObservableCollection<ClassTask> Tasks { get; set; }
+        public ObservableCollection<Todo> Tasks { get; set; }
 
         private List<string> _uniqueCategoriesList;
 
@@ -68,11 +68,11 @@ namespace lab
         public Mainxaml(string qwe)
         {
             _repository = new TaskRepository();
-            var tasks = new ObservableCollection<ClassTask>(TaskRepository.AllTasks);
+            var tasks = new ObservableCollection<Todo>(TaskRepository.AllTasks);
             this.Tasks = tasks;
             DataContext = this;
 
-            var uniqueCategories = tasks.Select(t => t.Category).Distinct().ToList();
+            var uniqueCategories = tasks.Select(t => t.category).Distinct().ToList();
 
             UniqueCategoriesList = new List<string>(uniqueCategories);
 
@@ -83,9 +83,11 @@ namespace lab
             {
                 UserBox.Content = qwe;
             }
+
+            Loaded += OnLoaded;
             Taske_List.ItemsSource = Tasks;
             DataContext = this;
-            Task_List.ItemsSource = Tasks;
+            //Task_List.ItemsSource = Tasks;
             DataContext = this;
             Category_List.ItemsSource = UniqueCategoriesList;
             DataContext = this;
@@ -93,6 +95,28 @@ namespace lab
             Buttone_Delete.Visibility = Visibility.Hidden;
             Buttone_Gotovo.Visibility = Visibility.Hidden;
             Taske_List.Visibility = Visibility.Hidden;
+        }
+        private async void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            await LoadTasksAsync();
+            Task_List.ItemsSource = Tasks;
+        }
+        public async Task LoadTasksAsync()
+        {
+            var repository = new Repository1();
+            var todolist = await repository.GetTodosAsync();
+
+            // Очистите существующий список, если он есть
+            //Tasks.Clear();
+
+            // Заполните Tasks новыми элементами
+            foreach (var task in todolist)
+            {
+                Tasks.Add(task);
+            }
+
+            // Привяжите Tasks к ItemsSource
+            Task_List.ItemsSource = Tasks;
         }
 
         private void Task_List_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -102,17 +126,19 @@ namespace lab
             TaskDescriotion.Text = "";
             TaskDate.Text = string.Empty;
             TaskDateTime.Text = string.Empty;
-            ClassTask classTask = (ClassTask)Task_List.SelectedItem;
+            Todo classTask = (Todo)Task_List.SelectedItem;
             if (classTask != null)
             {
-                int indexOfSpace = classTask.Date.LastIndexOf(' '); // находим последний пробел
-                if (indexOfSpace != -1 | classTask !=null)
+                //int indexOfSpace = classTask.date.LastIndexOf(' '); // находим последний пробел
+                if ( classTask !=null)
                 {
-                    TaskDate.Text = classTask.Date.Substring(indexOfSpace + 1);
-                    var firstDate = classTask.Date.Substring(0, indexOfSpace);
-                    TaskDateTime.Text = Formatter.FormatDate(firstDate);
-                    TaskName.Content = classTask.Name;
-                    TaskDescriotion.Text = classTask.Description;
+                    //TaskDate.Text = formattedDate.Value.ToString(); // Числовой формат даты
+                    //TaskDateTime.Text = formattedDate.Value.ToString(); // Время можно оставить таким же
+                    TaskDate.Text = classTask.date.ToString();
+                    //var firstDate = classTask.date.Substring(0, indexOfSpace);
+                    TaskDateTime.Text = classTask.date.ToString();
+                    TaskName.Content = classTask.title;
+                    TaskDescriotion.Text = classTask.description;
                     gridthick.BorderThickness = new Thickness(1);
                     gridthick.BorderBrush = Brushes.Black;
                 }
@@ -124,20 +150,20 @@ namespace lab
         {
             var Formatter = new DateFormatter();
 
-            ClassTask classTask = (ClassTask)Taske_List.SelectedItem;
+            Todo classTask = (Todo)Taske_List.SelectedItem;
             if (classTask == null)
             {
 
             }
-            int indexOfSpace = classTask.Date.LastIndexOf(' '); 
+            //int indexOfSpace = classTask.date.LastIndexOf(' '); 
 
-            if (indexOfSpace != -1 | classTask != null)
+            if (classTask != null)
             {
-                TaskDate.Text = classTask.Date.Substring(indexOfSpace + 1);
-                var firstDate = classTask.Date.Substring(0, indexOfSpace);
-                TaskDateTime.Text = Formatter.FormatDate(firstDate);
-                TaskName.Content = classTask.Name;
-                TaskDescriotion.Text = classTask.Description;
+                TaskDate.Text = classTask.date.ToString();
+                //var firstDate = classTask.date.ToString();
+                TaskDateTime.Text = classTask.date.ToString();
+                TaskName.Content = classTask.title;
+                TaskDescriotion.Text = classTask.description;
                 gridthick1.BorderThickness = new Thickness(1);
                 gridthick1.BorderBrush = Brushes.Black;
             }
@@ -146,11 +172,11 @@ namespace lab
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            ClassTask classTask = (ClassTask)Task_List.SelectedItem;
+            Todo classTask = (Todo)Task_List.SelectedItem;
 
             if (classTask != null)
             {
-                classTask.IsCompleted = true;
+                classTask.isCompleated = true;
                 Task_List.Items.Refresh();
                 Category_List.Items.Refresh();
                 Task_List.ItemsSource = Tasks;
@@ -169,11 +195,11 @@ namespace lab
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            ClassTask classTask = (ClassTask)Task_List.SelectedItem;
+            Todo classTask = (Todo)Task_List.SelectedItem;
 
             if (classTask != null)
             {
-                classTask.IsCompleted = true;
+                classTask.isCompleated = true;
                 Category_List.Items.Refresh();
                 Task_List.Items.Refresh();
                 MessageBox.Show("Задача удалена");
@@ -219,7 +245,7 @@ namespace lab
         private void Category_List_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
             string selectedCity = Category_List.SelectedItem as string;
-            var filteredPeople = Tasks.Where(p => p.Category == selectedCity).ToList();
+            var filteredPeople = Tasks.Where(p => p.category == selectedCity).ToList();
             if (filteredPeople.Count <= 0 && selectedCity != "Все")
             {
                 MessageBox.Show("В данной категории нет задач.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -245,7 +271,7 @@ namespace lab
                 }
                 if (filteredPeople == null)
                 {
-                    var filteredPeoples = Tasks.Where(p => p.Category == selectedCity);
+                    var filteredPeoples = Tasks.Where(p => p.category == selectedCity);
                     Task_List.ItemsSource = filteredPeoples.ToList();
                     Taske_List.ItemsSource = filteredPeoples.ToList();
                     TaskName.Content = "";
@@ -262,8 +288,8 @@ namespace lab
             if (add.ShowDialog() == true && add.NewTaskes != null)
             {
                 Tasks.Add(add.NewTaskes);
-                string category = add.NewTaskes.Category;
-                var uniqueCategories = Tasks.Select(t => t.Category).Distinct().ToList();
+                string category = add.NewTaskes.category;
+                var uniqueCategories = Tasks.Select(t => t.category).Distinct().ToList();
                 UniqueCategoriesList = new List<string>(uniqueCategories);
                 UniqueCategoriesList.Add("Все");
                 Task_List.ItemsSource = Tasks;

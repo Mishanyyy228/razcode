@@ -43,7 +43,7 @@ namespace lab
         {
             this.Close();
         }
-        public ClassTask NewTaskes { get; private set; }
+        public Todo NewTaskes { get; private set; }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
@@ -87,14 +87,36 @@ namespace lab
                                 }
                                 else
                                 {
-                                    string combinedText = $"{Date_PickerBox.SelectedDate.Value.ToShortDateString()} {Cmb1.SelectedItem}";
-                                    NewTaskes = new ClassTask
+                                    //if (Date_PickerBox.SelectedDate.HasValue)
+                                    //{
+                                    //    DateTime selectedDate = Date_PickerBox.SelectedDate.Value;
+
+                                    //    // Преобразуем дату в числовой формат YYYYMMDD
+                                    //    int numericDate = selectedDate.Year * 10000 + selectedDate.Month * 100 + selectedDate.Day;
+
+                                    //    // Выводим числовую дату
+                                    //    Console.WriteLine(numericDate);
+                                    //}
+                                    //else
+                                    //{
+                                    //    MessageBox.Show("Выберите дату.");
+                                    //}
+                                    int selectedItemValue = int.Parse(Cmb1.SelectedItem.ToString());
+
+                                    // Комбинируем дату и выбранный элемент
+                                    int combinedText = Date_PickerBox.SelectedDate.Value.Year * 10000 +
+                                                       Date_PickerBox.SelectedDate.Value.Month * 100 +
+                                                       Date_PickerBox.SelectedDate.Value.Day +
+                                                       selectedItemValue;
+
+                                    //int combinedText = $"{Date_PickerBox.SelectedDate.Value.ToShortDateString()} {Cmb1.SelectedItem}";
+                                    NewTaskes = new Todo
                                     {
-                                        Name = txt_name.Text,
-                                        Category = txt_category.Text,
-                                        Date = combinedText,
-                                        Description = txt_opis.Text,
-                                        IsCompleted = false,
+                                        title = txt_name.Text,
+                                        category = txt_category.Text,
+                                        date = combinedText,
+                                        description = txt_opis.Text,
+                                        isCompleated = false,
                                     };
 
                                     bool registr = userRepo1.AddTask(txt_name.Text, txt_opis.Text, txt_category.Text, combinedText);
