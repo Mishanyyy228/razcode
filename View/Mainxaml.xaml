@@ -50,13 +50,7 @@
                 <RowDefinition Height="646*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="1">
-
-                <ListBox Margin="50,0,25,0" x:Name="Category_List" ItemsSource="{Binding UniqueCategoriesList}" AlternationCount="5" 
-                BorderThickness="0,0,0,0"
-             ScrollViewer.VerticalScrollBarVisibility="Disabled"
-             ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-             Grid.Row="1"
-             SelectionChanged="Category_List_SelectionChanged_1">
+                <ListBox Margin="50,0,25,0" x:Name="Category_List" ItemsSource="{Binding UniqueCategoriesList}" AlternationCount="5" BorderThickness="0,0,0,0" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Grid.Row="1" SelectionChanged="Category_List_SelectionChanged_1">
 
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -123,9 +117,7 @@
             </Grid>
 
             <Grid Grid.Row="2">
-                <ListBox x:Name="Taske_List"  Style="{DynamicResource ListBoxStyle}" Margin="0,10,0,0"
-         SelectionChanged="Taske_List_SelectionChanged"
-         d:ItemsSource="{d:SampleData ItemCount=5}" >
+                <ListBox x:Name="Taske_List"  Style="{DynamicResource ListBoxStyle}" Margin="0,10,0,0"  SelectionChanged="Taske_List_SelectionChanged" d:ItemsSource="{d:SampleData ItemCount=5}" >
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
                             <Setter Property="Template">

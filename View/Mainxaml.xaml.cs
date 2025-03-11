@@ -52,8 +52,6 @@ namespace lab
         }
         public ObservableCollection<ClassTask> Tasks { get; set; }
 
-        private UserRepository _userRepository;
-
         private List<string> _uniqueCategoriesList;
 
         public List<string> UniqueCategoriesList
@@ -66,7 +64,6 @@ namespace lab
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChangeded;
 
         public Mainxaml(string qwe)
         {

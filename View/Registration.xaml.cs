@@ -12,7 +12,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using lab.Validation;
 using lab.Repository;
 
 namespace lab
@@ -154,7 +153,7 @@ namespace lab
                             if (registr)
                             {
                                 MessageBox.Show("Успешно!!!");
-                                Manager.MainFrame.Navigate(new LogIn());
+                                //Manager.MainFrame.Navigate(new LogIn());
 
                                 //Window w2 = new MainEmpty();
                                 //Hide();
@@ -164,7 +163,6 @@ namespace lab
                             {
                                 MessageBox.Show("Email уже занят. Пожалуйста, выберите другой.");
                             }
-
                         }
                         else
                         {
