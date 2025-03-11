@@ -30,7 +30,7 @@
             <Label Grid.Row="3" Content="Пароль" VerticalAlignment="Bottom" FontSize="20" ></Label>
             <TextBox x:Name="Password_user11" Text="Введите пароль" Grid.Row="4" Style="{DynamicResource TextBoxStyle1}" GotFocus="Password_user11_GotFocus" LostFocus="Password_user11_LostFocus" ></TextBox>
             <Label Grid.Row="5" HorizontalAlignment="Right"  ></Label>
-            <Button Style="{DynamicResource ButtonStyle1}"    Grid.Row="6 " HorizontalAlignment="Left" Width="250"  Content="Войти" Click="Button_Click"  Height="45" VerticalAlignment="Top"  >
+            <Button Style="{DynamicResource ButtonStyle1}"    Grid.Row="6 " HorizontalAlignment="Left"  Width="250"  Content="Войти" Click="Button_Click"  Height="45" VerticalAlignment="Top"  >
                 <Button.RenderTransform>
                     <ScaleTransform/>
                 </Button.RenderTransform>

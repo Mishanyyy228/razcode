@@ -16,6 +16,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.Text.Json" Version="9.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\taskLibrary\taskLibrary.csproj" />
     <ProjectReference Include="..\TodoEntities\TodoEntities.csproj" />
   </ItemGroup>

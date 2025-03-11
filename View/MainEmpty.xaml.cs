@@ -20,16 +20,13 @@ namespace lab
     /// </summary>
     public partial class MainEmpty : Page
     {
-        public MainEmpty(string qwe, string eqrwer)
+        public MainEmpty(string qwe)
         {
             var em = qwe;
-            var pas = eqrwer;
             InitializeComponent();
-            if (qwe != null & eqrwer != null)
+            if (qwe != null )
             {
-                var qazwsx = new UserRepository();
-                var qwert = qazwsx.GetUser(qwe, eqrwer);
-                Current_user.Content = qwert.Name;
+                Current_user.Content = em;
             }
         }
 

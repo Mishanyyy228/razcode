@@ -13,6 +13,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using lab.Repository;
+using System.Net.Http;
+using TodoEntities;
+using System.Net.Http.Json;
+using lab.View;
+using System.Net.Http.Headers;
+using System.Text.Json;
+using Newtonsoft.Json.Linq;
+
 
 namespace lab
 {
@@ -24,6 +32,7 @@ namespace lab
         public LogIn()
         {
             InitializeComponent();
+
 
         }
 
@@ -71,8 +80,16 @@ namespace lab
                 Pochta_user11.Foreground = Brushes.Black;
             }
         }
-        private void Button_Click(object sender, RoutedEventArgs e)
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://45.144.64.179/");
+            var user = new Usermodel
+            {
+                Email = Pochta_user11.Text,
+                Password = Password_user11.Text
+            };
             if (Pochta_user11.Text != "student12@gmail.com")
             {
                 if (Password_user11.Text != "Введите пароль")
@@ -96,18 +113,24 @@ namespace lab
                     }
                     if (isEmailValid && isPasswordValid)
                     {
-                        var userRepo = new UserRepository();
-                        var user = userRepo.GetUser(Pochta_user11.Text, Password_user11.Text);
-                        var qwer = Pochta_user11.Text;
-                        var qwert = Password_user11.Text;
-                        if (user != null)
+                        try
                         {
-                            MessageBox.Show($"Вход выполнен успешно! Добро пожаловать, {user.Name}!", "Успех", MessageBoxButton.OK);
-                            Manager.MainFrame.Navigate(new MainEmpty(qwer, qwert));
+                            var responce = await client.PostAsJsonAsync("api/auth/login", user);
+                            if(responce.IsSuccessStatusCode)
+                            {
+                                TokenStorage.Value = responce.Content.ReadAsAsync<Responce<Token>>().Result.data.access_token;
+                                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TokenStorage.Value);
+                                var result = await client.GetAsync("api/user");
+                                var userInfo = await result.Content.ReadAsStringAsync();
+                                JObject jObject = JObject.Parse(userInfo);
+                                string name = (string)jObject["data"]["name"];
+                                MessageBox.Show($"Вход выполнен успешно! Добро пожаловать, {name}!", "Успех", MessageBoxButton.OK);
+                                Manager.MainFrame.Navigate(new MainEmpty(name));
+                            }
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            MessageBox.Show("Неверный email или пароль.");
+                            MessageBox.Show(ex.Message);
                         }
                     }
                 }
