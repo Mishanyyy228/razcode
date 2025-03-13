@@ -99,7 +99,7 @@
                                                         <RowDefinition Height="auto"/>
                                                     </Grid.RowDefinitions>
                                                     <TextBlock Grid.Row="0" Style="{DynamicResource TextBlockStyle}" Text="{Binding title}"  />
-                                                    <TextBlock Grid.Row="1" Style="{DynamicResource TextBlockStyle3}" Text="{Binding date, StringFormat={}{0:hh:mm tt }}"/>
+                                                    <TextBlock Grid.Row="1" Style="{DynamicResource TextBlockStyle3}" Text="{Binding date}"/>
                                                 </Grid>
                                             </StackPanel>
                                         </Border>

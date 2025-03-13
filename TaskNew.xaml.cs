@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 using taskLibrary;
 
 namespace lab
@@ -45,92 +48,82 @@ namespace lab
         }
         public Todo NewTaskes { get; private set; }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://45.144.64.179/");
             this.DialogResult = true;
-            var userRepo1 = new TaskRepository();
             {
-                if (Date_PickerBox.SelectedDate.HasValue!=null | Cmb1.SelectedItem != null | txt_name.Text.Length<=20 | txt_category.Text.Length <= 10)
+                if (Date_PickerBox.SelectedDate.HasValue != null | Cmb1.SelectedItem != null | txt_name.Text.Length <= 20 | txt_category.Text.Length <= 10)
                 {
-                    if(Cmb1.SelectedItem != null)
+                    if (txt_category.Text.Length >= 15)
                     {
-                        try
+                        MessageBox.Show("Название категории слишком длинное");
+                    }
+                    else
+                    {
+                        if (txt_name.Text.Length >= 20)
                         {
-                            string selectedDateAsString = Date_PickerBox.SelectedDate.Value.ToShortDateString();
-                            if (selectedDateAsString == null)
-                            {
-                                MessageBox.Show("Выберите дату.");
-                            }
-                        }
-                        catch(Exception ex)
-                        {
-                            if(Date_PickerBox.SelectedDate.Value.ToShortDateString()==null)
-                            {
-                                MessageBox.Show(ex.Message);
-                            }
-                        }
-                        if (Cmb1.SelectedItem == null)
-                        {
-                            MessageBox.Show("Выберите время.");
+                            MessageBox.Show("Название задачи слишком длинное");
                         }
                         else
                         {
-                            if (txt_category.Text.Length >= 15)
+                            try
                             {
-                                MessageBox.Show("Название категории слишком длинное");
-                            }
-                            else
-                            {
-                                if (txt_name.Text.Length >= 20)
+                                if (Date_PickerBox.SelectedDate.HasValue)
                                 {
-                                    MessageBox.Show("Название задачи слишком длинное");
-                                }
-                                else
-                                {
-                                    //if (Date_PickerBox.SelectedDate.HasValue)
-                                    //{
-                                    //    DateTime selectedDate = Date_PickerBox.SelectedDate.Value;
+                                    var selectedDate = Date_PickerBox.SelectedDate.Value.Date;
+                                    var selectedTime = Cmb1.SelectedItem.ToString(); // Строка формата "HH:mm"
 
-                                    //    // Преобразуем дату в числовой формат YYYYMMDD
-                                    //    int numericDate = selectedDate.Year * 10000 + selectedDate.Month * 100 + selectedDate.Day;
+                                    // Преобразуем строку времени в часы и минуты
+                                    var timeParts = selectedTime.Split(':');
+                                    var hours = int.Parse(timeParts[0]);
+                                    var minutes = int.Parse(timeParts[1]);
 
-                                    //    // Выводим числовую дату
-                                    //    Console.WriteLine(numericDate);
-                                    //}
-                                    //else
-                                    //{
-                                    //    MessageBox.Show("Выберите дату.");
-                                    //}
-                                    int selectedItemValue = int.Parse(Cmb1.SelectedItem.ToString());
+                                    // Создаем DateTime, объединяя дату и время
+                                    var combinedDateTime = new DateTime(selectedDate.Year, selectedDate.Month, selectedDate.Day, hours, minutes, 0);
 
-                                    // Комбинируем дату и выбранный элемент
-                                    int combinedText = Date_PickerBox.SelectedDate.Value.Year * 10000 +
-                                                       Date_PickerBox.SelectedDate.Value.Month * 100 +
-                                                       Date_PickerBox.SelectedDate.Value.Day +
-                                                       selectedItemValue;
+                                    // Преобразуем DateTime в long
+                                    long timestamp = combinedDateTime.ToBinary();
 
-                                    //int combinedText = $"{Date_PickerBox.SelectedDate.Value.ToShortDateString()} {Cmb1.SelectedItem}";
-                                    NewTaskes = new Todo
+                                    var NewTaskes = new Todo
                                     {
                                         title = txt_name.Text,
                                         category = txt_category.Text,
-                                        date = combinedText,
+                                        date = timestamp, 
                                         description = txt_opis.Text,
-                                        isCompleated = false,
+                                        isCompleated = false
                                     };
+                                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TokenStorage.Value);
 
-                                    bool registr = userRepo1.AddTask(txt_name.Text, txt_opis.Text, txt_category.Text, combinedText);
+                                    var responce = await client.PostAsJsonAsync("api/todos", NewTaskes);
 
-                                    if (registr)
+                                    if (responce.IsSuccessStatusCode)
                                     {
                                         MessageBox.Show("Задача добавлена");
+
+
+                                    }
+                                    if (!responce.IsSuccessStatusCode)
+                                    {
+                                        MessageBox.Show($"Запрос информации о пользователе не удался. Код ошибки: {(int)responce.StatusCode}. Сообщение: {await responce.Content.ReadAsStringAsync()}");
+
                                     }
                                 }
+
                             }
+
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(ex.Message);
+                            }
+
                         }
+                    }
+
+
+                }
                     }
                 }
             }
         }
-    }
-}

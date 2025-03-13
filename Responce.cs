@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace lab
 {
-    class Responce<T>
+    public class Responce<T>
     {
         public T data { get; set; }
-        //public T data;
     }
 }

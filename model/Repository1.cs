@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using taskLibrary;
 using System.Net.Http.Json;
 
-namespace lab
+namespace lab.model
 {
     public class Repository1 : TodoHttpClient
     {
@@ -23,6 +23,13 @@ namespace lab
         {
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TokenStorage.Value);
             var result = await httpClient.GetFromJsonAsync<Responce<List<Todo>>>(TodosUrl);
+            //var todos = result.data;
+
+            //var todo = new List<Todo>();
+            //foreach(var tod in todos)
+            //{
+            //    todo.Add(TodoModel.Map(tod));
+            //}
             return result?.data;
         }
     }

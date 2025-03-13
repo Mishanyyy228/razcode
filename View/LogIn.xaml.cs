@@ -20,6 +20,7 @@ using System.Net.Http.Json;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using Newtonsoft.Json.Linq;
+using lab.model;
 
 
 namespace lab

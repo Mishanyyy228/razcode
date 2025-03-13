@@ -22,6 +22,9 @@ using TodoEntities;
 using taskLibrary;
 using System.IO;
 using System.Runtime.Serialization;
+using lab.model;
+
+
 
 
 
@@ -129,14 +132,19 @@ namespace lab
             Todo classTask = (Todo)Task_List.SelectedItem;
             if (classTask != null)
             {
-                //int indexOfSpace = classTask.date.LastIndexOf(' '); // находим последний пробел
                 if ( classTask !=null)
                 {
-                    //TaskDate.Text = formattedDate.Value.ToString(); // Числовой формат даты
-                    //TaskDateTime.Text = formattedDate.Value.ToString(); // Время можно оставить таким же
-                    TaskDate.Text = classTask.date.ToString();
-                    //var firstDate = classTask.date.Substring(0, indexOfSpace);
-                    TaskDateTime.Text = classTask.date.ToString();
+                    long timestamp = classTask.date; 
+                    DateTime dateTime = DateTime.FromBinary(timestamp);
+
+                    DateTime combinedDateTime = DateTime.FromBinary(timestamp);
+
+                    // Разбиваем на дату и время
+                    string datePart = combinedDateTime.ToShortDateString();
+                    string timePart = combinedDateTime.ToLongTimeString();
+
+                    TaskDateTime.Text = datePart;
+                    TaskDate.Text = timePart;         // Полная дата
                     TaskName.Content = classTask.title;
                     TaskDescriotion.Text = classTask.description;
                     gridthick.BorderThickness = new Thickness(1);

@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using lab.Repository;
+using System.Net.Http;
+using TodoEntities;
 
 namespace lab
 {
@@ -105,8 +107,10 @@ namespace lab
             //w2.Show();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private async void  Button_Click_1(object sender, RoutedEventArgs e)
         {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://45.144.64.179/");
             if (Name_user.Text != "Введите имя пользователя")
             {
                 if (Email_user.Text != "Введите почту")
@@ -147,19 +151,20 @@ namespace lab
 
                         if (Pass_user.Text == Pass_user1.Text)
                         {
-                            var userRepo = new UserRepository();
-                            bool registr = userRepo.Register(Name_user.Text, Email_user.Text, Pass_user.Text);
+                            var user = new Usermodel
+                            {
+                              Email = Email_user.Text,
+                              Password = Pass_user.Text,
+                              Name = Name_user.Text
+                            };
+                            var responce = await client.PostAsJsonAsync("api/auth/registration", user);
 
-                            if (registr)
+                            if (responce.IsSuccessStatusCode)
                             {
                                 MessageBox.Show("Успешно!!!");
-                                //Manager.MainFrame.Navigate(new LogIn());
 
-                                //Window w2 = new MainEmpty();
-                                //Hide();
-                                //w2.Show();
                             }
-                            if (!registr)
+                            if(!responce.IsSuccessStatusCode)
                             {
                                 MessageBox.Show("Email уже занят. Пожалуйста, выберите другой.");
                             }
