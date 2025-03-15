@@ -20,21 +20,21 @@ namespace lab
     /// </summary>
     public partial class MainEmpty : Page
     {
-        public MainEmpty(string qwe)
+        public MainEmpty(string nameUser)
         {
-            var em = qwe;
+            var currentUser = nameUser;
             InitializeComponent();
-            if (qwe != null )
+            if (nameUser != null )
             {
-                Current_user.Content = em;
+                Current_user.Content = currentUser;
             }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var qwe = Current_user.Content;
-            var qa = qwe.ToString();
-            Manager.MainFrame.Navigate(new Mainxaml(qa));
+            var nameUser = Current_user.Content;
+            var currentUser = nameUser.ToString();
+            Manager.MainFrame.Navigate(new Mainxaml(currentUser));
         }
     }
 }

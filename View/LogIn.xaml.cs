@@ -33,17 +33,11 @@ namespace lab
         public LogIn()
         {
             InitializeComponent();
-
-
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             Manager.MainFrame.Navigate(new Registration());
-
-            //Window w2 = new Registration();
-            //Hide();
-            //w2.Show();
         }
 
         private void Password_user11_GotFocus(object sender, RoutedEventArgs e)
@@ -127,6 +121,10 @@ namespace lab
                                 string name = (string)jObject["data"]["name"];
                                 MessageBox.Show($"Вход выполнен успешно! Добро пожаловать, {name}!", "Успех", MessageBoxButton.OK);
                                 Manager.MainFrame.Navigate(new MainEmpty(name));
+                            }
+                            if (!responce.IsSuccessStatusCode)
+                            {
+                                MessageBox.Show("Неверный логин или пароль.");
                             }
                         }
                         catch (Exception ex)

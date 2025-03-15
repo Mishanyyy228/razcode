@@ -99,15 +99,15 @@
                                                         <RowDefinition Height="auto"/>
                                                     </Grid.RowDefinitions>
                                                     <TextBlock Grid.Row="0" Style="{DynamicResource TextBlockStyle}" Text="{Binding title}"  />
-                                                    <TextBlock Grid.Row="1" Style="{DynamicResource TextBlockStyle3}" Text="{Binding date}"/>
+                                                    <TextBlock  Grid.Row="1" Style="{DynamicResource TextBlockStyle3}" Text="{Binding partdate}"/>
                                                 </Grid>
                                             </StackPanel>
                                         </Border>
-                                        <ControlTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding isCompleated}" Value="true">
+                                        <!--<ControlTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding isCompleated}" Value="false">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                             </DataTrigger>
-                                        </ControlTemplate.Triggers>
+                                        </ControlTemplate.Triggers>-->
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
@@ -141,7 +141,7 @@
                                             </StackPanel>
                                         </Border>
                                         <ControlTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding IsCompleted}" Value="false">
+                                            <DataTrigger Binding="{Binding isCompleted}" Value="true">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                             </DataTrigger>
                                         </ControlTemplate.Triggers>

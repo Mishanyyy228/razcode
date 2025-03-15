@@ -102,9 +102,6 @@ namespace lab
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Manager.MainFrame.Navigate(new LogIn());
-            //Window w2 = new LogIn();
-            //Hide();
-            //w2.Show();
         }
 
         private async void  Button_Click_1(object sender, RoutedEventArgs e)

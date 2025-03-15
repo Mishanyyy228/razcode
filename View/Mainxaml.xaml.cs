@@ -23,6 +23,9 @@ using taskLibrary;
 using System.IO;
 using System.Runtime.Serialization;
 using lab.model;
+using Newtonsoft.Json.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 
 
@@ -35,19 +38,6 @@ namespace lab
     /// </summary>
     public partial class Mainxaml : Page, INotifyPropertyChanged
     {
-        public TaskRepository _repository;
-        public UserRepository _repository1;
-
-        private string _username;
-        public string Username
-        {
-            get => _username;
-            set
-            {
-                _username = value;
-                OnPropertyChanged();
-            }
-        }
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
@@ -67,11 +57,9 @@ namespace lab
             }
         }
 
-
-        public Mainxaml(string qwe)
+        public Mainxaml(string nameUser)
         {
-            _repository = new TaskRepository();
-            var tasks = new ObservableCollection<Todo>(TaskRepository.AllTasks);
+            var tasks = new ObservableCollection<Todo>();
             this.Tasks = tasks;
             DataContext = this;
 
@@ -82,15 +70,13 @@ namespace lab
             DataContext = this;
             InitializeComponent();
             
-            if( qwe!= null)
+            if(nameUser != null)
             {
-                UserBox.Content = qwe;
+                UserBox.Content = nameUser;
             }
 
             Loaded += OnLoaded;
             Taske_List.ItemsSource = Tasks;
-            DataContext = this;
-            //Task_List.ItemsSource = Tasks;
             DataContext = this;
             Category_List.ItemsSource = UniqueCategoriesList;
             DataContext = this;
@@ -103,28 +89,39 @@ namespace lab
         {
             await LoadTasksAsync();
             Task_List.ItemsSource = Tasks;
+
+            await LoadCategoryAsync();
+            var classTask = new Todo();
+            long timestamp = classTask.date;
+            DateTime dateTime = DateTime.FromBinary(timestamp);
+
+            DateTime combinedDateTime = DateTime.FromBinary(timestamp);
+
+            string datePart = combinedDateTime.ToShortDateString();
+            string timePart = combinedDateTime.ToLongTimeString();
+        }
+        public async Task LoadCategoryAsync()
+        {
+            var repository = new Repository1();
+            var updatedTodolist = await repository.GetTodosAsync();
+
+            var categories = updatedTodolist.Select(task => task.category).Distinct().ToList();
+
+            Category_List.ItemsSource = categories;
         }
         public async Task LoadTasksAsync()
         {
             var repository = new Repository1();
-            var todolist = await repository.GetTodosAsync();
-
-            // Очистите существующий список, если он есть
-            //Tasks.Clear();
-
-            // Заполните Tasks новыми элементами
-            foreach (var task in todolist)
+            var updatedTodolist = await repository.GetTodosAsync();
+            foreach (var task in updatedTodolist)
             {
                 Tasks.Add(task);
             }
-
-            // Привяжите Tasks к ItemsSource
             Task_List.ItemsSource = Tasks;
         }
 
         private void Task_List_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var Formatter = new DateFormatter();
             TaskName.Content = string.Empty;
             TaskDescriotion.Text = "";
             TaskDate.Text = string.Empty;
@@ -139,12 +136,11 @@ namespace lab
 
                     DateTime combinedDateTime = DateTime.FromBinary(timestamp);
 
-                    // Разбиваем на дату и время
                     string datePart = combinedDateTime.ToShortDateString();
                     string timePart = combinedDateTime.ToLongTimeString();
 
                     TaskDateTime.Text = datePart;
-                    TaskDate.Text = timePart;         // Полная дата
+                    TaskDate.Text = timePart;    
                     TaskName.Content = classTask.title;
                     TaskDescriotion.Text = classTask.description;
                     gridthick.BorderThickness = new Thickness(1);
@@ -156,19 +152,15 @@ namespace lab
         }
         private void Taske_List_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var Formatter = new DateFormatter();
-
             Todo classTask = (Todo)Taske_List.SelectedItem;
             if (classTask == null)
             {
 
             }
-            //int indexOfSpace = classTask.date.LastIndexOf(' '); 
 
             if (classTask != null)
             {
                 TaskDate.Text = classTask.date.ToString();
-                //var firstDate = classTask.date.ToString();
                 TaskDateTime.Text = classTask.date.ToString();
                 TaskName.Content = classTask.title;
                 TaskDescriotion.Text = classTask.description;
@@ -178,18 +170,29 @@ namespace lab
             Buttone_Delete.Visibility = Visibility.Hidden;
             Buttone_Gotovo.Visibility = Visibility.Hidden;
         }
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://45.144.64.179/");
             Todo classTask = (Todo)Task_List.SelectedItem;
 
             if (classTask != null)
             {
-                classTask.isCompleated = true;
-                Task_List.Items.Refresh();
-                Category_List.Items.Refresh();
-                Task_List.ItemsSource = Tasks;
-                DataContext = this;
-                MessageBox.Show("Задача выполнена!");
+                var taskId = classTask.id;
+                var content = new StringContent(taskId, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TokenStorage.Value);
+
+                var result = await client.PutAsync($"api/todos/mark/{taskId}", content);
+                if (result.IsSuccessStatusCode)
+                {
+                    var repository = new Repository1();
+                    MessageBox.Show("Задача выполнена");
+                    await LoadTasksAsync();
+                }
+                if (!result.IsSuccessStatusCode)
+                {
+                    MessageBox.Show($"Задача не выполнена. Возникла ошибка: {(int)result.StatusCode}. Сообщение: {await result.Content.ReadAsStringAsync()}");
+                }
             }
             TaskName.Content = "";
             TaskDescriotion.Text = "";
@@ -201,16 +204,27 @@ namespace lab
             gridthick.Visibility = Visibility.Hidden;
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://45.144.64.179/");
             Todo classTask = (Todo)Task_List.SelectedItem;
 
             if (classTask != null)
             {
-                classTask.isCompleated = true;
-                Category_List.Items.Refresh();
-                Task_List.Items.Refresh();
-                MessageBox.Show("Задача удалена");
+                var taskId = classTask.id;
+                var content = new StringContent(taskId, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TokenStorage.Value);
+
+                var result = await client.DeleteAsync($"/api/todos/{taskId}");
+                if (result.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Задача удалена");
+                }
+                if (!result.IsSuccessStatusCode)
+                {
+                    MessageBox.Show($"Задача не удалена. Возникла ошибка: {(int)result.StatusCode}. Сообщение: {await result.Content.ReadAsStringAsync()}");
+                }
             }
             TaskName.Content = " ";
             TaskDescriotion.Text = " ";
@@ -296,6 +310,7 @@ namespace lab
             if (add.ShowDialog() == true && add.NewTaskes != null)
             {
                 Tasks.Add(add.NewTaskes);
+                UniqueCategoriesList.Add("Все");
                 string category = add.NewTaskes.category;
                 var uniqueCategories = Tasks.Select(t => t.category).Distinct().ToList();
                 UniqueCategoriesList = new List<string>(uniqueCategories);
