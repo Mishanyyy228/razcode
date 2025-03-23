@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using lab.Repository;
 using System.Net.Http;
 using TodoEntities;
+using lab.model;
 
 namespace lab
 {
@@ -106,15 +107,12 @@ namespace lab
 
         private async void  Button_Click_1(object sender, RoutedEventArgs e)
         {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://45.144.64.179/");
             if (Name_user.Text != "Введите имя пользователя")
             {
                 if (Email_user.Text != "Введите почту")
                 {
                     if (Pass_user.Text != "Введите пароль")
                     {
-
                         string email = Email_user.Text;
                         string password = Pass_user.Text;
                         string name = Name_user.Text;
@@ -154,17 +152,9 @@ namespace lab
                               Password = Pass_user.Text,
                               Name = Name_user.Text
                             };
-                            var responce = await client.PostAsJsonAsync("api/auth/registration", user);
-
-                            if (responce.IsSuccessStatusCode)
-                            {
-                                MessageBox.Show("Успешно!!!");
-
-                            }
-                            if(!responce.IsSuccessStatusCode)
-                            {
-                                MessageBox.Show("Email уже занят. Пожалуйста, выберите другой.");
-                            }
+                            var repository = new Repository1();
+                            var infoUser = await repository.RegistrUser(user);
+                            MessageBox.Show(infoUser);
                         }
                         else
                         {

@@ -45,18 +45,6 @@ namespace lab
         }
         public ObservableCollection<Todo> Tasks { get; set; }
 
-        private List<string> _uniqueCategoriesList;
-
-        public List<string> UniqueCategoriesList
-        {
-            get => _uniqueCategoriesList;
-            set
-            {
-                _uniqueCategoriesList = value;
-                OnPropertyChanged();
-            }
-        }
-
         public Mainxaml(string nameUser)
         {
             var tasks = new ObservableCollection<Todo>();
@@ -64,8 +52,6 @@ namespace lab
             DataContext = this;
 
             var uniqueCategories = tasks.Select(t => t.category).Distinct().ToList();
-
-            UniqueCategoriesList = new List<string>(uniqueCategories);
 
             DataContext = this;
             InitializeComponent();
@@ -76,252 +62,231 @@ namespace lab
             }
 
             Loaded += OnLoaded;
-            Taske_List.ItemsSource = Tasks;
-            DataContext = this;
-            Category_List.ItemsSource = UniqueCategoriesList;
             DataContext = this;
 
-            Buttone_Delete.Visibility = Visibility.Hidden;
-            Buttone_Gotovo.Visibility = Visibility.Hidden;
-            Taske_List.Visibility = Visibility.Hidden;
+            ClearElement clearElement = new ClearElement();
+            clearElement.HiddenElement(Buttone_Delete, Buttone_Gotovo, Taske_List, null);
         }
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
-            await LoadTasksAsync();
-            Task_List.ItemsSource = Tasks;
-
+            var repository = new Repository1();
+            var infoUser = await repository.GetImageUser(Image_UserDefault ,Image_User1);
+            Image_User1.Source = infoUser;
             await LoadCategoryAsync();
-            var classTask = new Todo();
-            long timestamp = classTask.date;
-            DateTime dateTime = DateTime.FromBinary(timestamp);
-
-            DateTime combinedDateTime = DateTime.FromBinary(timestamp);
-
-            string datePart = combinedDateTime.ToShortDateString();
-            string timePart = combinedDateTime.ToLongTimeString();
+            await FalseTaskAsync();
         }
         public async Task LoadCategoryAsync()
         {
+            ObservableCollection<string> Categories = new ObservableCollection<string>();
+            Categories.Add("Все");
             var repository = new Repository1();
-            var updatedTodolist = await repository.GetTodosAsync();
+            var allTasks = await repository.GetTodosAsync();
 
-            var categories = updatedTodolist.Select(task => task.category).Distinct().ToList();
+            Tasks.Clear();
 
-            Category_List.ItemsSource = categories;
+            foreach (var task in allTasks)
+            {
+                if (!Categories.Contains(task.category))
+                {
+                    Categories.Add(task.category);
+                }
+            }
+            Category_List.ItemsSource = null;
+            Category_List.ItemsSource = Categories;
         }
-        public async Task LoadTasksAsync()
+        public async Task TrueTaskAsync()
         {
             var repository = new Repository1();
-            var updatedTodolist = await repository.GetTodosAsync();
-            foreach (var task in updatedTodolist)
+            var allTodos = await repository.GetTodosAsync();  
+            var completedTodos = allTodos.Where(todo => todo.isCompleted == true);
+
+            Tasks.Clear();
+
+            foreach (var todo in completedTodos)
             {
-                Tasks.Add(task);
+                Tasks.Add(todo);
             }
+
+            Taske_List.ItemsSource = null;
+            Taske_List.ItemsSource = Tasks;
+        }
+        public async Task FalseTaskAsync()
+        {
+            var repository = new Repository1();
+            var allTasks = await repository.GetTodosAsync();
+
+            var completedTasks = allTasks.Where(task => task.isCompleted == false);
+
+            Tasks.Clear(); 
+            foreach (var task in completedTasks)
+            {
+                Tasks.Add(task); 
+            }
+            Task_List.ItemsSource = null;
             Task_List.ItemsSource = Tasks;
         }
-
         private void Task_List_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            TaskName.Content = string.Empty;
-            TaskDescriotion.Text = "";
-            TaskDate.Text = string.Empty;
-            TaskDateTime.Text = string.Empty;
+            ClearElement clearElement = new ClearElement();
+            clearElement.ClearText(TaskName, TaskDateTime, TaskDate, TaskDescriotion);
             Todo classTask = (Todo)Task_List.SelectedItem;
             if (classTask != null)
             {
-                if ( classTask !=null)
-                {
-                    long timestamp = classTask.date; 
-                    DateTime dateTime = DateTime.FromBinary(timestamp);
+                long timestamp = classTask.date;
 
-                    DateTime combinedDateTime = DateTime.FromBinary(timestamp);
+                DateTime combinedDateTime = DateTime.FromBinary(timestamp);
 
-                    string datePart = combinedDateTime.ToShortDateString();
-                    string timePart = combinedDateTime.ToLongTimeString();
+                string datePart = combinedDateTime.ToShortDateString();
+                string timePart = combinedDateTime.ToLongTimeString();
 
-                    TaskDateTime.Text = datePart;
-                    TaskDate.Text = timePart;    
-                    TaskName.Content = classTask.title;
-                    TaskDescriotion.Text = classTask.description;
-                    gridthick.BorderThickness = new Thickness(1);
-                    gridthick.BorderBrush = Brushes.Black;
-                }
+                TaskDateTime.Text = datePart;
+                TaskDate.Text = timePart;
+                TaskName.Content = classTask.title;
+                TaskDescriotion.Text = classTask.description;
+                gridthick.BorderThickness = new Thickness(1);
+                gridthick.BorderBrush = Brushes.Black;
             }
             Buttone_Delete.Visibility = Visibility.Visible;
             Buttone_Gotovo.Visibility = Visibility.Visible;
         }
         private void Taske_List_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            ClearElement clearElement = new ClearElement();
             Todo classTask = (Todo)Taske_List.SelectedItem;
-            if (classTask == null)
-            {
-
-            }
 
             if (classTask != null)
             {
-                TaskDate.Text = classTask.date.ToString();
-                TaskDateTime.Text = classTask.date.ToString();
+                long timestamp = classTask.date;
+                DateTime combinedDateTime = DateTime.FromBinary(timestamp);
+
+                string datePart = combinedDateTime.ToShortDateString();
+                string timePart = combinedDateTime.ToLongTimeString();
+
+                TaskDateTime.Text = datePart;
+                TaskDate.Text = timePart;
                 TaskName.Content = classTask.title;
                 TaskDescriotion.Text = classTask.description;
-                gridthick1.BorderThickness = new Thickness(1);
-                gridthick1.BorderBrush = Brushes.Black;
+                gridthick.BorderThickness = new Thickness(1);
+                gridthick.BorderBrush = Brushes.Black;
             }
-            Buttone_Delete.Visibility = Visibility.Hidden;
-            Buttone_Gotovo.Visibility = Visibility.Hidden;
+            clearElement.HiddenElement(Buttone_Delete, Buttone_Gotovo, null, null);
         }
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://45.144.64.179/");
             Todo classTask = (Todo)Task_List.SelectedItem;
-
-            if (classTask != null)
-            {
-                var taskId = classTask.id;
-                var content = new StringContent(taskId, Encoding.UTF8, "application/json");
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TokenStorage.Value);
-
-                var result = await client.PutAsync($"api/todos/mark/{taskId}", content);
-                if (result.IsSuccessStatusCode)
-                {
-                    var repository = new Repository1();
-                    MessageBox.Show("Задача выполнена");
-                    await LoadTasksAsync();
-                }
-                if (!result.IsSuccessStatusCode)
-                {
-                    MessageBox.Show($"Задача не выполнена. Возникла ошибка: {(int)result.StatusCode}. Сообщение: {await result.Content.ReadAsStringAsync()}");
-                }
-            }
-            TaskName.Content = "";
-            TaskDescriotion.Text = "";
-            TaskDate.Text = "";
-            TaskDateTime.Text = "";
-            gridthick.Visibility = Visibility.Hidden;
-            Buttone_Delete.Visibility = Visibility.Hidden;
-            Buttone_Gotovo.Visibility = Visibility.Hidden;
-            gridthick.Visibility = Visibility.Hidden;
+            var repository = new Repository1();
+            var currentImage = await repository.TodosIsReady(classTask, Task_List);
+            MessageBox.Show(currentImage);
+            await TrueTaskAsync();
+            await LoadCategoryAsync();
+            await FalseTaskAsync();
+            ClearElement clearElement = new ClearElement();
+            clearElement.ClearText(TaskName, TaskDateTime, TaskDate, TaskDescriotion);
+            gridthick.BorderBrush = Brushes.White;
+            clearElement.HiddenElement(Buttone_Delete, Buttone_Gotovo,null,null);
+            gridthick1.BorderBrush = Brushes.White;
         }
-
         private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://45.144.64.179/");
             Todo classTask = (Todo)Task_List.SelectedItem;
-
-            if (classTask != null)
-            {
-                var taskId = classTask.id;
-                var content = new StringContent(taskId, Encoding.UTF8, "application/json");
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TokenStorage.Value);
-
-                var result = await client.DeleteAsync($"/api/todos/{taskId}");
-                if (result.IsSuccessStatusCode)
-                {
-                    MessageBox.Show("Задача удалена");
-                }
-                if (!result.IsSuccessStatusCode)
-                {
-                    MessageBox.Show($"Задача не удалена. Возникла ошибка: {(int)result.StatusCode}. Сообщение: {await result.Content.ReadAsStringAsync()}");
-                }
-            }
-            TaskName.Content = " ";
-            TaskDescriotion.Text = " ";
-            TaskDate.Text = " ";
-            TaskDateTime.Text = " ";
-            gridthick.Visibility = Visibility.Hidden;
-            Buttone_Delete.Visibility = Visibility.Hidden;
-            Buttone_Gotovo.Visibility = Visibility.Hidden;
-            gridthick.Visibility = Visibility.Hidden;
+            var repository = new Repository1();
+            var currentImage = await repository.DeleteTodos(classTask,Task_List);
+            MessageBox.Show(currentImage);
+            await LoadCategoryAsync();
+            await FalseTaskAsync();
+            ClearElement clearElement = new ClearElement();
+            clearElement.ClearText(TaskName, TaskDateTime, TaskDate, TaskDescriotion);
+            gridthick.BorderBrush = Brushes.White;
+            clearElement.HiddenElement(Buttone_Delete, Buttone_Gotovo, null,null);
+            gridthick1.BorderBrush = Brushes.White;
         }
 
-        private void Button_Click_3(object sender, RoutedEventArgs e)
+        private async void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            TaskName.Content = "";
-            TaskDescriotion.Text = "";
-            TaskDate.Text = "";
-            TaskDateTime.Text = "";
+            ClearElement clearElement = new ClearElement();
+            clearElement.ClearText(TaskName, TaskDateTime, TaskDate, TaskDescriotion);
+            await TrueTaskAsync();
+            clearElement.HiddenElement(Buttone_Delete, Buttone_Gotovo, Task_List, Taske_List);
             NewTask_Image.Visibility = Visibility.Hidden;
-            Task_List.Visibility = Visibility.Hidden;
-            Taske_List.Visibility = Visibility.Visible;
-            Buttone_Delete.Visibility = Visibility.Hidden;
-            Buttone_Gotovo.Visibility = Visibility.Hidden;
-            gridthick.Visibility = Visibility.Hidden;
+            gridthick.BorderBrush = Brushes.White;
+            gridthick1.BorderBrush = Brushes.White;
         }
 
-        private void Button_Click_4(object sender, RoutedEventArgs e)
+        private async void Button_Click_4(object sender, RoutedEventArgs e)
         {
-            gridthick1.Visibility = Visibility.Hidden;
-            Taske_List.Visibility = Visibility.Hidden;
-            Task_List.Visibility = Visibility.Visible;
-            Buttone_Delete.Visibility = Visibility.Hidden;
-            Buttone_Gotovo.Visibility = Visibility.Hidden;
+            ClearElement clearElement = new ClearElement();
+            clearElement.ClearText(TaskName, TaskDateTime, TaskDate, TaskDescriotion);
+            gridthick.BorderBrush = Brushes.White;
+            gridthick1.BorderBrush = Brushes.White;
+            clearElement.HiddenElement(Buttone_Delete, Buttone_Gotovo, Taske_List ,Task_List);
             NewTask_Image.Visibility = Visibility.Visible;
-            TaskName.Content = "";
-            TaskDescriotion.Text = "";
-            TaskDate.Text = "";
-            TaskDateTime.Text = "";
+            await FalseTaskAsync();
         }
 
         private void Category_List_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
+            ClearElement clearElement = new ClearElement();
+
             string selectedCity = Category_List.SelectedItem as string;
             var filteredPeople = Tasks.Where(p => p.category == selectedCity).ToList();
             if (filteredPeople.Count <= 0 && selectedCity != "Все")
             {
                 MessageBox.Show("В данной категории нет задач.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+                gridthick.BorderBrush = Brushes.White;
+                gridthick1.BorderBrush = Brushes.White;
+                clearElement.HiddenElement(Buttone_Delete, Buttone_Gotovo, null, null);
+                Task_List.ItemsSource = Tasks;
+                Taske_List.ItemsSource = Tasks;
             }
             else
             {
                 Task_List.ItemsSource = filteredPeople.ToList();
                 Taske_List.ItemsSource = filteredPeople.ToList();
-                TaskName.Content = "";
-                TaskDescriotion.Text = "";
-                TaskDate.Text = "";
-                TaskDateTime.Text = "";
-                Buttone_Delete.Visibility = Visibility.Hidden;
-                Buttone_Gotovo.Visibility = Visibility.Hidden;
+                clearElement.ClearText(TaskName, TaskDateTime, TaskDate, TaskDescriotion);
+                clearElement.HiddenElement(Buttone_Delete, Buttone_Gotovo,null,null);
                 if (selectedCity == "Все")
                 {
-                    TaskName.Content = "";
-                    TaskDescriotion.Text = "";
-                    TaskDate.Text = "";
-                    TaskDateTime.Text = "";
+                    gridthick.BorderBrush = Brushes.White;
+                    gridthick1.BorderBrush = Brushes.White;
+                    clearElement.ClearText(TaskName, TaskDateTime, TaskDate, TaskDescriotion);
                     Task_List.ItemsSource = Tasks;
                     Taske_List.ItemsSource = Tasks;
                 }
                 if (filteredPeople == null)
                 {
+                    gridthick.BorderBrush = Brushes.White;
+                    gridthick1.BorderBrush = Brushes.White;
                     var filteredPeoples = Tasks.Where(p => p.category == selectedCity);
                     Task_List.ItemsSource = filteredPeoples.ToList();
-                    Taske_List.ItemsSource = filteredPeoples.ToList();
-                    TaskName.Content = "";
-                    TaskDescriotion.Text = "";
-                    TaskDate.Text = "";
-                    TaskDateTime.Text = "";
+                    Taske_List.ItemsSource = filteredPeople.ToList();
+                    clearElement.ClearText(TaskName, TaskDateTime, TaskDate, TaskDescriotion);
                 }
             }
         }
 
-        private void NewTask_Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private async void NewTask_Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var add = new TaskNew();
-            if (add.ShowDialog() == true && add.NewTaskes != null)
+            if (add.ShowDialog() == true)
             {
-                Tasks.Add(add.NewTaskes);
-                UniqueCategoriesList.Add("Все");
-                string category = add.NewTaskes.category;
+                await TrueTaskAsync();
+                await LoadCategoryAsync();
+                await FalseTaskAsync();
                 var uniqueCategories = Tasks.Select(t => t.category).Distinct().ToList();
-                UniqueCategoriesList = new List<string>(uniqueCategories);
-                UniqueCategoriesList.Add("Все");
-                Task_List.ItemsSource = Tasks;
-                DataContext = this;
-                Taske_List.ItemsSource = Tasks;
-                DataContext = this;
-                Category_List.ItemsSource = UniqueCategoriesList;
-                DataContext = this;
             }
+        }
+        private async void Image_UserDefault_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var repository = new Repository1();
+            var currentImage = await repository.PostAndGetImageUser( Image_UserDefault, Image_User1);
+            Image_User1.Source = currentImage;
+        }
+
+        private async void Image_User1_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var repository = new Repository1();
+            var currentImage = await repository.PostAndGetImageUser(Image_UserDefault, Image_User1);
+            Image_User1.Source = currentImage;
         }
     }
 }

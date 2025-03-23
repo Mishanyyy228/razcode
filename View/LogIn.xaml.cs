@@ -21,6 +21,7 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using Newtonsoft.Json.Linq;
 using lab.model;
+using System.Xml.Linq;
 
 
 namespace lab
@@ -78,8 +79,6 @@ namespace lab
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://45.144.64.179/");
             var user = new Usermodel
             {
                 Email = Pochta_user11.Text,
@@ -108,28 +107,19 @@ namespace lab
                     }
                     if (isEmailValid && isPasswordValid)
                     {
-                        try
+                        var repository = new Repository1();
+                        var infoUser = await repository.LoginAndGetUser(user);
+                        var todosUser = await repository.GetTodosAsync();
+                        var Todos = todosUser.Count();
+                        if(Todos==0)
                         {
-                            var responce = await client.PostAsJsonAsync("api/auth/login", user);
-                            if(responce.IsSuccessStatusCode)
-                            {
-                                TokenStorage.Value = responce.Content.ReadAsAsync<Responce<Token>>().Result.data.access_token;
-                                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TokenStorage.Value);
-                                var result = await client.GetAsync("api/user");
-                                var userInfo = await result.Content.ReadAsStringAsync();
-                                JObject jObject = JObject.Parse(userInfo);
-                                string name = (string)jObject["data"]["name"];
-                                MessageBox.Show($"Вход выполнен успешно! Добро пожаловать, {name}!", "Успех", MessageBoxButton.OK);
-                                Manager.MainFrame.Navigate(new MainEmpty(name));
-                            }
-                            if (!responce.IsSuccessStatusCode)
-                            {
-                                MessageBox.Show("Неверный логин или пароль.");
-                            }
+                            MessageBox.Show($"Вход выполнен успешно! Приветсвуем вас, {infoUser}!", "Успех", MessageBoxButton.OK);
+                            Manager.MainFrame.Navigate(new Mainxaml(infoUser));
                         }
-                        catch (Exception ex)
+                        if (Todos != 0)
                         {
-                            MessageBox.Show(ex.Message);
+                            MessageBox.Show($"Вход выполнен успешно! С возвращением, {infoUser}!", "Успех", MessageBoxButton.OK);
+                            Manager.MainFrame.Navigate(new MainEmpty(infoUser));
                         }
                     }
                 }

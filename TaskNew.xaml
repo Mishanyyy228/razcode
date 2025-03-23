@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:lab"
         mc:Ignorable="d"
         Title="Добавление задачи" Height="500" Width="700">
-    <Grid>
+    <Grid Background="Gray">
         <Grid.RowDefinitions>
             <RowDefinition Height="22*"/>
             <RowDefinition Height="220*"/>
@@ -22,8 +22,8 @@
                     <ColumnDefinition Width="12*"/>
                     <ColumnDefinition Width="12*"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Content="Создать" Margin="40,20,40,20" Click="Button_Click_1"></Button>
-                <Button Grid.Column="1" Content="Отменить" Margin="40,20,40,20" Click="Button_Click"></Button>
+                <Button Background="#F96060" Grid.Column="0" Content="Создать" Margin="40,20,40,20" Click="Button_Click_1"></Button>
+                <Button Background="#F96060" Grid.Column="1" Content="Отменить" Margin="40,20,40,20" Click="Button_Click"></Button>
             </Grid>
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
@@ -42,9 +42,9 @@
                     <TextBlock Grid.Row="0" VerticalAlignment="Center"  Margin="10,0,0,0" Text="Наименование"></TextBlock>
                     <TextBlock Grid.Row="2" VerticalAlignment="Center"  Margin="10,0,0,0"  Text="Категория"></TextBlock>
                     <TextBlock Grid.Row="4" VerticalAlignment="Center" Margin="10,0,0,0"  Text="Описание"></TextBlock>
-                    <TextBox Grid.Row="1" x:Name="txt_name" Margin="10,10,10,10"></TextBox>
+                    <TextBox  Grid.Row="1" x:Name="txt_name" Margin="10,10,10,10"></TextBox>
                     <TextBox Grid.Row="3" x:Name="txt_category" Margin="10,10,10,10"></TextBox>
-                    <TextBox Grid.Row="5" x:Name="txt_opis" Margin="10,10,10,10"></TextBox>
+                    <TextBox TextWrapping="Wrap" Grid.Row="5" x:Name="txt_opis" Margin="10,10,10,10"></TextBox>
                 </Grid>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>

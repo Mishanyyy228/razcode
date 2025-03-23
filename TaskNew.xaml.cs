@@ -1,4 +1,5 @@
-﻿using lab.Repository;
+﻿using lab.model;
+using lab.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,7 +53,6 @@ namespace lab
         {
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("http://45.144.64.179/");
-            this.DialogResult = true;
             {
                 if (Date_PickerBox.SelectedDate.HasValue != null | Cmb1.SelectedItem != null | txt_name.Text.Length <= 20 | txt_category.Text.Length <= 10)
                 {
@@ -68,62 +68,36 @@ namespace lab
                         }
                         else
                         {
-                            try
+                            if (Date_PickerBox.SelectedDate.HasValue)
                             {
-                                if (Date_PickerBox.SelectedDate.HasValue)
+                                var selectedDate = Date_PickerBox.SelectedDate.Value.Date;
+                                var selectedTime = Cmb1.SelectedItem.ToString();
+
+                                var timeParts = selectedTime.Split(':');
+                                var hours = int.Parse(timeParts[0]);
+                                var minutes = int.Parse(timeParts[1]);
+
+                                var combinedDateTime = new DateTime(selectedDate.Year, selectedDate.Month, selectedDate.Day, hours, minutes, 0);
+
+                                long timestamp = combinedDateTime.ToBinary();
+
+                                var NewTaskes = new Todo
                                 {
-                                    var selectedDate = Date_PickerBox.SelectedDate.Value.Date;
-                                    var selectedTime = Cmb1.SelectedItem.ToString(); // Строка формата "HH:mm"
-
-                                    // Преобразуем строку времени в часы и минуты
-                                    var timeParts = selectedTime.Split(':');
-                                    var hours = int.Parse(timeParts[0]);
-                                    var minutes = int.Parse(timeParts[1]);
-
-                                    // Создаем DateTime, объединяя дату и время
-                                    var combinedDateTime = new DateTime(selectedDate.Year, selectedDate.Month, selectedDate.Day, hours, minutes, 0);
-
-                                    // Преобразуем DateTime в long
-                                    long timestamp = combinedDateTime.ToBinary();
-
-                                    var NewTaskes = new Todo
-                                    {
-                                        title = txt_name.Text,
-                                        category = txt_category.Text,
-                                        date = timestamp, 
-                                        description = txt_opis.Text,
-                                        isCompleated = false
-                                    };
-                                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TokenStorage.Value);
-
-                                    var responce = await client.PostAsJsonAsync("api/todos", NewTaskes);
-
-                                    if (responce.IsSuccessStatusCode)
-                                    {
-                                        MessageBox.Show("Задача добавлена");
-
-
-                                    }
-                                    if (!responce.IsSuccessStatusCode)
-                                    {
-                                        MessageBox.Show($"Запрос информации о пользователе не удался. Код ошибки: {(int)responce.StatusCode}. Сообщение: {await responce.Content.ReadAsStringAsync()}");
-
-                                    }
-                                }
-
+                                    title = txt_name.Text,
+                                    category = txt_category.Text,
+                                    date = timestamp,
+                                    description = txt_opis.Text,
+                                    isCompleted = false
+                                };
+                                var repository = new Repository1();
+                                var infoUser = await repository.NewTodos(NewTaskes);
+                                MessageBox.Show(infoUser);
+                                this.DialogResult = true;
                             }
-
-                            catch (Exception ex)
-                            {
-                                MessageBox.Show(ex.Message);
-                            }
-
                         }
-                    }
-
-
-                }
                     }
                 }
             }
         }
+    }
+}

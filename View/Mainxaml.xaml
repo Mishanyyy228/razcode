@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:lab"
         mc:Ignorable="d"
         Title="Mainxaml" Height="600" Width="800">
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="719*"/>
@@ -28,7 +29,8 @@
                 <RowDefinition Height="71*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
-                <Image Source="/Resorses/5217769998146199571.png"  Style="{DynamicResource ImageStyle}"/>
+                <Image x:Name="Image_UserDefault" MouseLeftButtonDown="Image_UserDefault_MouseLeftButtonDown" Source="/Resorses/5217769998146199571.png"  Style="{DynamicResource ImageStyle}"/>
+                <Image x:Name="Image_User1" MouseLeftButtonDown="Image_User1_MouseLeftButtonDown" Style="{DynamicResource ImageStyle}"/>
             </Grid>
             <Grid Grid.Row="2">
                 <Label x:Name="UserBox" HorizontalAlignment="Center" VerticalAlignment="Center"  ></Label>
@@ -51,13 +53,11 @@
             </Grid.RowDefinitions>
             <Grid Grid.Row="1">
                 <ListBox Margin="50,0,25,0" x:Name="Category_List" ItemsSource="{Binding UniqueCategoriesList}" AlternationCount="5" BorderThickness="0,0,0,0" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Grid.Row="1" SelectionChanged="Category_List_SelectionChanged_1">
-
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel Orientation="Horizontal"/>
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
-
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="{x:Type ListBoxItem}" >
                             <Style.Triggers>
@@ -83,7 +83,7 @@
             </Grid>
             <Grid Grid.Row="2">
 
-                <ListBox x:Name="Task_List" Style="{DynamicResource ListBoxStyle}"
+                <ListBox x:Name="Task_List" Style="{DynamicResource ListBoxStyle}" d:ItemsSource="{d:SampleData ItemCount=5}" 
          SelectionChanged="Task_List_SelectionChanged">
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
@@ -92,22 +92,17 @@
                                     <ControlTemplate TargetType="ListBoxItem">
                                         <Border Style="{DynamicResource CustomBorderStyle1}" Padding="5"  Width="300" Margin="0,5">
                                             <StackPanel Margin="0,10,0,5" Orientation="Horizontal">
-                                                <RadioButton  x:Name="RadioButton1" Style="{DynamicResource RadioButtonStyle1}" Margin="10" IsChecked="{Binding IsCompleted}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FF1A68E5" FontWeight="Bold" />
+                                                <RadioButton   x:Name="RadioButton1" Style="{DynamicResource RadioButtonStyle1}" Margin="10" IsChecked="{Binding IsCompleted}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FF1A68E5" FontWeight="Bold" />
                                                 <Grid Margin="10,0,0,0">
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition Height="auto"/>
                                                         <RowDefinition Height="auto"/>
                                                     </Grid.RowDefinitions>
                                                     <TextBlock Grid.Row="0" Style="{DynamicResource TextBlockStyle}" Text="{Binding title}"  />
-                                                    <TextBlock  Grid.Row="1" Style="{DynamicResource TextBlockStyle3}" Text="{Binding partdate}"/>
+                                                    <TextBlock  Grid.Row="1" Style="{DynamicResource TextBlockStyle3}" Text="{Binding FormattedDate}"/>
                                                 </Grid>
                                             </StackPanel>
                                         </Border>
-                                        <!--<ControlTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding isCompleated}" Value="false">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
-                                        </ControlTemplate.Triggers>-->
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
@@ -117,7 +112,9 @@
             </Grid>
 
             <Grid Grid.Row="2">
-                <ListBox x:Name="Taske_List"  Style="{DynamicResource ListBoxStyle}" Margin="0,10,0,0"  SelectionChanged="Taske_List_SelectionChanged" d:ItemsSource="{d:SampleData ItemCount=5}" >
+                <ListBox x:Name="Taske_List"  Style="{DynamicResource ListBoxStyle}" Margin="0,10,0,0"
+         SelectionChanged="Taske_List_SelectionChanged"
+         d:ItemsSource="{d:SampleData ItemCount=5}" >
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
                             <Setter Property="Template">
@@ -133,18 +130,13 @@
                                                     </Grid.RowDefinitions>
                                                     <TextBlock Grid.Row="0"
                                                Style="{DynamicResource TextBlockStyle1}"
-                                               Text="{Binding Name}" />
+                                               Text="{Binding title}" />
                                                     <TextBlock Grid.Row="1" 
                                                Style="{DynamicResource TextBlockStyle2}"
-                                               Text="{Binding Date}" />
+                                               Text="{Binding FormattedDate}" />
                                                 </Grid>
                                             </StackPanel>
                                         </Border>
-                                        <ControlTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding isCompleted}" Value="true">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
-                                        </ControlTemplate.Triggers>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
@@ -152,6 +144,7 @@
                     </ListBox.ItemContainerStyle>
                 </ListBox>
             </Grid>
+
         </Grid>
         <Border Grid.Column="2" BorderThickness="1,1,1,1" BorderBrush="{Binding Task_List_SelectionChanged}" />
         <Border Grid.Column="2" BorderThickness="1,1,1,1" BorderBrush="{Binding Taske_List_SelectionChanged}" />
@@ -180,14 +173,12 @@
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0">
                         <Button Style="{DynamicResource ButtonStyle1}" Content="Готово" x:Name="Buttone_Gotovo" Background="#F96060" Click="Button_Click"/>
-
                     </Grid>
                     <Grid Grid.Row="1">
                         <Button Style="{DynamicResource ButtonStyle2}" x:Name="Buttone_Delete"  Content="Удалить"  Background="#F96060" Click="Button_Click_1"/>
                     </Grid>
                 </Grid>
                 <Grid Grid.Row="0"  >
-
                     <Grid Grid.Row="0" Margin="20,0,0,0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30*"/>
@@ -198,7 +189,6 @@
                             <RowDefinition Height="50*"/>
                             <RowDefinition Height="340*"/>
                         </Grid.RowDefinitions>
-
                         <Grid Grid.Row="2">
                             <TextBlock x:Name="TaskDate"  FontFamily="Actor" VerticalAlignment="Bottom"/>
                         </Grid>
@@ -206,7 +196,7 @@
                             <TextBlock x:Name="TaskDateTime" FontFamily="Actor" VerticalAlignment="Bottom"/>
                         </Grid>
                         <Grid Grid.Row="5">
-                            <TextBlock x:Name="TaskDescriotion" FontFamily="Actor" />
+                            <TextBlock x:Name="TaskDescriotion" TextWrapping="Wrap" FontFamily="Actor" />
                         </Grid>
                         <Grid Grid.Row="0">
                             <Label x:Name="TaskName"  FontFamily="Actor" HorizontalAlignment="Center"></Label>

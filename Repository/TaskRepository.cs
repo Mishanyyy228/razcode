@@ -22,7 +22,7 @@ namespace lab.Repository
                 category = category,
                 title = name,
                 description = description,
-                isCompleated = false,
+                isCompleted = false,
                 date = date,
             };
             Tasks.Add(newTask);
