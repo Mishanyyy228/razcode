@@ -69,7 +69,7 @@ namespace lab
         }
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
-            var repository = new Repository1();
+            var repository = new RepositoryFile();
             var infoUser = await repository.GetImageUser(Image_UserDefault ,Image_User1);
             Image_User1.Source = infoUser;
             await LoadCategoryAsync();
@@ -79,7 +79,7 @@ namespace lab
         {
             ObservableCollection<string> Categories = new ObservableCollection<string>();
             Categories.Add("Все");
-            var repository = new Repository1();
+            var repository = new TodoRepository();
             var allTasks = await repository.GetTodosAsync();
 
             Tasks.Clear();
@@ -96,7 +96,7 @@ namespace lab
         }
         public async Task TrueTaskAsync()
         {
-            var repository = new Repository1();
+            var repository = new TodoRepository();
             var allTodos = await repository.GetTodosAsync();  
             var completedTodos = allTodos.Where(todo => todo.isCompleted == true);
 
@@ -112,7 +112,7 @@ namespace lab
         }
         public async Task FalseTaskAsync()
         {
-            var repository = new Repository1();
+            var repository = new TodoRepository();
             var allTasks = await repository.GetTodosAsync();
 
             var completedTasks = allTasks.Where(task => task.isCompleted == false);
@@ -174,7 +174,7 @@ namespace lab
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             Todo classTask = (Todo)Task_List.SelectedItem;
-            var repository = new Repository1();
+            var repository = new TodoRepository();
             var currentImage = await repository.TodosIsReady(classTask, Task_List);
             MessageBox.Show(currentImage);
             await TrueTaskAsync();
@@ -189,7 +189,7 @@ namespace lab
         private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
             Todo classTask = (Todo)Task_List.SelectedItem;
-            var repository = new Repository1();
+            var repository = new TodoRepository();
             var currentImage = await repository.DeleteTodos(classTask,Task_List);
             MessageBox.Show(currentImage);
             await LoadCategoryAsync();
@@ -277,14 +277,14 @@ namespace lab
         }
         private async void Image_UserDefault_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var repository = new Repository1();
+            var repository = new RepositoryFile();
             var currentImage = await repository.PostAndGetImageUser( Image_UserDefault, Image_User1);
             Image_User1.Source = currentImage;
         }
 
         private async void Image_User1_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var repository = new Repository1();
+            var repository = new RepositoryFile();
             var currentImage = await repository.PostAndGetImageUser(Image_UserDefault, Image_User1);
             Image_User1.Source = currentImage;
         }

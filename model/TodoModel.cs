@@ -15,18 +15,6 @@ namespace lab.model
         public DateTime Date { get; set; }
         public bool IsCompleated { get; set; }
         public Coordinate Coordinate { get; set; }
-        //public static TodoModel Map(TodoModel model)
-        //{
-        //    return new TodoModel
-        //    {
-        //        Id = model.Id,
-        //        Title = model.Title,
-        //        Category = model.Category,
-        //        Description = model.Description,
-        //        Date = MapDate(model.Date),
-        //        IsCompleated = model.IsCompleated
-        //    };
-        //}
     }
 }
     public class Coordinate

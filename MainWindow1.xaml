@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:lab"
         mc:Ignorable="d"
-        Title="MainWindow1" Height="600" Width="800">
+        Title="MainWindow1" Height="640" Width="800">
     <Window.Resources>
         <Storyboard x:Key="FadeInStoryboard">
             <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.5"/>
@@ -15,7 +15,12 @@
         </Storyboard>
     </Window.Resources>
     <Grid>
-        <Frame x:Name="MainFrame" Navigating="MainFrame_OnNavigating" NavigationUIVisibility="Hidden"></Frame>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="61*"/>
+        </Grid.RowDefinitions>
+        <Button x:Name="Exit_Btn" Grid.Row="0" Width="80" Height="30" Content="Выйти" HorizontalAlignment="Right" Margin="0,0,15,0" Click="Exit_Btn_Click"></Button>
+        <Frame Grid.Row="1" x:Name="MainFrame" Navigating="MainFrame_OnNavigating" NavigationUIVisibility="Hidden" Grid.RowSpan="2"></Frame>
 
     </Grid>
 </Window>

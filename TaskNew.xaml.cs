@@ -89,7 +89,7 @@ namespace lab
                                     description = txt_opis.Text,
                                     isCompleted = false
                                 };
-                                var repository = new Repository1();
+                                var repository = new TodoRepository();
                                 var infoUser = await repository.NewTodos(NewTaskes);
                                 MessageBox.Show(infoUser);
                                 this.DialogResult = true;

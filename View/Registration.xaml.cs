@@ -152,7 +152,7 @@ namespace lab
                               Password = Pass_user.Text,
                               Name = Name_user.Text
                             };
-                            var repository = new Repository1();
+                            var repository = new AuthRepository();
                             var infoUser = await repository.RegistrUser(user);
                             MessageBox.Show(infoUser);
                         }

@@ -16,7 +16,6 @@ using lab.Repository;
 using System.Net.Http;
 using TodoEntities;
 using System.Net.Http.Json;
-
 using System.Net.Http.Headers;
 using System.Text.Json;
 using Newtonsoft.Json.Linq;
@@ -107,21 +106,26 @@ namespace lab
                     }
                     if (isEmailValid && isPasswordValid)
                     {
-                        var repository = new Repository1();
+                        var repository = new AuthRepository();
+                        var repository1 = new TodoRepository();
                         var infoUser = await repository.LoginAndGetUser(user);
-                        var todosUser = await repository.GetTodosAsync();
+                        var todosUser = await repository1.GetTodosAsync();
                         var Todos = todosUser.Count();
+                        var token = new Token(TokenStorage.Value);
                         if(Todos==0)
                         {
-                            MessageBox.Show($"Вход выполнен успешно! Приветсвуем вас, {infoUser}!", "Успех", MessageBoxButton.OK);
-                            Manager.MainFrame.Navigate(new Mainxaml(infoUser));
-                        }
-                        if (Todos != 0)
-                        {
-                            MessageBox.Show($"Вход выполнен успешно! С возвращением, {infoUser}!", "Успех", MessageBoxButton.OK);
+                            //BaseConnect.SaveToken(token); // Вызываем метод статически
+                            MessageBox.Show($"Вход выполнен успешно! Приветствуем вас, {infoUser}!", "Успех", MessageBoxButton.OK);
                             Manager.MainFrame.Navigate(new MainEmpty(infoUser));
                         }
+                        else
+                        {
+                            MessageBox.Show($"Вход выполнен успешно! С возвращением, {infoUser}!", "Успех", MessageBoxButton.OK);
+                            //BaseConnect.SaveToken(token); // Вызываем метод статически
+                            Manager.MainFrame.Navigate(new Mainxaml(infoUser));
+                        }
                     }
+                    //kmlkmmlklm@hgv.seg
                 }
                 else
                 {

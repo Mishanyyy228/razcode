@@ -38,7 +38,7 @@ namespace lab
         }
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
-            var repository = new Repository1();
+            var repository = new RepositoryFile();
             var infoUser = await repository.GetImageUser(Image_User1,Image_User);
             Image_User.Source = infoUser;
         }
