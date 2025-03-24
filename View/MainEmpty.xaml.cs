@@ -25,7 +25,7 @@ namespace lab
     /// </summary>
     public partial class MainEmpty : Page
     {
-        public MainEmpty(string nameUser)
+        public MainEmpty(string nameUser,string Token1)
         {
             var currentUser = nameUser;
             InitializeComponent();
@@ -38,7 +38,9 @@ namespace lab
         }
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
-            var repository = new RepositoryFile();
+            var repository = new FileRepository();
+            var tok1 = BaseConnect.GetLastAddedToken();
+            var rep1 = await repository.GetUser(tok1);
             var infoUser = await repository.GetImageUser(Image_User1,Image_User);
             Image_User.Source = infoUser;
         }

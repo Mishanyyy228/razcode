@@ -23,7 +23,8 @@ namespace lab.Repository
 
         public async Task<BitmapImage> GetImageUser(Image Image_User1, Image Image_User)
         {
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TokenStorage.Value);
+            var tok1 = BaseConnect.GetLastAddedToken();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tok1);
             try
             {
                 var result = await httpClient.GetAsync("api/user");
@@ -112,8 +113,8 @@ namespace lab.Repository
                     using (var formData = new MultipartFormDataContent())
                     {
                         formData.Add(new ByteArrayContent(imageData), "uploadedFile", System.IO.Path.GetFileName(filePath));
-
-                        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TokenStorage.Value);
+                        var tok1 = BaseConnect.GetLastAddedToken();
+                        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tok1);
 
                         var response = await httpClient.PostAsync("api/user/photo", formData);
 

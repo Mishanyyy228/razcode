@@ -114,9 +114,9 @@ namespace lab
                         var token = new Token(TokenStorage.Value);
                         if(Todos==0)
                         {
-                            //BaseConnect.SaveToken(token); // Вызываем метод статически
+                           // BaseConnect.SaveToken(token); // Вызываем метод статически
                             MessageBox.Show($"Вход выполнен успешно! Приветствуем вас, {infoUser}!", "Успех", MessageBoxButton.OK);
-                            Manager.MainFrame.Navigate(new MainEmpty(infoUser));
+                            Manager.MainFrame.Navigate(new MainEmpty(infoUser,null));
                         }
                         else
                         {

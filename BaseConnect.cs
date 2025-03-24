@@ -21,18 +21,15 @@ namespace lab
                 {
                     connection.Open();
 
-                    // Проверка наличия таблицы TokeenTable
                     CheckTableExists(connection);
 
                     if (!TokenAlreadyExists(connection, token.access_token))
                     {
-                        // Запрос на вставку нового токена
                         string insertQuery = "INSERT INTO TokenTable (Token) VALUES (@Token)";
                         using (var command = new SqlCommand(insertQuery, connection))
                         {
                             command.Parameters.AddWithValue("@Token", token.access_token);
                             command.ExecuteNonQuery();
-                            //MessageBox.Show("Токен успешно сохранён.");
                         }
                     }
                     else
@@ -78,11 +75,11 @@ namespace lab
                         command.ExecuteNonQuery();
                     }
 
-                    MessageBox.Show("Последний добавленный токен успешно удалён.");
+                    MessageBox.Show("Успешный выход из программы");
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Ошибка при удалении токена: {ex.Message}");
+                    MessageBox.Show($"При выходе из программы возникла ошибка: {ex.Message}");
                 }
                 finally
                 {
@@ -110,27 +107,20 @@ namespace lab
                 {
                     connection.Open();
 
-                    // Проверка наличия таблицы TokeenTable
                     CheckTableExists(connection);
 
-                    // Получение последнего добавленного токена
                     var selectQuery = "SELECT TOP 1 Token FROM TokenTable ORDER BY Id_Token DESC";
                     using (var command = new SqlCommand(selectQuery, connection))
                     {
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            if (reader.Read()) // Если токен найден
+                            if (reader.Read()) 
                             {
-                                // Читаем значение токена из первого столбца
-                                string tokenValue = reader.GetString(0); // или reader["Token"]
-
-                                // Возвращаем строку с токеном
+                                string tokenValue = reader.GetString(0); 
                                 return tokenValue;
                             }
                         }
                     }
-
-                    // Если токен не найден, возвращаем null
                     return null;
                 }
                 catch (Exception ex)

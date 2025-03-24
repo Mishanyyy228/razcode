@@ -16,6 +16,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using lab.model;
+using lab.Repository;
+
 
 namespace lab
 {
@@ -28,7 +30,7 @@ namespace lab
         {
             InitializeComponent();
 
-            //Loaded += OnLoaded;
+            Loaded += OnLoaded;
 
 
             MainFrame.Navigate(new LogIn());
@@ -37,20 +39,15 @@ namespace lab
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
-            //var thisToken = BaseConnect.GetLastAddedToken();
+            var thisToken = BaseConnect.GetLastAddedToken();
             //MessageBox.Show(thisToken);
-            //var repository = new RepositoryTodo();
-            //var infoUser = await repository.GetUser(thisToken);
-            //if (infoUser != null)
-            //{
-            //    MainFrame.Navigate(new MainEmpty(infoUser));
-            //    Manager.MainFrame = MainFrame;
-            //}
-            //if (infoUser == null)
-            //{
-            //    MessageBox.Show("два банана");
-            //}
-
+            var repository = new FileRepository();
+            var infoUser = await repository.GetUser(thisToken);
+            if (infoUser != null)
+            {
+                MainFrame.Navigate(new MainEmpty(infoUser, thisToken));
+                Manager.MainFrame = MainFrame;
+            }
         }
         private void MainFrame_OnNavigating(object sender, NavigatingCancelEventArgs e)
         {
@@ -61,7 +58,7 @@ namespace lab
         private void Exit_Btn_Click(object sender, RoutedEventArgs e)
         {
             // Удаление токена
-            //BaseConnect.DeleteLastAddedToken();
+            BaseConnect.DeleteLastAddedToken();
             this.Close();
             var add = new TaskNew();
             if (add.ShowDialog() == true)

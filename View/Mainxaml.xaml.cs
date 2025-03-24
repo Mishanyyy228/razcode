@@ -69,7 +69,7 @@ namespace lab
         }
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
-            var repository = new RepositoryFile();
+            var repository = new FileRepository();
             var infoUser = await repository.GetImageUser(Image_UserDefault ,Image_User1);
             Image_User1.Source = infoUser;
             await LoadCategoryAsync();
@@ -277,14 +277,14 @@ namespace lab
         }
         private async void Image_UserDefault_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var repository = new RepositoryFile();
+            var repository = new FileRepository();
             var currentImage = await repository.PostAndGetImageUser( Image_UserDefault, Image_User1);
             Image_User1.Source = currentImage;
         }
 
         private async void Image_User1_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var repository = new RepositoryFile();
+            var repository = new FileRepository();
             var currentImage = await repository.PostAndGetImageUser(Image_UserDefault, Image_User1);
             Image_User1.Source = currentImage;
         }

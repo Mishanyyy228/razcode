@@ -30,11 +30,14 @@ namespace lab.Repository
                 }
 
                 TokenStorage.Value = response.Content.ReadAsAsync<Responce<Token>>().Result.data.access_token;
+                var token = new Token(TokenStorage.Value);
+                BaseConnect.SaveToken(token);
                 if (TokenStorage.Value == null)
                 {
                     throw new InvalidOperationException("Не удалось получить токен.");
                 }
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TokenStorage.Value);
+                var tok1 = BaseConnect.GetLastAddedToken();
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tok1);
 
                 var result = await httpClient.GetAsync("api/user");
                 if (!result.IsSuccessStatusCode)
@@ -44,8 +47,6 @@ namespace lab.Repository
                 var userInfo = await result.Content.ReadAsStringAsync();
                 JObject jObject = JObject.Parse(userInfo);
                 string name = (string)jObject["data"]["name"];
-                //var token = new Token(TokenStorage.Value);
-                //BaseConnect.SaveToken(token);
                 if (name == null)
                 {
                     throw new Exception($"Ошибка получения данных пользователя");

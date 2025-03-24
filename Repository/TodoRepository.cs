@@ -25,18 +25,18 @@ namespace lab.Repository
 
         public async Task<List<Todo>?> GetTodosAsync()
         {
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TokenStorage.Value);
+            var tok1 = BaseConnect.GetLastAddedToken();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tok1);
             var result = await httpClient.GetFromJsonAsync<Responce<List<Todo>>>(TodosUrl);
             return result?.data;
-        }
-        //3
-        
+        }        
 
         public async Task<string> NewTodos(Todo todo)
         {
             try
             {
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TokenStorage.Value);
+                var tok1 = BaseConnect.GetLastAddedToken();
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tok1);
                 var responce = await httpClient.PostAsJsonAsync("api/todos", todo);
                 if (responce.IsSuccessStatusCode)
                 {
@@ -63,7 +63,8 @@ namespace lab.Repository
             if (todo != null)
             {
                 var taskId = todo.id;
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TokenStorage.Value);
+                var tok1 = BaseConnect.GetLastAddedToken();
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tok1);
 
                 var result = await httpClient.DeleteAsync($"/api/todos/{taskId}");
                 if (result.IsSuccessStatusCode)
@@ -88,8 +89,8 @@ namespace lab.Repository
             {
                 var taskId = todo.id;
                 var content = new StringContent(taskId, Encoding.UTF8, "application/json");
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TokenStorage.Value);
-
+                var tok1 = BaseConnect.GetLastAddedToken();
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tok1);
                 var result = await httpClient.PutAsync($"api/todos/mark/{taskId}", content);
                 if (result.IsSuccessStatusCode)
                 {
