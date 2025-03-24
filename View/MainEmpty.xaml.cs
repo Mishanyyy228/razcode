@@ -1,5 +1,4 @@
-﻿using lab.model;
-using lab.Repository;
+﻿using lab.Repository;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;

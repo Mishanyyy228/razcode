@@ -15,7 +15,6 @@ using System.Windows.Shapes;
 using lab.Repository;
 using System.Net.Http;
 using TodoEntities;
-using lab.model;
 
 namespace lab
 {
