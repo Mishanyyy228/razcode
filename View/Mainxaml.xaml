@@ -153,6 +153,7 @@
                 <RowDefinition Height="76*"/>
                 <RowDefinition Height="643*" />
             </Grid.RowDefinitions>
+            <Button Grid.Row="0" x:Name="Btn_Exit" Click="Btn_Exit_Click" Content="Выйти" Style="{DynamicResource ButtonExitStyle}"></Button>
             <Border x:Name="gridthick" Grid.Row="1" BorderThickness="1" BorderBrush="{Binding Task_List_SelectionChanged}">
                 <Grid>
                 </Grid>

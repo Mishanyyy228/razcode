@@ -13,7 +13,7 @@ using System.Windows.Controls;
 
 namespace lab.Repository
 {
-    public class FileRepository : TodoHttpClient
+    public class FileRepository : TodoHttpClient,IFileRepository
     {
         private readonly HttpClient httpClient;
         public FileRepository()

@@ -15,12 +15,6 @@
         </Storyboard>
     </Window.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="4*"/>
-            <RowDefinition Height="61*"/>
-        </Grid.RowDefinitions>
-        <Button x:Name="Exit_Btn" Grid.Row="0" Width="80" Height="30" Content="Выйти" HorizontalAlignment="Right" Margin="0,0,15,0" Click="Exit_Btn_Click"></Button>
         <Frame Grid.Row="1" x:Name="MainFrame" Navigating="MainFrame_OnNavigating" NavigationUIVisibility="Hidden" Grid.RowSpan="2"></Frame>
-
     </Grid>
 </Window>

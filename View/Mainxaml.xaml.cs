@@ -37,6 +37,9 @@ namespace lab
     /// </summary>
     public partial class Mainxaml : Page, INotifyPropertyChanged
     {
+        IFileRepository fileRepository;
+        ITodoRepository todoRepository;
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
@@ -44,42 +47,66 @@ namespace lab
         }
         public ObservableCollection<Todo> Tasks { get; set; }
 
-        public Mainxaml(string nameUser)
+        public Mainxaml()
         {
+            fileRepository = new FileRepository();
+            todoRepository = new TodoRepository();
+
             var tasks = new ObservableCollection<Todo>();
             this.Tasks = tasks;
-            DataContext = this;
 
             var uniqueCategories = tasks.Select(t => t.category).Distinct().ToList();
 
             DataContext = this;
             InitializeComponent();
-            
-            if(nameUser != null)
-            {
-                UserBox.Content = nameUser;
-            }
 
             Loaded += OnLoaded;
-            DataContext = this;
 
             ClearElement clearElement = new ClearElement();
             clearElement.HiddenElement(Buttone_Delete, Buttone_Gotovo, Taske_List, null);
         }
+        private async Task<bool> ReturnTodos()
+        {
+            var todosUser = await todoRepository.GetTodosAsync();
+            var Todos = todosUser.Count();
+            if (Todos >= 0)
+            {
+                return true;
+            }
+            return false;
+        }
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
-            var repository = new FileRepository();
-            var infoUser = await repository.GetImageUser(Image_UserDefault ,Image_User1);
-            Image_User1.Source = infoUser;
-            await LoadCategoryAsync();
-            await FalseTaskAsync();
+            var reptodosTask = ReturnTodos(); 
+            bool reptodos = await reptodosTask; 
+
+            if (reptodos == true)
+            {
+                var tokenOfUser = BaseConnect.GetLastAddedToken();
+                var name = await fileRepository.GetUser(tokenOfUser);
+                UserBox.Content = name;
+                var infoUser = await fileRepository.GetImageUser(Image_UserDefault, Image_User1);
+                Image_User1.Source = infoUser;
+                await FalseTaskAsync();
+                await LoadCategoryAsync();
+            }
+            if (reptodos == false)
+            {
+                Manager.MainFrame.Navigate(new MainEmpty());
+                var tokenOfUser = BaseConnect.GetLastAddedToken();
+                var name = await fileRepository.GetUser(tokenOfUser);
+                UserBox.Content = name;
+                var infoUser = await fileRepository.GetImageUser(Image_UserDefault, Image_User1);
+                Image_User1.Source = infoUser;
+                await LoadCategoryAsync();
+                await FalseTaskAsync();
+            }
         }
         public async Task LoadCategoryAsync()
         {
             ObservableCollection<string> Categories = new ObservableCollection<string>();
             Categories.Add("Все");
-            var repository = new TodoRepository();
-            var allTasks = await repository.GetTodosAsync();
+            var allTasks = await todoRepository.GetTodosAsync();
 
             Tasks.Clear();
 
@@ -95,8 +122,7 @@ namespace lab
         }
         public async Task TrueTaskAsync()
         {
-            var repository = new TodoRepository();
-            var allTodos = await repository.GetTodosAsync();  
+            var allTodos = await todoRepository.GetTodosAsync();  
             var completedTodos = allTodos.Where(todo => todo.isCompleted == true);
 
             Tasks.Clear();
@@ -111,8 +137,7 @@ namespace lab
         }
         public async Task FalseTaskAsync()
         {
-            var repository = new TodoRepository();
-            var allTasks = await repository.GetTodosAsync();
+            var allTasks = await todoRepository.GetTodosAsync();
 
             var completedTasks = allTasks.Where(task => task.isCompleted == false);
 
@@ -173,8 +198,7 @@ namespace lab
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             Todo classTask = (Todo)Task_List.SelectedItem;
-            var repository = new TodoRepository();
-            var currentImage = await repository.TodosIsReady(classTask, Task_List);
+            var currentImage = await todoRepository.TodosIsReady(classTask, Task_List);
             MessageBox.Show(currentImage);
             await TrueTaskAsync();
             await LoadCategoryAsync();
@@ -188,8 +212,7 @@ namespace lab
         private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
             Todo classTask = (Todo)Task_List.SelectedItem;
-            var repository = new TodoRepository();
-            var currentImage = await repository.DeleteTodos(classTask,Task_List);
+            var currentImage = await todoRepository.DeleteTodos(classTask,Task_List);
             MessageBox.Show(currentImage);
             await LoadCategoryAsync();
             await FalseTaskAsync();
@@ -276,16 +299,24 @@ namespace lab
         }
         private async void Image_UserDefault_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var repository = new FileRepository();
-            var currentImage = await repository.PostAndGetImageUser( Image_UserDefault, Image_User1);
+            var currentImage = await fileRepository.PostAndGetImageUser( Image_UserDefault, Image_User1);
             Image_User1.Source = currentImage;
         }
 
         private async void Image_User1_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var repository = new FileRepository();
-            var currentImage = await repository.PostAndGetImageUser(Image_UserDefault, Image_User1);
+            var currentImage = await fileRepository.PostAndGetImageUser(Image_UserDefault, Image_User1);
             Image_User1.Source = currentImage;
+        }
+
+        private void Btn_Exit_Click(object sender, RoutedEventArgs e)
+        {
+            BaseConnect.DeleteLastAddedToken();
+            NavigationService.Navigate(null);
+            //var w2 = new MainWindow1();
+            //w2.Close();
+            //var add = new TaskNew();
+            //add.Close();
         }
     }
 }

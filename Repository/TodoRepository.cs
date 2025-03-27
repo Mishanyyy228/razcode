@@ -17,7 +17,6 @@ namespace lab.Repository
     {
         private readonly HttpClient httpClient;
         private readonly string TodosUrl = "api/todos";
-
         public TodoRepository()
         {
             httpClient = GetHttpClient();
@@ -55,7 +54,6 @@ namespace lab.Repository
             }
             return null;
         }
-        //2
         //удаление задачи
         public async Task<string> DeleteTodos(Todo todo, ListBox Task_List)
         {
@@ -79,7 +77,6 @@ namespace lab.Repository
             }
             return null;
         }
-        //2
         //присвоение задаче статуса готовности
         public async Task<string> TodosIsReady(Todo todo, ListBox Task_List)
         {
@@ -87,10 +84,11 @@ namespace lab.Repository
 
             if (todo != null)
             {
-                var taskId = todo.id;
-                var content = new StringContent(taskId, Encoding.UTF8, "application/json");
                 var tok1 = BaseConnect.GetLastAddedToken();
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tok1);
+                var taskId = todo.id;
+                var content = new StringContent(taskId, Encoding.UTF8, "application/json");
+
                 var result = await httpClient.PutAsync($"api/todos/mark/{taskId}", content);
                 if (result.IsSuccessStatusCode)
                 {

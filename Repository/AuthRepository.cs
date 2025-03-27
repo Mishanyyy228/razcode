@@ -11,7 +11,7 @@ using TodoEntities;
 
 namespace lab.Repository
 {
-    public class AuthRepository : TodoHttpClient
+    public class AuthRepository : TodoHttpClient, IAuthRepository
     {
         private readonly HttpClient httpClient;
         public AuthRepository()

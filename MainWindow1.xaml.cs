@@ -31,7 +31,6 @@ namespace lab
 
             Loaded += OnLoaded;
 
-
             MainFrame.Navigate(new LogIn());
             Manager.MainFrame = MainFrame;
         }
@@ -39,30 +38,20 @@ namespace lab
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
             var thisToken = BaseConnect.GetLastAddedToken();
-            //MessageBox.Show(thisToken);
             var repository = new FileRepository();
             var infoUser = await repository.GetUser(thisToken);
             if (infoUser != null)
             {
-                MainFrame.Navigate(new MainEmpty(infoUser, thisToken));
+                MainFrame.Navigate(new Mainxaml());
                 Manager.MainFrame = MainFrame;
             }
         }
         private void MainFrame_OnNavigating(object sender, NavigatingCancelEventArgs e)
         {
-            var fa = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(0.3));
-            (e.Content as Page).BeginAnimation(OpacityProperty, fa);
-        }
-
-        private void Exit_Btn_Click(object sender, RoutedEventArgs e)
-        {
-            // Удаление токена
-            BaseConnect.DeleteLastAddedToken();
-            this.Close();
-            var add = new TaskNew();
-            if (add.ShowDialog() == true)
+            if (e.Content is Page page)
             {
-                add.Close();
+                var fa = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(0.3));
+                page.BeginAnimation(OpacityProperty, fa);
             }
         }
     }

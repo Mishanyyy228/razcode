@@ -24,30 +24,32 @@ namespace lab
     /// </summary>
     public partial class MainEmpty : Page
     {
-        public MainEmpty(string nameUser,string Token1)
+        IFileRepository fileRepository;
+        public MainEmpty()
         {
-            var currentUser = nameUser;
+
             InitializeComponent();
-            if (nameUser != null)
-            {
-                Current_user.Content = currentUser;
-            }
             Loaded += OnLoaded;
             Image_User1.Visibility = Visibility.Hidden;
         }
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
-            var repository = new FileRepository();
+            fileRepository = new FileRepository();
+            var tokenOfUser = BaseConnect.GetLastAddedToken();
+            var name = await fileRepository.GetUser(tokenOfUser);
+            Current_user.Content = name;
+
+            // var repository = new FileRepository();
             var tok1 = BaseConnect.GetLastAddedToken();
-            var rep1 = await repository.GetUser(tok1);
-            var infoUser = await repository.GetImageUser(Image_User1,Image_User);
+            var rep1 = await fileRepository.GetUser(tok1);
+            var infoUser = await fileRepository.GetImageUser(Image_User1,Image_User);
             Image_User.Source = infoUser;
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var nameUser = Current_user.Content;
             var currentUser = nameUser.ToString();
-            Manager.MainFrame.Navigate(new Mainxaml(currentUser));
+            Manager.MainFrame.Navigate(new Mainxaml());
         }
         public async void ImageReload()
         {

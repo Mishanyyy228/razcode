@@ -23,9 +23,11 @@ namespace lab
     /// </summary>
     public partial class Registration : Page
     {
+        IAuthRepository authRepository;
         public Registration()
         {
             InitializeComponent();
+            authRepository = new AuthRepository();
         }
         private void Name_user_GotFocus_1(object sender, RoutedEventArgs e)
         {
@@ -151,8 +153,7 @@ namespace lab
                               Password = Pass_user.Text,
                               Name = Name_user.Text
                             };
-                            var repository = new AuthRepository();
-                            var infoUser = await repository.RegistrUser(user);
+                            var infoUser = await authRepository.RegistrUser(user);
                             MessageBox.Show(infoUser);
                         }
                         else

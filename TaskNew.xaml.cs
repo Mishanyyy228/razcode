@@ -24,11 +24,12 @@ namespace lab
     /// </summary>
     public partial class TaskNew : Window
     {
+        ITodoRepository todoRepository;
         public TaskNew()
         {
             InitializeComponent();
             PopulateTimeComboBox();
-
+            todoRepository = new TodoRepository();
         }
         private void PopulateTimeComboBox()
         {
@@ -88,8 +89,7 @@ namespace lab
                                     description = txt_opis.Text,
                                     isCompleted = false
                                 };
-                                var repository = new TodoRepository();
-                                var infoUser = await repository.NewTodos(NewTaskes);
+                                var infoUser = await todoRepository.NewTodos(NewTaskes);
                                 MessageBox.Show(infoUser);
                                 this.DialogResult = true;
                             }
