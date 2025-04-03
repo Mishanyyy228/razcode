@@ -51,8 +51,6 @@ namespace lab
 
         private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://45.144.64.179/");
             {
                 if (Date_PickerBox.SelectedDate.HasValue != null | Cmb1.SelectedItem != null | txt_name.Text.Length <= 20 | txt_category.Text.Length <= 10)
                 {

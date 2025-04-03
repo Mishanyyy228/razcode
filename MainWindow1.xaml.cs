@@ -30,8 +30,7 @@ namespace lab
             InitializeComponent();
             progressBar.Visibility = Visibility.Visible;
 
-            // Обновляем значение прогресса
-            progressBar.Value = 50; // Значение от 0 до 100
+            progressBar.Value = 50; 
             Loaded += OnLoaded;
         }
 

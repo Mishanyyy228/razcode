@@ -40,6 +40,7 @@ namespace lab.Repository
                 if (responce.IsSuccessStatusCode)
                 {
                     var text = "Задача добавлена";
+                    await GetTodosAsync();
                     return text;
                 }
                 if (!responce.IsSuccessStatusCode)
