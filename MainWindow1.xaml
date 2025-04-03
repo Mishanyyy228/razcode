@@ -13,8 +13,10 @@
         <Storyboard x:Key="FadeOutStoryboard">
             <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.5"/>
         </Storyboard>
+        
     </Window.Resources>
     <Grid>
         <Frame Grid.Row="1" x:Name="MainFrame" Navigating="MainFrame_OnNavigating" NavigationUIVisibility="Hidden" Grid.RowSpan="2"></Frame>
+        <ProgressBar Style="{DynamicResource ProgressBarStyle1}" x:Name="progressBar" Height="30" Width="200" HorizontalAlignment="Center" VerticalAlignment="Center" />
     </Grid>
 </Window>

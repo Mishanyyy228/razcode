@@ -41,10 +41,7 @@ namespace lab
         ITodoRepository todoRepository;
 
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
+
         public ObservableCollection<Todo> Tasks { get; set; }
 
         public Mainxaml()
@@ -75,6 +72,28 @@ namespace lab
             }
             return false;
         }
+        private async Task<bool> ReturnTrueTodos()
+        {
+            var allTodos = await todoRepository.GetTodosAsync();
+            var completedTodos = allTodos.Where(todo => todo.isCompleted == true);
+            var countCompleatedTodos = completedTodos.Count();
+            if (countCompleatedTodos == 0)
+            {
+                return false;
+            }
+            return true;
+        }
+        private async Task<bool> ReturnFalseTodos()
+        {
+            var allTodos = await todoRepository.GetTodosAsync();
+            var completedTodos = allTodos.Where(todo => todo.isCompleted == false);
+            var countCompleatedTodos = completedTodos.Count();
+            if (countCompleatedTodos == 0)
+            {
+                return false;
+            }
+            return true;
+        }
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
             var reptodosTask = ReturnTodos(); 
@@ -88,7 +107,7 @@ namespace lab
                 var infoUser = await fileRepository.GetImageUser(Image_UserDefault, Image_User1);
                 Image_User1.Source = infoUser;
                 await FalseTaskAsync();
-                await LoadCategoryAsync();
+                await LoadCategoryFalseAsync();
             }
             if (reptodos == false)
             {
@@ -98,19 +117,49 @@ namespace lab
                 UserBox.Content = name;
                 var infoUser = await fileRepository.GetImageUser(Image_UserDefault, Image_User1);
                 Image_User1.Source = infoUser;
-                await LoadCategoryAsync();
                 await FalseTaskAsync();
+                await LoadCategoryFalseAsync();
             }
         }
-        public async Task LoadCategoryAsync()
+        public async Task LoadCategoryTrueAsync()
         {
             ObservableCollection<string> Categories = new ObservableCollection<string>();
-            Categories.Add("Все");
-            var allTasks = await todoRepository.GetTodosAsync();
+            var reptodosTask = ReturnTrueTodos();
+            bool reptodos = await reptodosTask;
 
+            if (reptodos==true)
+            {
+                Categories.Add("Все");
+            }
+            var allTodos = await todoRepository.GetTodosAsync();
+            var completedTodos = allTodos.Where(todo => todo.isCompleted == true);
             Tasks.Clear();
 
-            foreach (var task in allTasks)
+            foreach (var task in completedTodos)
+            {
+                if (!Categories.Contains(task.category))
+                {
+                    Categories.Add(task.category);
+                }
+            }
+            Category_List.ItemsSource = null;
+            Category_List.ItemsSource = Categories;
+        }
+        public async Task LoadCategoryFalseAsync()
+        {
+            ObservableCollection<string> Categories = new ObservableCollection<string>();
+            var reptodosTask = ReturnFalseTodos();
+            bool reptodos = await reptodosTask;
+
+            if (reptodos == true)
+            {
+                Categories.Add("Все");
+            }
+            var allTodos = await todoRepository.GetTodosAsync();
+            var completedTodos = allTodos.Where(todo => todo.isCompleted == false);
+            Tasks.Clear();
+
+            foreach (var task in completedTodos)
             {
                 if (!Categories.Contains(task.category))
                 {
@@ -141,6 +190,7 @@ namespace lab
 
             var completedTasks = allTasks.Where(task => task.isCompleted == false);
 
+            completedTasks.DistinctBy(t => t.date).ToList();
             Tasks.Clear(); 
             foreach (var task in completedTasks)
             {
@@ -201,7 +251,7 @@ namespace lab
             var currentImage = await todoRepository.TodosIsReady(classTask, Task_List);
             MessageBox.Show(currentImage);
             await TrueTaskAsync();
-            await LoadCategoryAsync();
+            await LoadCategoryFalseAsync();
             await FalseTaskAsync();
             ClearElement clearElement = new ClearElement();
             clearElement.ClearText(TaskName, TaskDateTime, TaskDate, TaskDescriotion);
@@ -214,7 +264,7 @@ namespace lab
             Todo classTask = (Todo)Task_List.SelectedItem;
             var currentImage = await todoRepository.DeleteTodos(classTask,Task_List);
             MessageBox.Show(currentImage);
-            await LoadCategoryAsync();
+            await LoadCategoryFalseAsync();
             await FalseTaskAsync();
             ClearElement clearElement = new ClearElement();
             clearElement.ClearText(TaskName, TaskDateTime, TaskDate, TaskDescriotion);
@@ -227,6 +277,7 @@ namespace lab
         {
             ClearElement clearElement = new ClearElement();
             clearElement.ClearText(TaskName, TaskDateTime, TaskDate, TaskDescriotion);
+            await LoadCategoryTrueAsync();
             await TrueTaskAsync();
             clearElement.HiddenElement(Buttone_Delete, Buttone_Gotovo, Task_List, Taske_List);
             NewTask_Image.Visibility = Visibility.Hidden;
@@ -242,6 +293,7 @@ namespace lab
             gridthick1.BorderBrush = Brushes.White;
             clearElement.HiddenElement(Buttone_Delete, Buttone_Gotovo, Taske_List ,Task_List);
             NewTask_Image.Visibility = Visibility.Visible;
+            await LoadCategoryFalseAsync();
             await FalseTaskAsync();
         }
 
@@ -291,8 +343,8 @@ namespace lab
             var add = new TaskNew();
             if (add.ShowDialog() == true)
             {
-                await TrueTaskAsync();
-                await LoadCategoryAsync();
+                //await TrueTaskAsync();
+                await LoadCategoryFalseAsync();
                 await FalseTaskAsync();
                 var uniqueCategories = Tasks.Select(t => t.category).Distinct().ToList();
             }
@@ -312,11 +364,7 @@ namespace lab
         private void Btn_Exit_Click(object sender, RoutedEventArgs e)
         {
             BaseConnect.DeleteLastAddedToken();
-            NavigationService.Navigate(null);
-            //var w2 = new MainWindow1();
-            //w2.Close();
-            //var add = new TaskNew();
-            //add.Close();
+            Manager.MainFrame.Navigate(new LogIn());
         }
     }
 }

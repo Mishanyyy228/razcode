@@ -28,15 +28,16 @@ namespace lab
         public MainWindow1()
         {
             InitializeComponent();
+            progressBar.Visibility = Visibility.Visible;
 
+            // Обновляем значение прогресса
+            progressBar.Value = 50; // Значение от 0 до 100
             Loaded += OnLoaded;
-
-            MainFrame.Navigate(new LogIn());
-            Manager.MainFrame = MainFrame;
         }
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
+
             var thisToken = BaseConnect.GetLastAddedToken();
             var repository = new FileRepository();
             var infoUser = await repository.GetUser(thisToken);
@@ -44,6 +45,13 @@ namespace lab
             {
                 MainFrame.Navigate(new Mainxaml());
                 Manager.MainFrame = MainFrame;
+                progressBar.Visibility = Visibility.Collapsed;
+            }
+            if (infoUser == null)
+            {
+                MainFrame.Navigate(new LogIn());
+                Manager.MainFrame = MainFrame;
+                progressBar.Visibility = Visibility.Collapsed;
             }
         }
         private void MainFrame_OnNavigating(object sender, NavigatingCancelEventArgs e)

@@ -41,7 +41,7 @@ namespace lab
 
             // var repository = new FileRepository();
             var tok1 = BaseConnect.GetLastAddedToken();
-            var rep1 = await fileRepository.GetUser(tok1);
+           // var rep1 = await fileRepository.GetUser(tok1);
             var infoUser = await fileRepository.GetImageUser(Image_User1,Image_User);
             Image_User.Source = infoUser;
         }
