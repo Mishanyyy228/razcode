@@ -39,11 +39,12 @@ namespace lab
     {
         IFileRepository fileRepository;
         ITodoRepository todoRepository;
+        private bool _isLoaded = false;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ObservableCollection<Todo> Tasks { get; set; }
-
+        private bool _loadedOnce = false;
         public Mainxaml()
         {
             fileRepository = new FileRepository();
@@ -57,6 +58,10 @@ namespace lab
             DataContext = this;
             InitializeComponent();
 
+            for (int i = 0; i < 1; i++)
+            {
+                Loaded += OnLoadedPage;
+            }
             Loaded += OnLoaded;
 
             ClearElement clearElement = new ClearElement();
@@ -94,32 +99,65 @@ namespace lab
             }
             return true;
         }
-        private async void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            var reptodosTask = ReturnTodos(); 
-            bool reptodos = await reptodosTask; 
 
-            if (reptodos == true)
+        private async void OnLoadedPage(object sender, RoutedEventArgs e)
+        {
+            if (App.IsPageLoaded)
             {
-                var tokenOfUser = BaseConnect.GetLastAddedToken();
-                var name = await fileRepository.GetUser(tokenOfUser);
-                UserBox.Content = name;
-                var infoUser = await fileRepository.GetImageUser(Image_UserDefault, Image_User1);
-                Image_User1.Source = infoUser;
-                await LoadCategoryFalseAsync();
-                await FalseTaskAsync();
+                return;
             }
-            if (reptodos == false)
+
+            App.IsPageLoaded = true; // Устанавливаем флаг
+
+            var reptodosTask2 = ReturnFalseTodos();
+            bool reptodos1 = await reptodosTask2;
+
+            if (reptodos1 == true)
+            {
+                Manager.MainFrame.Navigate(new Mainxaml());
+            }
+            else
             {
                 Manager.MainFrame.Navigate(new MainEmpty());
-                var tokenOfUser = BaseConnect.GetLastAddedToken();
-                var name = await fileRepository.GetUser(tokenOfUser);
-                UserBox.Content = name;
-                var infoUser = await fileRepository.GetImageUser(Image_UserDefault, Image_User1);
-                Image_User1.Source = infoUser;
-                await LoadCategoryFalseAsync();
-                await FalseTaskAsync();
             }
+        }
+        public partial class App : Application
+        {
+            public static bool IsPageLoaded { get; set; }
+
+        }
+        //private async void OnLoadedPage(object sender, RoutedEventArgs e)
+        //{
+        //    // Проверяем, был ли метод уже вызван
+        //    if (_isLoaded)
+        //    {
+        //        return;
+        //    }
+
+        //    _isLoaded = true; // Устанавливаем флаг
+
+        //    var reptodosTask2 = ReturnFalseTodos();
+        //    bool reptodos1 = await reptodosTask2;
+
+        //    if (reptodos1 == true)
+        //    {
+        //        Manager.MainFrame.Navigate(new Mainxaml());
+        //    }
+        //    else
+        //    {
+        //        Manager.MainFrame.Navigate(new MainEmpty());
+        //    }
+        //}
+
+        private async void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var tokenOfUser = BaseConnect.GetLastAddedToken();
+            var name = await fileRepository.GetUser(tokenOfUser);
+            UserBox.Content = name;
+            var infoUser = await fileRepository.GetImageUser(Image_UserDefault, Image_User1);
+            Image_User1.Source = infoUser;
+            await LoadCategoryFalseAsync();
+            await FalseTaskAsync();
         }
         public async Task LoadCategoryTrueAsync()
         {
@@ -249,7 +287,6 @@ namespace lab
             Todo classTask = (Todo)Task_List.SelectedItem;
             var currentImage = await todoRepository.TodosIsReady(classTask, Task_List);
             MessageBox.Show(currentImage);
-            //await TrueTaskAsync();
             await LoadCategoryFalseAsync();
             await FalseTaskAsync();
             ClearElement clearElement = new ClearElement();
@@ -257,6 +294,17 @@ namespace lab
             gridthick.BorderBrush = Brushes.White;
             clearElement.HiddenElement(Buttone_Delete, Buttone_Gotovo,null,null);
             gridthick1.BorderBrush = Brushes.White;
+            var reptodosTask2 = ReturnFalseTodos();
+            bool reptodos1 = await reptodosTask2;
+
+            if (reptodos1 == true)
+            {
+                Manager.MainFrame.Navigate(new Mainxaml());
+            }
+            else
+            {
+                Manager.MainFrame.Navigate(new MainEmpty());
+            }
         }
         private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
@@ -270,6 +318,16 @@ namespace lab
             gridthick.BorderBrush = Brushes.White;
             clearElement.HiddenElement(Buttone_Delete, Buttone_Gotovo, null,null);
             gridthick1.BorderBrush = Brushes.White;
+            var reptodosTask2 = ReturnFalseTodos();
+            bool reptodos1 = await reptodosTask2;
+            if (reptodos1 == true)
+            {
+                Manager.MainFrame.Navigate(new Mainxaml());
+            }
+            else
+            {
+                Manager.MainFrame.Navigate(new MainEmpty());
+            }
         }
 
         private async void Button_Click_3(object sender, RoutedEventArgs e)
