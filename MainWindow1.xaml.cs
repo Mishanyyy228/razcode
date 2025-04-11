@@ -16,6 +16,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using lab.Repository;
+using lab.DataBase;
+using System.Windows.Threading;
 
 
 namespace lab
@@ -25,33 +27,56 @@ namespace lab
     /// </summary>
     public partial class MainWindow1 : Window
     {
+        private DispatcherTimer timer;
         public MainWindow1()
         {
             InitializeComponent();
             progressBar.Visibility = Visibility.Visible;
 
-            progressBar.Value = 50; 
+
             Loaded += OnLoaded;
         }
-
-        private async void OnLoaded(object sender, RoutedEventArgs e)
+        public bool IsWindowOpen<T>() where T : Window
+        {
+            return Application.Current.Windows.OfType<T>().Any();
+        }
+        private async void OnTimerTick(object sender, EventArgs e)
         {
 
-            var thisToken = BaseConnect.GetLastAddedToken();
-            var repository = new FileRepository();
-            var infoUser = await repository.GetUser(thisToken);
-            if (infoUser != null)
-            {
-                MainFrame.Navigate(new Mainxaml());
-                Manager.MainFrame = MainFrame;
-                progressBar.Visibility = Visibility.Collapsed;
-            }
-            if (infoUser == null)
-            {
-                MainFrame.Navigate(new LogIn());
-                Manager.MainFrame = MainFrame;
-                progressBar.Visibility = Visibility.Collapsed;
-            }
+                if (progressBar.Value >= 100)
+                {
+                    timer.Stop();
+                    var thisToken = BaseConnect.GetLastAddedToken();
+                    var repository = new FileRepository();
+                    var infoUser = await repository.GetUser(thisToken);
+                    if (infoUser != null)
+                    {
+                        MainFrame.Navigate(new Mainxaml());
+                        Manager.MainFrame = MainFrame;
+                        progressBar.Visibility = Visibility.Collapsed;
+                    }
+                    if (infoUser == null)
+                    {
+                        MainFrame.Navigate(new LogIn());
+                        Manager.MainFrame = MainFrame;
+                        progressBar.Visibility = Visibility.Collapsed;
+                    }
+                }
+                else
+                {
+                    progressBar.Value += 10;
+                }  
+        }
+        private async void OnLoaded(object sender, RoutedEventArgs e)
+        {
+        //    MessageBox.Show("Событие Loaded сработало"); // Добавьте это для проверки
+            timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(100) };
+            timer.Tick += OnTimerTick;
+            timer.Start(); // Запускаем таймер
+       //     progressBar.Value = 30; // Начальное значение прогрессбара
+
+         //   progressBar.Value = 0; // Начальное значение прогрессбара
+
         }
         private void MainFrame_OnNavigating(object sender, NavigatingCancelEventArgs e)
         {

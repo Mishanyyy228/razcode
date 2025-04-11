@@ -8,7 +8,11 @@ namespace lab
 {
     public class Token
     {
+        public int id { get; set; }
         public string access_token { get; set; }
+
+        public Token() { }
+
         public Token(string accessToken)
         {
             access_token = accessToken;

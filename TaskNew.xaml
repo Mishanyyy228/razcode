@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:lab"
         mc:Ignorable="d"
-        Title="Добавление задачи" Height="500" Width="700">
+        Title="Добавление задачи" Height="640" Width="800">
     <Grid Background="Gray">
         <Grid.RowDefinitions>
             <RowDefinition Height="22*"/>

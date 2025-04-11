@@ -1,4 +1,5 @@
-﻿using lab.Repository;
+﻿using lab.DataBase;
+using lab.Repository;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,6 @@ namespace lab
         IFileRepository fileRepository;
         public MainEmpty()
         {
-
             InitializeComponent();
             Loaded += OnLoaded;
             Image_User1.Visibility = Visibility.Hidden;
@@ -39,23 +39,37 @@ namespace lab
             var name = await fileRepository.GetUser(tokenOfUser);
             Current_user.Content = name;
 
-            // var repository = new FileRepository();
             var tok1 = BaseConnect.GetLastAddedToken();
-           // var rep1 = await fileRepository.GetUser(tok1);
             var infoUser = await fileRepository.GetImageUser(Image_User1,Image_User);
             Image_User.Source = infoUser;
         }
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            var nameUser = Current_user.Content;
-            var currentUser = nameUser.ToString();
-            Manager.MainFrame.Navigate(new Mainxaml());
+            Mainxaml mainxaml = new Mainxaml();
+            var reptodosTask2 = mainxaml.ReturnFalseTodos();
+            bool reptodos1 = await reptodosTask2;
+
+            if (reptodos1 == false)
+            {
+                var add = new TaskNew();
+                bool? result = add.ShowDialog(); 
+
+                if (result.HasValue && result.Value)
+                {
+                    Manager.MainFrame.Navigate(new Mainxaml());
+                }
+                else
+                {
+                    Manager.MainFrame.Navigate(new Mainxaml());
+                }
+            }
         }
         public async void ImageReload()
         {
         }
         private async void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        { }
+        { 
+        }
         private async void Image_User1_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
         }

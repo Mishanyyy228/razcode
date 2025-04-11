@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
 using taskLibrary;
+using lab.DataBase;
 
 namespace lab.Repository
 {

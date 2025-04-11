@@ -25,6 +25,7 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using lab.DataBase;
 
 
 
@@ -88,7 +89,7 @@ namespace lab
             }
             return true;
         }
-        private async Task<bool> ReturnFalseTodos()
+        public async Task<bool> ReturnFalseTodos()
         {
             var allTodos = await todoRepository.GetTodosAsync();
             var completedTodos = allTodos.Where(todo => todo.isCompleted == false);
@@ -107,7 +108,7 @@ namespace lab
                 return;
             }
 
-            App.IsPageLoaded = true; // Устанавливаем флаг
+            App.IsPageLoaded = true; 
 
             var reptodosTask2 = ReturnFalseTodos();
             bool reptodos1 = await reptodosTask2;
@@ -126,28 +127,6 @@ namespace lab
             public static bool IsPageLoaded { get; set; }
 
         }
-        //private async void OnLoadedPage(object sender, RoutedEventArgs e)
-        //{
-        //    // Проверяем, был ли метод уже вызван
-        //    if (_isLoaded)
-        //    {
-        //        return;
-        //    }
-
-        //    _isLoaded = true; // Устанавливаем флаг
-
-        //    var reptodosTask2 = ReturnFalseTodos();
-        //    bool reptodos1 = await reptodosTask2;
-
-        //    if (reptodos1 == true)
-        //    {
-        //        Manager.MainFrame.Navigate(new Mainxaml());
-        //    }
-        //    else
-        //    {
-        //        Manager.MainFrame.Navigate(new MainEmpty());
-        //    }
-        //}
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
@@ -398,6 +377,7 @@ namespace lab
         private async void NewTask_Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var add = new TaskNew();
+            //add.ShowDialog();
             if (add.ShowDialog() == true)
             {
                 await LoadCategoryFalseAsync();
