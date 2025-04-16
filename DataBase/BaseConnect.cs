@@ -1,11 +1,11 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.EntityFrameworkCore;
 
 namespace lab.DataBase
 {
@@ -13,14 +13,12 @@ namespace lab.DataBase
     {
         public static void SaveToken(Token token)
         {
-            using (var context = new ResponceTokenContext())
+            using (var context = new ApplicationContext())
             {
                 try
                 {
-                    // Проверим, есть ли такой токен в базе данных
                     if (!context.Token.Any(t => t.access_token == token.access_token))
                     {
-                        // Добавление нового токена
                         context.Token.Add(token);
                         context.SaveChanges();
                     }
@@ -36,18 +34,21 @@ namespace lab.DataBase
             }
         }
 
+        // Метод удаления последнего токена переписываем иначе,
+        // так как нет уникального идентификатора для сортировки
         public static void DeleteLastAddedToken()
         {
-            using (var context = new ResponceTokenContext())
+            using (var context = new ApplicationContext())
             {
                 try
                 {
-                    var lastToken = context.Token.OrderByDescending(t => t.id).FirstOrDefault();
-                    if (lastToken != null)
+                    // Берём произвольный токен из списка
+                    var anyToken = context.Token.FirstOrDefault();
+                    if (anyToken != null)
                     {
-                        context.Token.Remove(lastToken);
+                        context.Token.Remove(anyToken);
                         context.SaveChanges();
-                        MessageBox.Show("Последний токен удалён успешно.");
+                        MessageBox.Show("Один из токенов удалён успешно.");
                     }
                     else
                     {
@@ -61,14 +62,15 @@ namespace lab.DataBase
             }
         }
 
+        // Возврат последнего токена тоже переделываем
         public static string GetLastAddedToken()
         {
-            using (var context = new ResponceTokenContext())
+            using (var context = new ApplicationContext())
             {
                 try
                 {
-                    var lastToken = context.Token.OrderByDescending(t => t.id).Select(t => t.access_token).FirstOrDefault();
-                    return lastToken;
+                    var randomToken = context.Token.Select(t => t.access_token).FirstOrDefault();
+                    return randomToken;
                 }
                 catch (Exception ex)
                 {
@@ -78,5 +80,15 @@ namespace lab.DataBase
             }
         }
     }
-}
 
+    public class ApplicationContext : DbContext
+    {
+        public DbSet<Token> Token => Set<Token>();
+        public ApplicationContext() => Database.EnsureCreated();
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite("Data Source=helloapp.db");
+        }
+    }
+}

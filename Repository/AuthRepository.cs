@@ -33,6 +33,7 @@ namespace lab.Repository
                 TokenStorage.Value = response.Content.ReadAsAsync<Responce<Token>>().Result.data.access_token;
                 var token = new Token(TokenStorage.Value);
                 BaseConnect.SaveToken(token);
+
                 if (TokenStorage.Value == null)
                 {
                     throw new InvalidOperationException("Не удалось получить токен.");

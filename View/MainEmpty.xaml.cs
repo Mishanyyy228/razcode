@@ -52,16 +52,11 @@ namespace lab
             if (reptodos1 == false)
             {
                 var add = new TaskNew();
-                bool? result = add.ShowDialog(); 
-
-                if (result.HasValue && result.Value)
-                {
-                    Manager.MainFrame.Navigate(new Mainxaml());
-                }
-                else
-                {
-                    Manager.MainFrame.Navigate(new Mainxaml());
-                }
+                bool? result = add.ShowDialog();
+            }
+            if (reptodos1 == true)
+            {
+                Manager.MainFrame.Navigate(new Mainxaml());
             }
         }
         public async void ImageReload()

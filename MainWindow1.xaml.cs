@@ -33,7 +33,6 @@ namespace lab
             InitializeComponent();
             progressBar.Visibility = Visibility.Visible;
 
-
             Loaded += OnLoaded;
         }
         public bool IsWindowOpen<T>() where T : Window
@@ -42,41 +41,35 @@ namespace lab
         }
         private async void OnTimerTick(object sender, EventArgs e)
         {
-
-                if (progressBar.Value >= 100)
+            if (progressBar.Value >= 100)
+            {
+                timer.Stop();
+                var thisToken = BaseConnect.GetLastAddedToken();
+                var repository = new FileRepository();
+                var infoUser = await repository.GetUser(thisToken);
+                if (infoUser != null)
                 {
-                    timer.Stop();
-                    var thisToken = BaseConnect.GetLastAddedToken();
-                    var repository = new FileRepository();
-                    var infoUser = await repository.GetUser(thisToken);
-                    if (infoUser != null)
-                    {
-                        MainFrame.Navigate(new Mainxaml());
-                        Manager.MainFrame = MainFrame;
-                        progressBar.Visibility = Visibility.Collapsed;
-                    }
-                    if (infoUser == null)
-                    {
-                        MainFrame.Navigate(new LogIn());
-                        Manager.MainFrame = MainFrame;
-                        progressBar.Visibility = Visibility.Collapsed;
-                    }
+                    MainFrame.Navigate(new Mainxaml());
+                    Manager.MainFrame = MainFrame;
+                    progressBar.Visibility = Visibility.Collapsed;
                 }
-                else
+                if (infoUser == null)
                 {
-                    progressBar.Value += 10;
-                }  
+                    MainFrame.Navigate(new LogIn());
+                    Manager.MainFrame = MainFrame;
+                    progressBar.Visibility = Visibility.Collapsed;
+                }
+            }
+            else
+            {
+                progressBar.Value += 10;
+            }
         }
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
-        //    MessageBox.Show("Событие Loaded сработало"); // Добавьте это для проверки
             timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(100) };
             timer.Tick += OnTimerTick;
-            timer.Start(); // Запускаем таймер
-       //     progressBar.Value = 30; // Начальное значение прогрессбара
-
-         //   progressBar.Value = 0; // Начальное значение прогрессбара
-
+            timer.Start(); 
         }
         private void MainFrame_OnNavigating(object sender, NavigatingCancelEventArgs e)
         {

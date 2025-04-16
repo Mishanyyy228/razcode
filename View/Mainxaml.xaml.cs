@@ -124,7 +124,7 @@ namespace lab
         }
         public partial class App : Application
         {
-            public static bool IsPageLoaded { get; set; }
+            public static bool IsPageLoaded { get; set; } 
 
         }
 
@@ -377,7 +377,6 @@ namespace lab
         private async void NewTask_Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var add = new TaskNew();
-            //add.ShowDialog();
             if (add.ShowDialog() == true)
             {
                 await LoadCategoryFalseAsync();
