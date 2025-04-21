@@ -35,11 +35,11 @@ namespace lab
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
             fileRepository = new FileRepository();
-            var tokenOfUser = BaseConnect.GetLastAddedToken();
+            var tokenOfUser = DataBaseService.GetLastAddedToken();
             var name = await fileRepository.GetUser(tokenOfUser);
             Current_user.Content = name;
 
-            var tok1 = BaseConnect.GetLastAddedToken();
+            var tok1 = DataBaseService.GetLastAddedToken();
             var infoUser = await fileRepository.GetImageUser(Image_User1,Image_User);
             Image_User.Source = infoUser;
         }
@@ -53,6 +53,11 @@ namespace lab
             {
                 var add = new TaskNew();
                 bool? result = add.ShowDialog();
+                if (result == true)
+                {
+                    Manager.MainFrame.Navigate(new Mainxaml());
+
+                }
             }
             if (reptodos1 == true)
             {

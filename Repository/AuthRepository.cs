@@ -32,13 +32,13 @@ namespace lab.Repository
 
                 TokenStorage.Value = response.Content.ReadAsAsync<Responce<Token>>().Result.data.access_token;
                 var token = new Token(TokenStorage.Value);
-                BaseConnect.SaveToken(token);
+                DataBaseService.SaveToken(token);
 
                 if (TokenStorage.Value == null)
                 {
                     throw new InvalidOperationException("Не удалось получить токен.");
                 }
-                var tok1 = BaseConnect.GetLastAddedToken();
+                var tok1 = DataBaseService.GetLastAddedToken();
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tok1);
 
                 var result = await httpClient.GetAsync("api/user");

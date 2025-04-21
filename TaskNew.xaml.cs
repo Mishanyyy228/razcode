@@ -89,8 +89,8 @@ namespace lab
                                 };
                                 var infoUser = await todoRepository.NewTodos(NewTaskes);
                                 MessageBox.Show(infoUser);
-                                this.DialogResult = true; // Указываем, что диалог был успешно закрыт
-                                this.Close(); // Закрываем окно                            }
+                                this.DialogResult = true; 
+                                this.Close();                          
                             }
                         }
                     }

@@ -25,7 +25,7 @@ namespace lab.Repository
 
         public async Task<List<Todo>?> GetTodosAsync()
         {
-            var tok1 = BaseConnect.GetLastAddedToken();
+            var tok1 = DataBaseService.GetLastAddedToken();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tok1);
             var result = await httpClient.GetFromJsonAsync<Responce<List<Todo>>>(TodosUrl);
             return result?.data;
@@ -35,7 +35,7 @@ namespace lab.Repository
         {
             try
             {
-                var tok1 = BaseConnect.GetLastAddedToken();
+                var tok1 = DataBaseService.GetLastAddedToken();
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tok1);
                 var responce = await httpClient.PostAsJsonAsync("api/todos", todo);
                 if (responce.IsSuccessStatusCode)
@@ -56,6 +56,7 @@ namespace lab.Repository
             }
             return null;
         }
+
         //удаление задачи
         public async Task<string> DeleteTodos(Todo todo, ListBox Task_List)
         {
@@ -63,7 +64,7 @@ namespace lab.Repository
             if (todo != null)
             {
                 var taskId = todo.id;
-                var tok1 = BaseConnect.GetLastAddedToken();
+                var tok1 = DataBaseService.GetLastAddedToken();
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tok1);
 
                 var result = await httpClient.DeleteAsync($"/api/todos/{taskId}");
@@ -86,7 +87,7 @@ namespace lab.Repository
 
             if (todo != null)
             {
-                var tok1 = BaseConnect.GetLastAddedToken();
+                var tok1 = DataBaseService.GetLastAddedToken();
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tok1);
                 var taskId = todo.id;
                 var content = new StringContent(taskId, Encoding.UTF8, "application/json");

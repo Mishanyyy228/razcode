@@ -27,9 +27,12 @@ namespace lab
     /// </summary>
     public partial class MainWindow1 : Window
     {
+        ITodoRepository todoRepository;
         private DispatcherTimer timer;
         public MainWindow1()
         {
+            todoRepository = new TodoRepository();
+
             InitializeComponent();
             progressBar.Visibility = Visibility.Visible;
 
@@ -41,29 +44,66 @@ namespace lab
         }
         private async void OnTimerTick(object sender, EventArgs e)
         {
+
             if (progressBar.Value >= 100)
             {
-                timer.Stop();
-                var thisToken = BaseConnect.GetLastAddedToken();
+                var thisToken = DataBaseService.GetLastAddedToken();
                 var repository = new FileRepository();
                 var infoUser = await repository.GetUser(thisToken);
-                if (infoUser != null)
+
+                // Проверяем, что токен вообще существует
+                if (string.IsNullOrEmpty(thisToken))
                 {
-                    MainFrame.Navigate(new Mainxaml());
-                    Manager.MainFrame = MainFrame;
-                    progressBar.Visibility = Visibility.Collapsed;
-                }
-                if (infoUser == null)
-                {
+                    // Если токена нет, переходим на страницу авторизации
                     MainFrame.Navigate(new LogIn());
                     Manager.MainFrame = MainFrame;
                     progressBar.Visibility = Visibility.Collapsed;
+                    timer.Stop();
+                    return;
+                }
+
+                // Дальнейшая логика продолжается только если токен есть
+                if (infoUser != null)
+                {
+                    var reptodosTask2 = ReturnFalseTodos();
+                    bool reptodos1 = await reptodosTask2;
+                    progressBar.Visibility = Visibility.Collapsed;
+                    timer.Stop();
+                    Manager.MainFrame = MainFrame;
+
+                    if (reptodos1 == true)
+                    {
+                        Manager.MainFrame.Navigate(new Mainxaml());
+                    }
+                    else
+                    {
+                        Manager.MainFrame.Navigate(new MainEmpty());
+                    }
+                }
+                else
+                {
+                    // Если токен есть, но пользователь не найден
+                    MainFrame.Navigate(new LogIn());
+                    Manager.MainFrame = MainFrame;
+                    progressBar.Visibility = Visibility.Collapsed;
+                    timer.Stop();
                 }
             }
             else
             {
-                progressBar.Value += 10;
+                progressBar.Value += 5;
             }
+        }
+        public async Task<bool> ReturnFalseTodos()
+        {
+            var allTodos = await todoRepository.GetTodosAsync();
+            var completedTodos = allTodos.Where(todo => todo.isCompleted == false);
+            var countCompleatedTodos = completedTodos.Count();
+            if (countCompleatedTodos == 0)
+            {
+                return false;
+            }
+            return true;
         }
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {

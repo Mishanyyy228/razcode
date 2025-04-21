@@ -26,6 +26,7 @@ using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using lab.DataBase;
+using System.Windows.Threading;
 
 
 
@@ -48,6 +49,7 @@ namespace lab
         private bool _loadedOnce = false;
         public Mainxaml()
         {
+
             fileRepository = new FileRepository();
             todoRepository = new TodoRepository();
 
@@ -68,16 +70,7 @@ namespace lab
             ClearElement clearElement = new ClearElement();
             clearElement.HiddenElement(Buttone_Delete, Buttone_Gotovo, Taske_List, null);
         }
-        private async Task<bool> ReturnTodos()
-        {
-            var todosUser = await todoRepository.GetTodosAsync();
-            var Todos = todosUser.Count();
-            if (Todos >= 0)
-            {
-                return true;
-            }
-            return false;
-        }
+
         private async Task<bool> ReturnTrueTodos()
         {
             var allTodos = await todoRepository.GetTodosAsync();
@@ -113,14 +106,14 @@ namespace lab
             var reptodosTask2 = ReturnFalseTodos();
             bool reptodos1 = await reptodosTask2;
 
-            if (reptodos1 == true)
-            {
-                Manager.MainFrame.Navigate(new Mainxaml());
-            }
-            else
-            {
-                Manager.MainFrame.Navigate(new MainEmpty());
-            }
+            //if (reptodos1 == true)
+            //{
+            //    Manager.MainFrame.Navigate(new Mainxaml());
+            //}
+            //else
+            //{
+            //    Manager.MainFrame.Navigate(new MainEmpty());
+            //}
         }
         public partial class App : Application
         {
@@ -130,7 +123,7 @@ namespace lab
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
-            var tokenOfUser = BaseConnect.GetLastAddedToken();
+            var tokenOfUser = DataBaseService.GetLastAddedToken();
             var name = await fileRepository.GetUser(tokenOfUser);
             UserBox.Content = name;
             var infoUser = await fileRepository.GetImageUser(Image_UserDefault, Image_User1);
@@ -398,7 +391,7 @@ namespace lab
 
         private void Btn_Exit_Click(object sender, RoutedEventArgs e)
         {
-            BaseConnect.DeleteLastAddedToken();
+            DataBaseService.DeleteLastAddedToken();
             Manager.MainFrame.Navigate(new LogIn());
         }
     }

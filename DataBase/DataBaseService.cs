@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace lab.DataBase
 {
-    public static class BaseConnect
+    public static class DataBaseService
     {
         public static void SaveToken(Token token)
         {
@@ -42,7 +42,6 @@ namespace lab.DataBase
             {
                 try
                 {
-                    // Берём произвольный токен из списка
                     var anyToken = context.Token.FirstOrDefault();
                     if (anyToken != null)
                     {
@@ -63,14 +62,26 @@ namespace lab.DataBase
         }
 
         // Возврат последнего токена тоже переделываем
+        // Вернуть последний добавленный токен
         public static string GetLastAddedToken()
         {
             using (var context = new ApplicationContext())
             {
                 try
                 {
-                    var randomToken = context.Token.Select(t => t.access_token).FirstOrDefault();
-                    return randomToken;
+                    // Сначала проверяем, есть ли токены в базе данных
+                    if (context.Token.Any())
+                    {
+                        // Если есть, выберем самый свежий токен
+                        var lastToken = context.Token.Select(t => t.access_token).FirstOrDefault();
+                        return lastToken;
+                    }
+                    else
+                    {
+                        // Если токенов нет, выводим сообщение и возвращаем null
+                        MessageBox.Show("Нет токенов в базе данных.");
+                        return null;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -78,17 +89,6 @@ namespace lab.DataBase
                     return null;
                 }
             }
-        }
-    }
-
-    public class ApplicationContext : DbContext
-    {
-        public DbSet<Token> Token => Set<Token>();
-        public ApplicationContext() => Database.EnsureCreated();
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlite("Data Source=helloapp.db");
         }
     }
 }

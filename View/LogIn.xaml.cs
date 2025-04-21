@@ -29,9 +29,12 @@ namespace lab
     /// </summary>
     public partial class LogIn : Page
     {
+        ITodoRepository todoRepository;
         IAuthRepository repository;
         public LogIn()
         {
+            todoRepository = new TodoRepository();
+
             InitializeComponent();
             repository = new AuthRepository();
         }
@@ -58,6 +61,17 @@ namespace lab
             }
         }
 
+        public async Task<bool> ReturnFalseTodos()
+        {
+            var allTodos = await todoRepository.GetTodosAsync();
+            var completedTodos = allTodos.Where(todo => todo.isCompleted == false);
+            var countCompleatedTodos = completedTodos.Count();
+            if (countCompleatedTodos == 0)
+            {
+                return false;
+            }
+            return true;
+        }
         private void Pochta_user11_GotFocus(object sender, RoutedEventArgs e)
         {
             if (Pochta_user11.Text == "student12@gmail.com")
@@ -108,11 +122,20 @@ namespace lab
                     {
 
                         var infoUser = await repository.LoginAndGetUser(user);
+                        var reptodosTask2 = ReturnFalseTodos();
+                        bool reptodos1 = await reptodosTask2;
 
-                        //var token = new Token(TokenStorage.Value);
                         MessageBox.Show($"Вход выполнен успешно! Приветствуем вас, {infoUser}!", "Успех", MessageBoxButton.OK);
-                        Manager.MainFrame.Navigate(new Mainxaml());
+                    //   Manager.MainFrame.Navigate(new Mainxaml());
 
+                        if (reptodos1 == true)
+                        {
+                            Manager.MainFrame.Navigate(new Mainxaml());
+                        }
+                        else
+                        {
+                            Manager.MainFrame.Navigate(new MainEmpty());
+                        }
 
                     }
                     //kmlkmmlklm@hgv.seg
